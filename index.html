@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>성경이 읽어지네 — 스터디 자료</title>
+<style>
+:root{
+  --bg:#f7f4ee; --surface:#fffdf9; --surface-2:#f0ebe1; --ink:#2b2724; --ink-soft:#5f574e;
+  --line:#ddd4c5; --accent:#0f6f63; --accent-soft:#d8ebe7; --gold:#a67c00; --gold-soft:#f6eccd;
+  --shadow:0 1px 2px rgba(43,39,36,.06),0 8px 24px rgba(43,39,36,.06); --radius:14px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16161a; --surface:#1e1e24; --surface-2:#26262e; --ink:#ece7de; --ink-soft:#a9a195;
+    --line:#393942; --accent:#5ec5b4; --accent-soft:#12332f; --gold:#d9b75a; --gold-soft:#332a14;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16161a; --surface:#1e1e24; --surface-2:#26262e; --ink:#ece7de; --ink-soft:#a9a195;
+  --line:#393942; --accent:#5ec5b4; --accent-soft:#12332f; --gold:#d9b75a; --gold-soft:#332a14;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;
+  font-size:17px; line-height:1.78; word-break:keep-all; overflow-wrap:anywhere;
+}
+.wrap{max-width:840px; margin:0 auto; padding:0 16px 100px}
+header.hero{
+  padding:64px 16px 40px; text-align:center; border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,var(--surface) 0%,var(--bg) 100%);
+}
+.hero .kicker{font-size:13px; letter-spacing:.16em; color:var(--accent); font-weight:700; margin:0 0 10px}
+.hero h1{font-size:clamp(28px,6vw,42px); line-height:1.25; margin:0 0 14px; letter-spacing:-.02em}
+.hero p{margin:0 auto; max-width:560px; color:var(--ink-soft); font-size:16px}
+
+.section-lbl{font-size:13px; letter-spacing:.1em; color:var(--ink-soft); font-weight:700; margin:48px 0 14px}
+
+.list{display:flex; flex-direction:column; gap:12px}
+a.card{
+  display:block; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+  padding:20px 22px; box-shadow:var(--shadow); text-decoration:none; color:inherit;
+  transition:transform .12s ease, border-color .12s ease;
+}
+a.card:hover{border-color:var(--accent); transform:translateY(-1px)}
+a.card .tag{font-size:12.5px; font-weight:700; letter-spacing:.06em; color:var(--accent); background:var(--accent-soft); border-radius:999px; padding:3px 10px; display:inline-block; margin-bottom:8px}
+a.card h3{margin:0 0 6px; font-size:19px}
+a.card p{margin:0; font-size:14.5px; color:var(--ink-soft)}
+
+a.guide-card{display:block; background:var(--gold-soft); border:1px solid var(--line); border-radius:var(--radius); padding:18px 22px; text-decoration:none; color:inherit; box-shadow:var(--shadow)}
+a.guide-card h3{margin:0 0 4px; font-size:17px; color:var(--gold)}
+a.guide-card p{margin:0; font-size:14px; color:var(--ink-soft)}
+
+.empty{color:var(--ink-soft); font-size:14.5px; padding:18px 0}
+footer{margin-top:70px; padding-top:24px; border-top:1px solid var(--line); color:var(--ink-soft); font-size:14px; text-align:center}
+.theme-toggle{position:fixed; right:14px; bottom:14px; z-index:10; border:1px solid var(--line); background:var(--surface); color:var(--ink); border-radius:999px; padding:9px 15px; font-size:13px; cursor:pointer; box-shadow:var(--shadow); font-family:inherit}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <p class="kicker">성경이 읽어지네</p>
+  <h1>구약과 신약을,<br>한 줄로 꿰뚫는 스터디</h1>
+  <p>강의를 회차별로 정리한 자료입니다. 나무를 보기 전에 먼저 숲을 봅니다.</p>
+</header>
+
+<div class="wrap">
+
+  <p class="section-lbl">회차별 자료</p>
+  <div class="list">
+    <a class="card" href="2일차/">
+      <span class="tag">2일차</span>
+      <h3>구약을 통째로 꿰뚫기</h3>
+      <p>창세기 1장부터 말라기까지, 구약 39권 전체를 한 시간 반 만에 한 줄로 이어 봅니다. (교재 23~27쪽)</p>
+    </a>
+    <!-- 새 회차를 추가하려면 위 카드를 복사해서 링크와 내용을 바꾸세요. -->
+  </div>
+
+  <p class="section-lbl">참고 자료</p>
+  <a class="guide-card" href="스터디자료-제작지침서.html">
+    <h3>스터디 자료 제작 지침서</h3>
+    <p>이 시리즈의 자료가 어떤 원칙으로 만들어지는지 설명합니다.</p>
+  </a>
+
+  <footer>
+    <p>원본 녹음과 전사본은 이 사이트에 올리지 않습니다.</p>
+  </footer>
+
+</div>
+
+<button class="theme-toggle" id="tt">◐ 화면 밝기 전환</button>
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('tt');
+  var saved=null;
+  try{ saved=localStorage.getItem('bs-theme'); }catch(e){}
+  if(saved){ root.setAttribute('data-theme',saved); }
+  btn.addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme');
+    if(!cur){ cur=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'; }
+    var next=cur==='dark'?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{ localStorage.setItem('bs-theme',next); }catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

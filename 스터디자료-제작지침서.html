@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>성경이 읽어지네 스터디 지침서</title>
+<style>
+:root{
+  --bg:#f7f4ee; --surface:#fffdf9; --surface-2:#f0ebe1; --ink:#2b2724; --ink-soft:#5f574e;
+  --line:#ddd4c5; --accent:#0f6f63; --accent-soft:#d8ebe7; --warn:#b3541e; --warn-soft:#f7e7da;
+  --gold:#a67c00; --gold-soft:#f6eccd; --shadow:0 1px 2px rgba(43,39,36,.06),0 8px 24px rgba(43,39,36,.06);
+  --radius:14px;
+  --map-sea:#cfe3ea; --map-land:#eee6d4; --map-desert:#f2e3c6; --map-river:#7fb3c4; --map-stroke:#b9ac94;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16161a; --surface:#1e1e24; --surface-2:#26262e; --ink:#ece7de; --ink-soft:#a9a195;
+    --line:#393942; --accent:#5ec5b4; --accent-soft:#12332f; --warn:#e2925c; --warn-soft:#3a2416;
+    --gold:#d9b75a; --gold-soft:#332a14; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+    --map-sea:#1d3a44; --map-land:#2c2a22; --map-desert:#34301f; --map-river:#4b8ea3; --map-stroke:#4d4738;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16161a; --surface:#1e1e24; --surface-2:#26262e; --ink:#ece7de; --ink-soft:#a9a195;
+  --line:#393942; --accent:#5ec5b4; --accent-soft:#12332f; --warn:#e2925c; --warn-soft:#3a2416;
+  --gold:#d9b75a; --gold-soft:#332a14; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+  --map-sea:#1d3a44; --map-land:#2c2a22; --map-desert:#34301f; --map-river:#4b8ea3; --map-stroke:#4d4738;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;
+  font-size:17px; line-height:1.75; word-break:keep-all; overflow-wrap:anywhere;
+}
+.wrap{max-width:900px; margin:0 auto; padding:0 16px 96px}
+header.hero{
+  padding:64px 16px 40px; text-align:center; border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,var(--surface) 0%,var(--bg) 100%);
+}
+.hero .kicker{font-size:13px; letter-spacing:.14em; color:var(--accent); font-weight:700; margin:0 0 10px}
+.hero h1{font-size:clamp(28px,6vw,42px); line-height:1.25; margin:0 0 12px; letter-spacing:-.02em}
+.hero p{margin:0 auto; max-width:560px; color:var(--ink-soft); font-size:16px}
+.badges{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:22px}
+.badge{font-size:13px; padding:5px 12px; border-radius:999px; background:var(--accent-soft); color:var(--accent); font-weight:600}
+nav.toc{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+  padding:20px 22px; margin:32px 0 8px; box-shadow:var(--shadow);
+}
+nav.toc h2{font-size:14px; margin:0 0 12px; color:var(--ink-soft); letter-spacing:.08em}
+nav.toc ol{margin:0; padding-left:20px; columns:2; column-gap:28px}
+@media (max-width:640px){nav.toc ol{columns:1}}
+nav.toc li{margin:4px 0}
+nav.toc a{color:var(--ink); text-decoration:none; border-bottom:1px solid transparent}
+nav.toc a:hover{color:var(--accent); border-bottom-color:var(--accent)}
+section{margin:56px 0 0; scroll-margin-top:24px}
+h2.sec{
+  font-size:clamp(21px,4vw,27px); margin:0 0 6px; letter-spacing:-.01em; display:flex; gap:12px; align-items:baseline;
+}
+h2.sec .num{
+  font-size:14px; font-weight:800; color:var(--accent); background:var(--accent-soft);
+  min-width:30px; height:30px; display:inline-flex; align-items:center; justify-content:center; border-radius:8px; flex:none;
+}
+.sec-lead{color:var(--ink-soft); margin:0 0 22px; font-size:15.5px}
+h3{font-size:18px; margin:30px 0 8px}
+h4{font-size:15.5px; margin:20px 0 6px; color:var(--ink-soft)}
+p{margin:0 0 14px}
+ul,ol{margin:0 0 14px; padding-left:22px}
+li{margin:6px 0}
+code{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:.88em;
+  background:var(--surface-2); padding:2px 6px; border-radius:5px; border:1px solid var(--line);
+}
+pre{
+  background:var(--surface-2); border:1px solid var(--line); border-radius:10px;
+  padding:14px 16px; overflow-x:auto; font-size:13.5px; line-height:1.6;
+}
+pre code{background:none; border:none; padding:0}
+.card{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+  padding:20px 22px; margin:16px 0; box-shadow:var(--shadow);
+}
+.card h3{margin-top:0}
+.grid{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}
+.note{
+  border-left:4px solid var(--accent); background:var(--accent-soft); padding:14px 18px;
+  border-radius:0 10px 10px 0; margin:18px 0; font-size:15.5px;
+}
+.note.warn{border-left-color:var(--warn); background:var(--warn-soft)}
+.note.gold{border-left-color:var(--gold); background:var(--gold-soft)}
+.note strong{display:block; margin-bottom:4px}
+table{width:100%; border-collapse:collapse; margin:16px 0; font-size:15px}
+th,td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{background:var(--surface-2); font-weight:700; font-size:13.5px; letter-spacing:.02em}
+tbody tr:hover{background:var(--surface)}
+.table-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
+.wrong{color:var(--warn); font-weight:600}
+.right{color:var(--accent); font-weight:700}
+.checklist{list-style:none; padding:0}
+.checklist li{
+  padding:10px 12px 10px 40px; position:relative; border:1px solid var(--line);
+  border-radius:9px; margin:8px 0; background:var(--surface); font-size:15.5px;
+}
+.checklist li::before{
+  content:"☐"; position:absolute; left:14px; top:9px; font-size:17px; color:var(--accent);
+}
+figure{margin:20px 0; padding:0}
+figure svg{width:100%; height:auto; display:block; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius)}
+figcaption{font-size:13.5px; color:var(--ink-soft); text-align:center; margin-top:8px}
+.pipeline{display:grid; gap:10px; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); margin:20px 0}
+.step{
+  background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:14px;
+  position:relative; box-shadow:var(--shadow);
+}
+.step .n{font-size:12px; font-weight:800; color:var(--accent); letter-spacing:.1em}
+.step .t{font-weight:700; margin:4px 0 2px; font-size:15px}
+.step .d{font-size:13px; color:var(--ink-soft); line-height:1.5}
+.tree{
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:13.5px; line-height:1.9;
+  background:var(--surface-2); border:1px solid var(--line); border-radius:10px; padding:18px 20px; overflow-x:auto;
+}
+.tree .dir{color:var(--accent); font-weight:700}
+.tree .cmt{color:var(--ink-soft)}
+.pill{display:inline-block; font-size:12.5px; padding:2px 9px; border-radius:999px; background:var(--surface-2); border:1px solid var(--line); color:var(--ink-soft); margin-right:5px}
+.swatches{display:flex; flex-wrap:wrap; gap:10px; margin:14px 0}
+.sw{flex:1 1 110px; border:1px solid var(--line); border-radius:10px; overflow:hidden; background:var(--surface)}
+.sw .chip{height:44px}
+.sw .lbl{padding:7px 9px; font-size:12px; line-height:1.4}
+.sw .lbl b{display:block; font-size:12.5px}
+footer{margin-top:72px; padding-top:24px; border-top:1px solid var(--line); color:var(--ink-soft); font-size:14px; text-align:center}
+.theme-toggle{
+  position:fixed; right:14px; bottom:14px; z-index:10; border:1px solid var(--line); background:var(--surface);
+  color:var(--ink); border-radius:999px; padding:9px 15px; font-size:13px; cursor:pointer; box-shadow:var(--shadow);
+  font-family:inherit;
+}
+@media print{.theme-toggle,nav.toc{display:none}}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <p class="kicker">BIBLE STUDY WORKBOOK GUIDE</p>
+  <h1>『성경이 읽어지네』 강의<br>스터디 자료 제작 지침서</h1>
+  <p>목사님 강의 녹음을 듣고 혼자서도 공부할 수 있는 자료로 바꾸는 방법. 이 문서의 규칙대로 만들면 1일차부터 마지막 날까지 모든 자료가 같은 모양, 같은 깊이로 쌓입니다.</p>
+  <div class="badges">
+    <span class="badge">눈높이: 중학생</span>
+    <span class="badge">형식: HTML 1파일</span>
+    <span class="badge">지도: 직접 그린 SVG</span>
+    <span class="badge">일차별 폴더</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+<nav class="toc">
+  <h2>목차</h2>
+  <ol>
+    <li><a href="#s1">이 자료가 하려는 일</a></li>
+    <li><a href="#s2">독자 눈높이 규칙</a></li>
+    <li><a href="#s3">폴더와 파일 구조</a></li>
+    <li><a href="#s4">하루치 자료의 표준 골격</a></li>
+    <li><a href="#s5">시각 자료 만드는 법</a></li>
+    <li><a href="#s6">표준 지도 좌표계</a></li>
+    <li><a href="#s7">디자인 시스템</a></li>
+    <li><a href="#s8">녹음 전사와 교정 규칙</a></li>
+    <li><a href="#s9">제작 순서(파이프라인)</a></li>
+    <li><a href="#s10">품질 체크리스트</a></li>
+  </ol>
+</nav>
+
+<!-- ───────────────────────── 1 ───────────────────────── -->
+<section id="s1">
+  <h2 class="sec"><span class="num">1</span>이 자료가 하려는 일</h2>
+  <p class="sec-lead">강의를 못 들은 사람도, 들었지만 흐릿해진 사람도 이 문서 하나로 그날 내용을 되살릴 수 있어야 합니다.</p>
+
+  <div class="grid">
+    <div class="card">
+      <h3>① 흐름을 잡아준다</h3>
+      <p>『성경이 읽어지네』는 성경 구절을 하나씩 파는 책이 아니라 <b>큰 줄기</b>를 잡는 책입니다. 그래서 자료도 "이 사건이 전체 이야기 어디쯤인가"를 항상 보여줘야 합니다.</p>
+    </div>
+    <div class="card">
+      <h3>② 손으로 그리게 한다</h3>
+      <p>목사님 강의는 백지에 지도를 그려가며 진행됩니다. 자료에도 <b>따라 그릴 수 있는 지도</b>와 그리는 순서를 넣습니다. 눈으로 읽는 것보다 손으로 그릴 때 훨씬 오래 남습니다.</p>
+    </div>
+    <div class="card">
+      <h3>③ 혼자 확인하게 한다</h3>
+      <p>각 일차 끝에 스스로 답해 보는 질문을 둡니다. 답을 바로 보여주지 말고 접었다 펴는 방식으로 숨깁니다.</p>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>이 자료가 하지 않는 일</strong>
+    설교를 대신하지 않습니다. 목사님이 하지 않은 신학적 주장을 끼워 넣지 않습니다. 강의에 없던 내용을 보충할 때는 반드시 <span class="pill">배경 지식</span> 같은 표시를 달아 강의 내용과 구분합니다.
+  </div>
+</section>
+
+<!-- ───────────────────────── 2 ───────────────────────── -->
+<section id="s2">
+  <h2 class="sec"><span class="num">2</span>독자 눈높이 규칙</h2>
+  <p class="sec-lead">기준은 <b>"성경을 처음 통독하는 중학생"</b>입니다. 이 사람이 막히면 그 문장은 고쳐야 합니다.</p>
+
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th style="width:34%">이렇게 쓰지 말고</th><th>이렇게 씁니다</th></tr></thead>
+    <tbody>
+      <tr><td class="wrong">족장사(族長史)의 서막</td><td class="right">아브라함·이삭·야곱, 세 집안 이야기의 시작</td></tr>
+      <tr><td class="wrong">신정 국가의 형성</td><td class="right">하나님이 직접 왕이 되어 다스리는 나라 만들기</td></tr>
+      <tr><td class="wrong">출애굽 사건의 구속사적 의의</td><td class="right">이집트 탈출이 왜 성경 전체에서 중요한가</td></tr>
+      <tr><td class="wrong">언약의 갱신이 이루어진다</td><td class="right">하나님과 맺은 약속을 다시 확인한다</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>다섯 가지 문장 규칙</h3>
+  <ol>
+    <li><b>한 문장은 한 가지만.</b> 두 줄이 넘어가면 자릅니다.</li>
+    <li><b>한자어가 나오면 그 자리에서 풀어준다.</b> 예: "지파(한 조상에서 나온 큰 가족 집단)".</li>
+    <li><b>숫자는 감각으로 바꿔준다.</b> "250만 명" → "250만 명. 요즘 대도시 하나가 통째로 움직인 셈".</li>
+    <li><b>낯선 지명은 오늘날 어디인지 붙인다.</b> "우르(지금의 이라크 남부)".</li>
+    <li><b>"왜?"에 답한다.</b> 사건을 나열만 하지 말고 앞뒤를 이어 줍니다.</li>
+  </ol>
+
+  <div class="note gold">
+    <strong>단, 쉽게 쓴다고 얕게 쓰지 않습니다</strong>
+    어려운 단어를 빼는 것이지 내용을 빼는 게 아닙니다. 분량은 오히려 넉넉하게 — 한 일차에 A4 기준 6~10쪽 분량을 목표로 합니다.
+  </div>
+</section>
+
+<!-- ───────────────────────── 3 ───────────────────────── -->
+<section id="s3">
+  <h2 class="sec"><span class="num">3</span>폴더와 파일 구조</h2>
+  <p class="sec-lead">일차별로 폴더 하나. 그 안에 완결된 HTML 한 개와 원본 녹음을 둡니다.</p>
+
+  <div class="tree">
+<span class="dir">bible-study/</span>
+├─ 스터디자료-제작지침서.html   <span class="cmt">← 지금 보고 있는 문서</span>
+├─ index.html                    <span class="cmt">← 전체 목차(일차가 늘어나면 만듦)</span>
+├─ <span class="dir">1일차/</span>                       <span class="cmt">← 나중에 추가</span>
+├─ <span class="dir">2일차/</span>
+│   ├─ index.html                <span class="cmt">← 스터디 자료 본문(이것만 열면 끝)</span>
+│   ├─ 새로운 녹음 167.m4a       <span class="cmt">← 원본 녹음</span>
+│   ├─ 새로운 녹음 168.m4a
+│   └─ <span class="dir">transcript/</span>
+│       ├─ 167.txt               <span class="cmt">← 교정 전 자동 전사본</span>
+│       └─ 168.txt
+└─ <span class="dir">3일차/</span>
+  </div>
+
+  <h3>규칙</h3>
+  <ul>
+    <li>폴더 이름은 <code>N일차</code>. 앞에 0을 붙이지 않습니다(1일차, 2일차 … 10일차).</li>
+    <li>본문 파일 이름은 항상 <code>index.html</code>. 폴더를 열어 더블클릭만 하면 열립니다.</li>
+    <li>HTML은 <b>한 파일로 완결</b>합니다. CSS·SVG·스크립트를 모두 안에 넣어, 파일 하나만 카톡으로 보내도 그대로 보이게 합니다.</li>
+    <li>인터넷 없이도 열려야 합니다. 외부 폰트·이미지·CDN을 쓰지 않습니다.</li>
+    <li>한 녹음이 여러 날에 걸쳐 있으면 날짜가 아니라 <b>강의 회차</b>를 기준으로 폴더를 나눕니다.</li>
+  </ul>
+</section>
+
+<!-- ───────────────────────── 4 ───────────────────────── -->
+<section id="s4">
+  <h2 class="sec"><span class="num">4</span>하루치 자료의 표준 골격</h2>
+  <p class="sec-lead">모든 일차 문서는 아래 열 개 블록을 이 순서대로 갖습니다. 그날 강의에 해당 내용이 없으면 그 블록만 생략합니다.</p>
+
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th style="width:8%">순서</th><th style="width:26%">블록</th><th>들어가는 것</th></tr></thead>
+    <tbody>
+      <tr><td>①</td><td><b>표지</b></td><td>N일차, 강의 범위(예: 창세기~열왕기), 녹음 파일명과 길이, 한 줄 요약</td></tr>
+      <tr><td>②</td><td><b>오늘의 한 문장</b></td><td>그날 강의 전체를 한 문장으로. 크고 굵게. 나머지는 전부 이 문장의 설명입니다.</td></tr>
+      <tr><td>③</td><td><b>한눈에 보기</b></td><td>오늘 다룬 성경책·인물·장소·사건을 카드나 표로 압축. 3분 안에 훑을 수 있게.</td></tr>
+      <tr><td>④</td><td><b>큰 그림 지도</b></td><td>오늘 이야기가 벌어진 무대 전체를 담은 SVG 지도 1장. 이동 경로는 번호가 붙은 화살표로.</td></tr>
+      <tr><td>⑤</td><td><b>흐름 따라가기</b></td><td>본문. 강의 순서를 그대로 따라 소제목으로 쪼갭니다. 각 소제목마다 작은 지도·도표를 곁들입니다.</td></tr>
+      <tr><td>⑥</td><td><b>연대표</b></td><td>오늘 다룬 사건을 시간순으로 배치한 가로 또는 세로 타임라인.</td></tr>
+      <tr><td>⑦</td><td><b>핵심 용어 카드</b></td><td>지명·인물·낯선 단어를 카드로. 뜻 + 오늘 왜 나왔는지 한 줄.</td></tr>
+      <tr><td>⑧</td><td><b>목사님 말씀 그대로</b></td><td>강의에서 특히 기억할 표현을 인용 상자로. 전사본에서 가져오되 말버릇은 다듬습니다.</td></tr>
+      <tr><td>⑨</td><td><b>직접 그려보기</b></td><td>빈 지도 또는 그리는 순서 목록. 강의가 "따라 그리라"고 한 그대로.</td></tr>
+      <tr><td>⑩</td><td><b>스스로 점검</b></td><td>질문 5~8개. 답은 <code>&lt;details&gt;</code>로 접어 둡니다. 마지막에 다음 시간 예고.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>본문(⑤) 쓰는 법</h3>
+  <ul>
+    <li>강의의 <b>말 순서를 지킵니다.</b> 목사님이 창세기 → 출애굽기 → 민수기 순으로 갔으면 자료도 그 순서입니다. 재배열하면 강의를 다시 들을 때 짝이 안 맞습니다.</li>
+    <li>각 소제목은 <b>"무엇을 보여주는 대목인가"</b>로 답니다. "출애굽기" 보다 "출애굽기 — 줄 하나만 세게 그으면 끝나는 책".</li>
+    <li>녹음 위치를 표시합니다. 소제목 옆에 <span class="pill">167 · 23분</span> 처럼 달아두면 다시 들을 때 바로 찾습니다.</li>
+    <li>강의에서 던진 질문("첫 번째 왕이 누구예요?")은 살려 둡니다. 읽는 사람이 속으로 답하게 됩니다.</li>
+  </ul>
+</section>
+
+<!-- ───────────────────────── 5 ───────────────────────── -->
+<section id="s5">
+  <h2 class="sec"><span class="num">5</span>시각 자료 만드는 법</h2>
+  <p class="sec-lead">그림은 모두 <b>HTML 안에 직접 쓴 SVG</b>로 만듭니다. 이미지 파일을 따로 두지 않습니다.</p>
+
+  <h3>왜 인라인 SVG인가</h3>
+  <ul>
+    <li>파일 하나로 끝나므로 공유가 쉽습니다.</li>
+    <li>확대해도 글씨가 깨지지 않습니다. 휴대폰에서도 또렷합니다.</li>
+    <li>어두운 화면에서 색을 바꿔줄 수 있습니다(<code>currentColor</code>와 CSS 변수 사용).</li>
+    <li>고칠 때 좌표만 손보면 됩니다.</li>
+  </ul>
+
+  <h3>다섯 가지 그림 종류</h3>
+  <div class="grid">
+    <div class="card">
+      <h3>지도</h3>
+      <p>가장 중요합니다. 6번 절의 표준 좌표계를 그대로 써서 모든 일차의 지도가 같은 모양이 되게 합니다. 오늘 다루는 곳만 진하게, 나머지는 흐리게.</p>
+    </div>
+    <div class="card">
+      <h3>이동 경로</h3>
+      <p>지도 위에 번호 붙은 화살표. <code>①</code>부터 순서대로. 경로 색은 한 사람/한 무리당 하나.</p>
+    </div>
+    <div class="card">
+      <h3>연대표</h3>
+      <p>가로 막대에 점을 찍고 라벨을 답니다. 화면이 좁으면 세로로 바뀌게 만듭니다.</p>
+    </div>
+    <div class="card">
+      <h3>관계도·계보</h3>
+      <p>가문(아브라함→이삭→야곱→열두 아들)이나 나라 갈라짐(남유다·북이스라엘)을 네모와 선으로.</p>
+    </div>
+    <div class="card">
+      <h3>구조 도표</h3>
+      <p>성막 구조, 모세오경 다섯 권의 관계처럼 공간 배치가 있는 것.</p>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>지도에 꼭 들어가야 하는 것</strong>
+    ① 방위표 또는 최소한 위쪽이 북쪽임을 알 수 있는 단서 ② 오늘 나온 지명의 이름표 ③ 범례(색이 두 개 이상이면 반드시) ④ 지중해·나일강·티그리스/유프라테스 같은 <b>고정 기준점</b> — 매번 같은 자리에 있어야 독자가 "아, 거기"라고 알아봅니다.
+  </div>
+
+  <h3>SVG 기본 틀</h3>
+  <pre><code>&lt;figure&gt;
+  &lt;svg viewBox="0 0 900 560" role="img" aria-labelledby="mapTitle"&gt;
+    &lt;title id="mapTitle"&gt;아브라함의 이동 경로&lt;/title&gt;
+    &lt;!-- 1. 바다 → 2. 땅 → 3. 강 → 4. 경로 → 5. 점 → 6. 글씨 순서로 그림 --&gt;
+  &lt;/svg&gt;
+  &lt;figcaption&gt;우르에서 하란을 거쳐 가나안까지&lt;/figcaption&gt;
+&lt;/figure&gt;</code></pre>
+  <ul>
+    <li><code>viewBox</code>는 지도라면 <b>900×560</b>으로 통일합니다.</li>
+    <li>글씨 크기는 <code>font-size</code> 13~15(지명), 11~12(설명). 더 작으면 휴대폰에서 못 읽습니다.</li>
+    <li>색은 <code>fill="var(--map-land)"</code>처럼 CSS 변수로 지정해 어두운 화면에서도 보이게 합니다.</li>
+    <li>글씨에는 <code>paint-order="stroke"</code>와 흰(또는 배경색) 테두리를 줘서 선 위에 겹쳐도 읽히게 합니다.</li>
+  </ul>
+</section>
+
+<!-- ───────────────────────── 6 ───────────────────────── -->
+<section id="s6">
+  <h2 class="sec"><span class="num">6</span>표준 지도 좌표계</h2>
+  <p class="sec-lead">모든 지도는 아래 하나의 좌표계를 씁니다. 매번 새로 그리지 말고 이 값을 복사해 쓰세요.</p>
+
+  <figure>
+    <svg viewBox="0 0 900 560" role="img" aria-labelledby="baseMapTitle">
+      <title id="baseMapTitle">고대 근동 표준 베이스맵 — 주요 지점 위치</title>
+  <rect x="0" y="0" width="900" height="560" fill="var(--map-desert)"/>
+  <path d="M336,344 Q356,198 470,136 Q610,70 702,158 Q770,244 748,392" fill="none" stroke="var(--map-land)" stroke-width="86" stroke-linecap="round"/>
+  <path d="M0,68 L132,60 L262,72 L332,106 L344,192 L306,258 L160,278 L40,264 L0,254 Z" fill="var(--map-sea)" stroke="var(--map-stroke)" stroke-width="1.2"/>
+  <path d="M272,296 L293,300 L306,400 L301,490 L283,486 L277,394 Z" fill="var(--map-sea)"/>
+  <path d="M397,296 L384,300 L377,398 L373,490 L391,486 L393,392 Z" fill="var(--map-sea)"/>
+  <path d="M276,486 L392,486 L418,560 L252,560 Z" fill="var(--map-sea)"/>
+  <path d="M900,356 L822,428 L792,498 L782,560 L900,560 Z" fill="var(--map-sea)"/>
+  <path d="M196,560 L208,480 L220,410 L232,340 L237,282" fill="none" stroke="var(--map-river)" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M470,78 Q560,180 640,290 Q700,370 788,466" fill="none" stroke="var(--map-river)" stroke-width="4" stroke-linecap="round"/>
+  <path d="M556,70 Q630,170 700,280 Q742,352 806,452" fill="none" stroke="var(--map-river)" stroke-width="3.5" stroke-linecap="round"/>
+  <path d="M382,228 L387,256 L390,296" fill="none" stroke="var(--map-river)" stroke-width="4.5" stroke-linecap="round"/>
+  <g font-size="14.5" font-style="italic" fill="var(--ink-soft)">
+    <text x="150" y="176">지중해</text>
+    <text x="836" y="516" text-anchor="middle" font-size="12.5">페르시아만</text>
+    <text x="336" y="544" text-anchor="middle" font-size="12.5">홍해</text>
+    <text x="168" y="474" font-size="12.5">나일강</text>
+    <text x="540" y="268" font-size="12.5">유프라테스 · 티그리스</text>
+  </g>
+  <g fill="var(--accent)"><circle cx="750" cy="438" r="7"/><circle cx="560" cy="128" r="7"/><circle cx="650" cy="120" r="7"/><circle cx="678" cy="330" r="7"/><circle cx="424" cy="186" r="7"/><circle cx="368" cy="238" r="7"/><circle cx="360" cy="282" r="7"/><circle cx="402" cy="278" r="7"/><circle cx="348" cy="322" r="7"/><circle cx="330" cy="358" r="7"/><circle cx="345" cy="438" r="7"/><circle cx="238" cy="318" r="7"/></g>
+  <g paint-order="stroke" stroke="var(--surface)" stroke-width="4.5" stroke-linejoin="round">
+    <text x="766" y="442" font-size="14" font-weight="700" fill="var(--ink)">우르</text>
+    <text x="574" y="124" font-size="14" font-weight="700" fill="var(--ink)">하란</text>
+    <text x="664" y="116" font-size="14" font-weight="700" fill="var(--ink)">니느웨</text>
+    <text x="692" y="334" font-size="14" font-weight="700" fill="var(--ink)">바벨론</text>
+    <text x="438" y="182" font-size="14" font-weight="700" fill="var(--ink)">다메섹</text>
+    <text x="384" y="234" font-size="14" font-weight="700" fill="var(--ink)">세겜</text>
+    <text x="346" y="286" text-anchor="end" font-size="14" font-weight="700" fill="var(--ink)">예루살렘</text>
+    <text x="416" y="274" font-size="14" font-weight="700" fill="var(--ink)">모압 평지</text>
+    <text x="334" y="326" text-anchor="end" font-size="14" font-weight="700" fill="var(--ink)">브엘세바</text>
+    <text x="316" y="354" text-anchor="end" font-size="14" font-weight="700" fill="var(--ink)">가데스바네아</text>
+    <text x="360" y="442" font-size="14" font-weight="700" fill="var(--ink)">시내산</text>
+    <text x="224" y="314" text-anchor="end" font-size="14" font-weight="700" fill="var(--ink)">애굽(고센)</text>
+  </g>
+  <g transform="translate(848,54)" stroke="var(--ink-soft)" fill="var(--ink-soft)">
+    <line x1="0" y1="26" x2="0" y2="-14" stroke-width="2"/><path d="M0,-20 L6,-8 L-6,-8 Z" stroke="none"/>
+    <text x="0" y="42" font-size="13" font-weight="700" text-anchor="middle" stroke="none">N</text>
+  </g>
+    </svg>
+    <figcaption>표준 베이스맵. 이 좌표를 모든 일차 지도에서 동일하게 사용합니다.</figcaption>
+  </figure>
+
+  <h3>지점 좌표표 (viewBox 900×560)</h3>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th>지명</th><th>x</th><th>y</th><th>오늘날 위치 / 메모</th></tr></thead>
+    <tbody>
+      <tr><td>우르</td><td>750</td><td>438</td><td>이라크 남부. 아브라함의 고향</td></tr>
+      <tr><td>하란</td><td>560</td><td>128</td><td>터키 남동부. 데라가 죽은 곳</td></tr>
+      <tr><td>니느웨</td><td>650</td><td>120</td><td>앗수르 수도. 요나가 간 곳</td></tr>
+      <tr><td>바벨론</td><td>678</td><td>330</td><td>바벨탑, 그리고 훗날 남유다를 멸망시킨 제국</td></tr>
+      <tr><td>다메섹</td><td>424</td><td>186</td><td>시리아 수도</td></tr>
+      <tr><td>세겜</td><td>368</td><td>238</td><td>아브라함이 처음 제단 쌓은 곳</td></tr>
+      <tr><td>예루살렘</td><td>360</td><td>282</td><td>다윗의 도성</td></tr>
+      <tr><td>모압 평지</td><td>402</td><td>278</td><td>요단강 동편. 모세오경이 끝나는 자리</td></tr>
+      <tr><td>브엘세바</td><td>348</td><td>322</td><td>약속의 땅 남쪽 끝</td></tr>
+      <tr><td>가데스바네아</td><td>330</td><td>358</td><td>바란 광야의 샘. 38년을 맴돈 곳</td></tr>
+      <tr><td>시내산</td><td>345</td><td>438</td><td>율법을 받은 산</td></tr>
+      <tr><td>에시온게벨</td><td>374</td><td>462</td><td>아카바만 끝. 민수기에서 빙 돌아 내려간 지점</td></tr>
+      <tr><td>고센(애굽)</td><td>238</td><td>318</td><td>나일 삼각주. 야곱 가족 70명이 정착</td></tr>
+
+
+
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note warn">
+    <strong>지도는 정확한 축척이 아닙니다</strong>
+    실제 지리를 왜곡해 <b>알아보기 쉽게</b> 만든 개념도입니다. 자료 안에 "실제 거리·모양과 다릅니다"라고 한 번 적어 둡니다.
+  </div>
+</section>
+
+<!-- ───────────────────────── 7 ───────────────────────── -->
+<section id="s7">
+  <h2 class="sec"><span class="num">7</span>디자인 시스템</h2>
+  <p class="sec-lead">모든 일차 문서가 같은 색, 같은 글꼴, 같은 간격을 씁니다. 아래 CSS 변수 블록을 그대로 복사해 쓰세요.</p>
+
+  <h3>색</h3>
+  <div class="swatches">
+    <div class="sw"><div class="chip" style="background:#f7f4ee"></div><div class="lbl"><b>--bg</b>바탕(양피지)</div></div>
+    <div class="sw"><div class="chip" style="background:#fffdf9"></div><div class="lbl"><b>--surface</b>카드</div></div>
+    <div class="sw"><div class="chip" style="background:#2b2724"></div><div class="lbl"><b>--ink</b>본문 글씨</div></div>
+    <div class="sw"><div class="chip" style="background:#0f6f63"></div><div class="lbl"><b>--accent</b>강조(청록)</div></div>
+    <div class="sw"><div class="chip" style="background:#b3541e"></div><div class="lbl"><b>--warn</b>주의(주황)</div></div>
+    <div class="sw"><div class="chip" style="background:#a67c00"></div><div class="lbl"><b>--gold</b>인용(금)</div></div>
+  </div>
+  <p>색의 의미를 섞지 않습니다. <b>청록</b>은 강조와 링크, <b>주황</b>은 주의와 실패한 사건(사사 시대, 멸망), <b>금색</b>은 목사님 인용, 지도의 흙·바다색은 지도 안에서만 씁니다.</p>
+
+  <h3>글꼴과 크기</h3>
+  <ul>
+    <li>본문 <code>17px</code>, 줄간격 <code>1.75</code>. 한글은 줄간격이 좁으면 금방 눈이 지칩니다.</li>
+    <li><code>word-break:keep-all</code>을 반드시 넣습니다. 안 넣으면 한글 단어가 아무 데서나 잘립니다.</li>
+    <li>글꼴은 <code>Pretendard, "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", system-ui</code> 순서. 설치돼 있으면 쓰고 없으면 시스템 기본으로 떨어지므로 인터넷이 없어도 됩니다.</li>
+    <li>본문 최대 너비 <code>900px</code>. 한 줄이 너무 길면 눈이 다음 줄을 놓칩니다.</li>
+  </ul>
+
+  <h3>어두운 화면(다크 모드)</h3>
+  <p>밤에 휴대폰으로 볼 일이 많으므로 반드시 지원합니다. <code>@media (prefers-color-scheme: dark)</code>로 변수를 다시 정의하고, 오른쪽 아래에 수동 전환 버튼도 답니다. 지도 색도 함께 바뀌어야 하므로 <b>지도 색을 SVG에 직접 쓰지 말고 변수로</b> 씁니다.</p>
+
+  <h3>휴대폰</h3>
+  <ul>
+    <li>좌우 여백 16px 고정. 가로 스크롤이 생기면 안 됩니다.</li>
+    <li>표는 <code>.table-scroll</code>로 감싸 표만 옆으로 밀리게 합니다.</li>
+    <li>카드 배치는 <code>grid-template-columns:repeat(auto-fit,minmax(250px,1fr))</code>로 자동으로 접히게 합니다.</li>
+  </ul>
+
+  <h3>인쇄</h3>
+  <p>교재로 뽑아 쓰는 사람을 위해 <code>@media print</code>에서 목차와 떠 있는 버튼을 숨깁니다.</p>
+</section>
+
+<!-- ───────────────────────── 8 ───────────────────────── -->
+<section id="s8">
+  <h2 class="sec"><span class="num">8</span>녹음 전사와 교정 규칙</h2>
+  <p class="sec-lead">자동 전사는 성경 고유명사를 거의 다 틀립니다. 교정 없이 인용하면 자료 전체가 망가집니다.</p>
+
+  <h3>전사 명령</h3>
+  <pre><code>ffmpeg -i "새로운 녹음 167.m4a" -ac 1 -ar 16000 rec167.wav
+mlx_whisper --model mlx-community/whisper-large-v3-turbo \
+            --language ko --output-format txt rec167.wav</code></pre>
+  <p>타임스탬프가 필요하면 <code>--output-format srt</code>로 뽑습니다. 본문에 녹음 위치를 표시하려면 srt가 편합니다.</p>
+
+  <h3>반드시 고쳐야 하는 말들</h3>
+  <p>실제로 이 강의 전사본에서 나온 오류입니다. 새 일차를 만들 때마다 여기에 추가하세요.</p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th style="width:36%">전사본이 이렇게 적으면</th><th>실제 말</th></tr></thead>
+    <tbody>
+      <tr><td class="wrong">장세기</td><td class="right">창세기</td></tr>
+      <tr><td class="wrong">추레국길 / 쥬도롭게 / 줄 해국기</td><td class="right">출애굽기</td></tr>
+      <tr><td class="wrong">내 위기</td><td class="right">레위기</td></tr>
+      <tr><td class="wrong">아부람</td><td class="right">아브람 (뒤에 아브라함)</td></tr>
+      <tr><td class="wrong">갈대아구르</td><td class="right">갈대아 우르</td></tr>
+      <tr><td class="wrong">신의사 / 시래산</td><td class="right">시내산</td></tr>
+      <tr><td class="wrong">가아네스바네아</td><td class="right">가데스바네아</td></tr>
+      <tr><td class="wrong">바란광냐</td><td class="right">바란 광야</td></tr>
+      <tr><td class="wrong">애돔 / 모합 / 암문 / 암모리</td><td class="right">에돔 / 모압 / 암몬 / 아모리</td></tr>
+      <tr><td class="wrong">요수와</td><td class="right">여호수아</td></tr>
+      <tr><td class="wrong">르벤갓 문화세</td><td class="right">르우벤·갓·므낫세 반 지파</td></tr>
+      <tr><td class="wrong">아수르</td><td class="right">앗수르</td></tr>
+      <tr><td class="wrong">에브라임 집합 / 집화</td><td class="right">에브라임 지파 / 지파</td></tr>
+      <tr><td class="wrong">종장실</td><td class="right">족장 시대</td></tr>
+      <tr><td class="wrong">애국</td><td class="right">애굽</td></tr>
+      <tr><td class="wrong">원약</td><td class="right">언약</td></tr>
+      <tr><td class="wrong">에시의 온구별</td><td class="right">에시온게벨</td></tr>
+      <tr><td class="wrong">띄구레를 무실하고</td><td class="right">디테일을 무시하고</td></tr>
+      <tr><td class="wrong">10가지 제안</td><td class="right">열 가지 재앙</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note warn">
+    <strong>같은 말이 수십 줄 반복되면 전사가 깨진 것입니다</strong>
+    "북쪽이 북쪽이 북쪽이…"처럼 한 낱말이 계속 반복되면 그 구간은 <b>실제 음성이 아닙니다</b>(전사 프로그램이 헛돈 것). 그 구간은 버리고, 해당 시각의 오디오를 잘라 다시 전사합니다.
+    <br><code>ffmpeg -i rec.wav -ss 600 -t 120 chunk.wav</code> 로 잘라서 재시도.
+  </div>
+
+  <h3>인용할 때</h3>
+  <ul>
+    <li>"그죠?", "맞죠?", "자~" 같은 말버릇은 <b>한두 개만 남깁니다.</b> 다 지우면 강의 느낌이 사라지고, 다 남기면 읽기 힘듭니다.</li>
+    <li>말을 바꿔 적으면 안 됩니다. 뜻이 달라질 정도의 손질은 인용이 아니라 요약이므로 인용 상자에서 빼고 본문에 녹입니다.</li>
+    <li>전사가 불확실한 대목은 인용하지 않습니다. 확실한 것만 인용합니다.</li>
+  </ul>
+</section>
+
+<!-- ───────────────────────── 9 ───────────────────────── -->
+<section id="s9">
+  <h2 class="sec"><span class="num">9</span>제작 순서(파이프라인)</h2>
+  <p class="sec-lead">새 녹음이 생겼을 때 이 순서대로 진행합니다.</p>
+
+  <div class="pipeline">
+    <div class="step"><div class="n">STEP 1</div><div class="t">폴더 만들기</div><div class="d">N일차 폴더를 만들고 녹음 파일을 옮깁니다.</div></div>
+    <div class="step"><div class="n">STEP 2</div><div class="t">전사</div><div class="d">m4a → wav → 텍스트. 결과는 transcript/ 에 보관.</div></div>
+    <div class="step"><div class="n">STEP 3</div><div class="t">교정</div><div class="d">8번 절 교정표로 고유명사를 바로잡고, 깨진 구간을 다시 전사.</div></div>
+    <div class="step"><div class="n">STEP 4</div><div class="t">뼈대 잡기</div><div class="d">강의를 소제목 단위로 나누고 "오늘의 한 문장"을 정합니다.</div></div>
+    <div class="step"><div class="n">STEP 5</div><div class="t">그림 설계</div><div class="d">어떤 지도·도표가 필요한지 먼저 정하고 좌표를 잡습니다.</div></div>
+    <div class="step"><div class="n">STEP 6</div><div class="t">본문 집필</div><div class="d">중학생 눈높이로. 강의 순서 유지.</div></div>
+    <div class="step"><div class="n">STEP 7</div><div class="t">문제 만들기</div><div class="d">질문 5~8개와 접힌 답.</div></div>
+    <div class="step"><div class="n">STEP 8</div><div class="t">점검</div><div class="d">10번 절 체크리스트로 확인하고, 휴대폰 크기로도 열어봅니다.</div></div>
+  </div>
+
+  <div class="note">
+    <strong>순서를 지키는 이유</strong>
+    본문을 먼저 쓰고 그림을 나중에 끼우면, 그림이 본문의 장식이 됩니다. 그림을 먼저 설계하면 본문이 그림을 설명하는 글이 되어 훨씬 잘 읽힙니다. 이 강의는 원래 <b>지도를 그리면서 하는 강의</b>이므로 더욱 그렇습니다.
+  </div>
+</section>
+
+<!-- ───────────────────────── 10 ───────────────────────── -->
+<section id="s10">
+  <h2 class="sec"><span class="num">10</span>품질 체크리스트</h2>
+  <p class="sec-lead">자료를 다 만든 뒤 하나씩 확인합니다. 하나라도 걸리면 아직 끝난 게 아닙니다.</p>
+
+  <h4>내용</h4>
+  <ul class="checklist">
+    <li>"오늘의 한 문장"만 읽어도 그날 강의의 요점이 전달되는가</li>
+    <li>강의에 없던 주장을 슬쩍 넣지 않았는가 (넣었다면 배경 지식으로 표시했는가)</li>
+    <li>성경책 이름·인물 이름·지명에 틀린 글자가 없는가</li>
+    <li>중학생이 모를 단어가 설명 없이 지나가지 않는가</li>
+    <li>사건의 순서가 강의 순서와 같은가</li>
+  </ul>
+
+  <h4>시각 자료</h4>
+  <ul class="checklist">
+    <li>지도의 지명 좌표가 표준 좌표계와 같은가</li>
+    <li>모든 그림에 제목(<code>&lt;title&gt;</code>)과 설명(figcaption)이 있는가</li>
+    <li>색이 두 개 이상인 그림에 범례가 있는가</li>
+    <li>어두운 화면으로 바꿔도 글씨와 선이 보이는가</li>
+  </ul>
+
+  <h4>형식</h4>
+  <ul class="checklist">
+    <li>파일 하나만으로 열리는가 (외부 파일·인터넷 없이)</li>
+    <li>휴대폰 너비(390px)에서 가로 스크롤이 생기지 않는가</li>
+    <li>목차의 링크가 모두 해당 위치로 가는가</li>
+    <li>접힌 답이 처음에는 닫혀 있는가</li>
+    <li>맨 아래에 녹음 파일명과 다음 시간 예고가 있는가</li>
+  </ul>
+</section>
+
+<footer>
+  <p>『성경이 읽어지네』 스터디 자료 제작 지침서 · 2026년 9월 작성<br>
+  새 규칙이 생기면 이 문서를 먼저 고치고, 그다음 각 일차 자료에 반영합니다.</p>
+</footer>
+
+</div>
+
+<button class="theme-toggle" id="tt">◐ 화면 밝기 전환</button>
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('tt');
+  var saved=null;
+  try{ saved=localStorage.getItem('bs-theme'); }catch(e){}
+  if(saved){ root.setAttribute('data-theme',saved); }
+  btn.addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme');
+    if(!cur){
+      cur=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';
+    }
+    var next=cur==='dark'?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{ localStorage.setItem('bs-theme',next); }catch(e){}
+  });
+})();
+</script>
+</body>
+</html>

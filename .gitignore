@@ -1,0 +1,20 @@
+# OS / editor
+.DS_Store
+.idea/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Raw study materials — audio recordings and transcripts are not published
+*.m4a
+**/transcript/
+
+# Jekyll build output
+_site/
+.sass-cache/
+.jekyll-cache/
+.jekyll-metadata
+vendor/
+.bundle/

@@ -1,0 +1,9 @@
+title: "성경이 읽어지네"
+description: "구약과 신약을 한 줄로 꿰뚫는 성경 통독 스터디 자료"
+lang: ko
+url: "https://marc416.github.io"
+baseurl: "/bible-study"
+
+exclude:
+  - main.py
+  - README.md
