@@ -117,7 +117,7 @@ def line_path(proj, features, names, eps=0.5):
 
 RIVERS = {'Nile', 'Rosetta Branch', 'Damietta Branch', 'Euphrates', 'Firat', 'Al Furat',
           'Tigris', 'Dicle', 'Shatt al Arab', 'Jordan', 'Karkheh'}
-LAKES = {'Sea of Galilee', 'Dead Sea', 'Lake Urmia', 'Great Bitter Lake'}
+LAKES = {'Sea of Galilee', 'Dead Sea', 'Lake Urmia', 'Great Bitter Lake', 'Lake Van'}
 
 def base(proj, eps=0.5):
     land, lakes, rivers = load('land'), load('lakes'), load('rivers_lake_centerlines')

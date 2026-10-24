@@ -4,6 +4,7 @@ import geo
 
 FULL = geo.Proj(29.3, 50.3, 38.0, 32.5)     # 고대 근동 전체
 ZOOM = geo.Proj(29.9, 38.1, 32.25, 30.0)    # 시내 반도 확대
+NORTH = geo.Proj(29.3, 50.3, 40.4, 35.0)    # 아라랏산까지 위로 넓힌 전체
 
 # (위도, 경도). 위치가 논쟁 중인 곳은 전통적 위치를 쓴다.
 PL = dict(
@@ -14,8 +15,8 @@ PL = dict(
     damascus=(33.513, 36.292), beersheba=(31.245, 34.84), hebron=(31.532, 35.095),
     bethel=(31.93, 35.22), ararat=(39.70, 44.30),
 )
-# 새 지명은 여기에 위경도로 추가한다. FULL 범위(위도 27.0~38.0, 경도 29.3~50.3)를 벗어나는
-# 곳(예: 아라랏산)은 그 지도만 geo.Proj로 범위를 넓혀 그린다.
+# 새 지명은 여기에 위경도로 추가한다. FULL·ZOOM·NORTH 범위를 모두 벗어나는 곳은
+# 그 지도만 geo.Proj로 범위를 넓혀 그린다.
 
 HALO = '<g paint-order="stroke" stroke="var(--surface)" stroke-width="4.5" stroke-linejoin="round">'
 SEA_TXT = '<g font-size="13" font-style="italic" fill="var(--ink-soft)" paint-order="stroke" stroke="var(--map-sea)" stroke-width="3" stroke-linejoin="round">'
@@ -97,11 +98,11 @@ CRESCENT = [(30.4, 47.4), (31.3, 45.9), (32.5, 44.5), (33.8, 43.6), (35.5, 43.4)
             (36.95, 39.8), (36.6, 37.6), (35.3, 36.5), (33.6, 35.8), (32.3, 35.2), (31.3, 34.8)]
 
 
-def crescent(P, accent=False):
+def crescent(P, accent=False, clip='ne-clip'):
     d = smooth(P, CRESCENT)
-    out = f'  <path d="{d}" fill="none" stroke="var(--map-land)" stroke-width="62" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#ne-clip)"/>'
+    out = f'  <path d="{d}" fill="none" stroke="var(--map-land)" stroke-width="62" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#{clip})"/>'
     if accent:
-        out += f'\n  <path d="{d}" fill="none" stroke="var(--accent)" stroke-width="62" opacity=".12" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#ne-clip)"/>'
+        out += f'\n  <path d="{d}" fill="none" stroke="var(--accent)" stroke-width="62" opacity=".12" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#{clip})"/>'
     return out
 
 

@@ -412,6 +412,7 @@ footer{margin-top:72px; padding-top:24px; border-top:1px solid var(--line); colo
       <tr><td><code>geo.py</code></td><td>Natural Earth 10m 데이터(땅·호수·강)를 내려받아 투영하고, 화면 밖을 잘라 SVG path로 만듭니다. 원본은 <code>tools/maps/data/</code>에 두고 git에는 올리지 않습니다.</td></tr>
       <tr><td><code>mapkit.py</code></td><td>표준 투영(FULL·ZOOM), 지명 위경도(<code>PL</code>), 바탕·경로·라벨·축척·방위표 부품</td></tr>
       <tr><td><code>day2.py</code></td><td>2일차 지도 6장. 새 일차는 이 파일을 복사해 <code>dayN.py</code>로 만듭니다.</td></tr>
+      <tr><td><code>day5.py</code></td><td>5일차 지도 1장(아라랏에서 애굽까지, NORTH 투영)</td></tr>
       <tr><td><code>guide.py</code></td><td>이 절의 표준 베이스맵</td></tr>
       <tr><td><code>preview.py</code></td><td>지도를 한 장씩 라이트·다크로 캡처해 겹침을 확인합니다(헤드리스 Chrome).</td></tr>
     </tbody>
@@ -425,10 +426,11 @@ footer{margin-top:72px; padding-top:24px; border-top:1px solid var(--line); colo
     <tbody>
       <tr><td><b>FULL</b></td><td>경도 29.3~50.3°, 위도 27.0~38.0°</td><td>고대 근동 전체. 애굽~메소포타미아를 오가는 지도</td></tr>
       <tr><td><b>ZOOM</b></td><td>경도 29.9~38.1°, 위도 27.7~32.25°</td><td>시나이 반도·가나안 확대. 출애굽·광야 여정</td></tr>
+      <tr><td><b>NORTH</b></td><td>경도 29.3~50.3°, 위도 29.7~40.4°</td><td>FULL을 북쪽으로 옮긴 범위. 아라랏산이 나오는 창세기 지도</td></tr>
     </tbody>
   </table>
   </div>
-  <p>두 범위를 벗어나는 지명(예: 아라랏산)이 나오면 그 지도만 <code>geo.Proj(경도0, 경도1, 위쪽 위도, 중앙 위도)</code>로 범위를 넓혀 만듭니다. 같은 문서 안에서 바탕 데이터는 첫 지도의 <code>&lt;defs&gt;</code>에 한 번만 넣고, 나머지 지도는 <code>&lt;use href&gt;</code>로 다시 씁니다.</p>
+  <p>세 범위를 모두 벗어나는 지명이 나오면 그 지도만 <code>geo.Proj(경도0, 경도1, 위쪽 위도, 중앙 위도)</code>로 범위를 넓혀 만듭니다. 같은 문서 안에서 바탕 데이터는 첫 지도의 <code>&lt;defs&gt;</code>에 한 번만 넣고, 나머지 지도는 <code>&lt;use href&gt;</code>로 다시 씁니다.</p>
 
   <h3>지명 위경도표</h3>
   <div class="table-scroll">
@@ -452,7 +454,7 @@ footer{margin-top:72px; padding-top:24px; border-top:1px solid var(--line); colo
       <tr><td>에시온게벨</td><td>29.530</td><td>34.970</td><td>아카바만 끝</td></tr>
       <tr><td>고센(애굽)</td><td>30.600</td><td>31.900</td><td>나일 삼각주 동쪽 와디 투밀라트. 야곱 가족 70명이 정착</td></tr>
       <tr><td>미디안</td><td>28.400</td><td>35.150</td><td>아라비아 북서부. 모세가 40년 지낸 곳</td></tr>
-      <tr><td>아라랏산</td><td>39.700</td><td>44.300</td><td>튀르키예 동부. 방주가 머문 곳. FULL 범위 밖</td></tr>
+      <tr><td>아라랏산</td><td>39.700</td><td>44.300</td><td>튀르키예 동부. 방주가 머문 곳. NORTH 투영으로 그립니다</td></tr>
     </tbody>
   </table>
   </div>
@@ -571,6 +573,29 @@ mlx_whisper --model mlx-community/whisper-large-v3-turbo \
       <tr><td class="wrong">남녀 호랑개교</td><td class="right">남묘호렌게쿄</td></tr>
       <tr><td class="wrong">갑바위</td><td class="right">갓바위</td></tr>
       <tr><td class="wrong">비조세계 / 피로세계</td><td class="right">피조세계</td></tr>
+      <tr><td class="wrong">노화홈수 / 노홍수 / 노와 홍수</td><td class="right">노아 홍수</td></tr>
+      <tr><td class="wrong">족포 / 존포용복 / 족보용법</td><td class="right">족보 / 족보 용법</td></tr>
+      <tr><td class="wrong">배털</td><td class="right">패턴</td></tr>
+      <tr><td class="wrong">무드셀러 / 무드셀라</td><td class="right">므두셀라</td></tr>
+      <tr><td class="wrong">샘, 함, 야베스</td><td class="right">셈·함·야벳</td></tr>
+      <tr><td class="wrong">길가베시 / 앵키도</td><td class="right">길가메시 / 엔키두</td></tr>
+      <tr><td class="wrong">세인트 헬렌산</td><td class="right">세인트헬렌스산</td></tr>
+      <tr><td class="wrong">동예 과정서</td><td class="right">동일과정설</td></tr>
+      <tr><td class="wrong">큰 기품의 샘 / 하늘의 장문·자문</td><td class="right">큰 깊음의 샘 / 하늘의 창문</td></tr>
+      <tr><td class="wrong">옹용설산</td><td class="right">옥룡설산</td></tr>
+      <tr><td class="wrong">리브노세 / 니브롯 / 님무로 / 니그로리치</td><td class="right">니므롯</td></tr>
+      <tr><td class="wrong">신할 땅 / 신할평지</td><td class="right">시날 땅 / 시날 평지</td></tr>
+      <tr><td class="wrong">바베게</td><td class="right">바벨</td></tr>
+      <tr><td class="wrong">하마르티야</td><td class="right">하마르티아</td></tr>
+      <tr><td class="wrong">요아이레 / 순냥 / 순념</td><td class="right">여호와 이레 / 숫양</td></tr>
+      <tr><td class="wrong">동경녀</td><td class="right">동정녀</td></tr>
+      <tr><td class="wrong">애서 / 베델</td><td class="right">에서 / 벧엘</td></tr>
+      <tr><td class="wrong">바타 나라라메 / 뇌삼촌</td><td class="right">밧단아람 / 외삼촌</td></tr>
+      <tr><td class="wrong">부대에 와서 (형을 만나기 전)</td><td class="right">얍복 나루</td></tr>
+      <tr><td class="wrong">색결 / 색계열</td><td class="right">셋 계열</td></tr>
+      <tr><td class="wrong">아보람 / 갈대와 우루 / 하라로</td><td class="right">아브람 / 갈대아 우르 / 하란</td></tr>
+      <tr><td class="wrong">맨파오</td><td class="right">맨파워</td></tr>
+      <tr><td class="wrong">천천 년설</td><td class="right">전천년설</td></tr>
     </tbody>
   </table>
   </div>
@@ -580,6 +605,7 @@ mlx_whisper --model mlx-community/whisper-large-v3-turbo \
     "북쪽이 북쪽이 북쪽이…"처럼 한 낱말이 계속 반복되면 그 구간은 <b>실제 음성이 아닙니다</b>(전사 프로그램이 헛돈 것). 그 구간은 버리고, 해당 시각의 오디오를 잘라 다시 전사합니다.
     <br><code>ffmpeg -i rec.wav -ss 600 -t 120 chunk.wav</code> 로 잘라서 재시도.
     <br>4일차 녹음 180·181에서는 "마", "70" 같은 한 글자가 30분 넘게 반복되었습니다. 4분 단위로 잘라 <code>--condition-on-previous-text False</code> 옵션을 주고 다시 전사하면 해결됩니다.
+    <br>5일차 녹음 184·185는 처음부터 4분 단위로 잘라 같은 옵션으로 전사했고, 반복 구간이 생기지 않았습니다.
   </div>
 
   <h3>인용할 때</h3>
