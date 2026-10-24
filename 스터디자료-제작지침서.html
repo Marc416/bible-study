@@ -508,6 +508,24 @@ mlx_whisper --model mlx-community/whisper-large-v3-turbo \
       <tr><td class="wrong">이시 / 이슈</td><td class="right">이쉬(남자) / 이샤(여자)</td></tr>
       <tr><td class="wrong">하와르 / 하와이</td><td class="right">하와</td></tr>
       <tr><td class="wrong">따라와 대로</td><td class="right">(형상을) 따라, (모양)대로</td></tr>
+      <tr><td class="wrong">선악가 / 선와라</td><td class="right">선악과</td></tr>
+      <tr><td class="wrong">멸류관 / 연료관 / 연루간</td><td class="right">면류관</td></tr>
+      <tr><td class="wrong">연령학</td><td class="right">열역학</td></tr>
+      <tr><td class="wrong">차연증</td><td class="right">차용증</td></tr>
+      <tr><td class="wrong">정경 죽으리라</td><td class="right">정녕 죽으리라</td></tr>
+      <tr><td class="wrong">원보금 / 원시보금</td><td class="right">원시복음</td></tr>
+      <tr><td class="wrong">하화 / 황화 / 하오</td><td class="right">하와</td></tr>
+      <tr><td class="wrong">아베 / 아베를</td><td class="right">아벨</td></tr>
+      <tr><td class="wrong">요아 / 요하</td><td class="right">여호와</td></tr>
+      <tr><td class="wrong">가인결 색결 / 3개월 / 셋개월 / 세계열</td><td class="right">가인 계열 · 셋 계열</td></tr>
+      <tr><td class="wrong">라메기 / 신라</td><td class="right">라멕 / 씰라</td></tr>
+      <tr><td class="wrong">수군과 둥소</td><td class="right">수금과 퉁소</td></tr>
+      <tr><td class="wrong">조슬날 / 조선달</td><td class="right">(비옥한) 초승달</td></tr>
+      <tr><td class="wrong">범하이려 / 성즙리 / 유에이지</td><td class="right">범아일여 / 성즉리 / 뉴에이지</td></tr>
+      <tr><td class="wrong">무화지경 / 단전오바시는</td><td class="right">무아지경 / 단전호흡</td></tr>
+      <tr><td class="wrong">남녀 호랑개교</td><td class="right">남묘호렌게쿄</td></tr>
+      <tr><td class="wrong">갑바위</td><td class="right">갓바위</td></tr>
+      <tr><td class="wrong">비조세계 / 피로세계</td><td class="right">피조세계</td></tr>
     </tbody>
   </table>
   </div>
@@ -516,6 +534,7 @@ mlx_whisper --model mlx-community/whisper-large-v3-turbo \
     <strong>같은 말이 수십 줄 반복되면 전사가 깨진 것입니다</strong>
     "북쪽이 북쪽이 북쪽이…"처럼 한 낱말이 계속 반복되면 그 구간은 <b>실제 음성이 아닙니다</b>(전사 프로그램이 헛돈 것). 그 구간은 버리고, 해당 시각의 오디오를 잘라 다시 전사합니다.
     <br><code>ffmpeg -i rec.wav -ss 600 -t 120 chunk.wav</code> 로 잘라서 재시도.
+    <br>4일차 녹음 180·181에서는 "마", "70" 같은 한 글자가 30분 넘게 반복되었습니다. 4분 단위로 잘라 <code>--condition-on-previous-text False</code> 옵션을 주고 다시 전사하면 해결됩니다.
   </div>
 
   <h3>인용할 때</h3>

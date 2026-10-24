@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>4일차 진짜 왕은 나다</title>
+<style>
+:root{
+  --bg:#f7f4ee; --surface:#fffdf9; --surface-2:#f0ebe1; --ink:#2b2724; --ink-soft:#5f574e;
+  --line:#ddd4c5; --accent:#0f6f63; --accent-soft:#d8ebe7; --warn:#b3541e; --warn-soft:#f7e7da;
+  --gold:#a67c00; --gold-soft:#f6eccd; --blue:#2f5f8f; --blue-soft:#dde7f2;
+  --shadow:0 1px 2px rgba(43,39,36,.06),0 8px 24px rgba(43,39,36,.06); --radius:14px;
+  --map-sea:#cfe3ea; --map-land:#eee6d4; --map-desert:#f2e3c6; --map-river:#7fb3c4; --map-stroke:#b9ac94;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16161a; --surface:#1e1e24; --surface-2:#26262e; --ink:#ece7de; --ink-soft:#a9a195;
+    --line:#393942; --accent:#5ec5b4; --accent-soft:#12332f; --warn:#e2925c; --warn-soft:#3a2416;
+    --gold:#d9b75a; --gold-soft:#332a14; --blue:#7ba7d7; --blue-soft:#1b2838;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+    --map-sea:#1d3a44; --map-land:#2c2a22; --map-desert:#34301f; --map-river:#4b8ea3; --map-stroke:#4d4738;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16161a; --surface:#1e1e24; --surface-2:#26262e; --ink:#ece7de; --ink-soft:#a9a195;
+  --line:#393942; --accent:#5ec5b4; --accent-soft:#12332f; --warn:#e2925c; --warn-soft:#3a2416;
+  --gold:#d9b75a; --gold-soft:#332a14; --blue:#7ba7d7; --blue-soft:#1b2838;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+  --map-sea:#1d3a44; --map-land:#2c2a22; --map-desert:#34301f; --map-river:#4b8ea3; --map-stroke:#4d4738;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0; background:var(--bg); color:var(--ink);
+  font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",system-ui,sans-serif;
+  font-size:17px; line-height:1.78; word-break:keep-all; overflow-wrap:anywhere;
+}
+.wrap{max-width:920px; margin:0 auto; padding:0 16px 100px}
+header.hero{
+  padding:60px 16px 36px; text-align:center; border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg,var(--surface) 0%,var(--bg) 100%);
+}
+.hero .kicker{font-size:13px; letter-spacing:.16em; color:var(--accent); font-weight:700; margin:0 0 10px}
+.hero h1{font-size:clamp(27px,6vw,40px); line-height:1.25; margin:0 0 14px; letter-spacing:-.02em}
+.hero .sub{margin:0 auto; max-width:600px; color:var(--ink-soft); font-size:16px}
+.meta{display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:22px}
+.meta span{font-size:13px; padding:5px 12px; border-radius:999px; background:var(--accent-soft); color:var(--accent); font-weight:600}
+
+.onesent{
+  margin:36px 0 8px; padding:30px 28px; border-radius:var(--radius);
+  background:var(--accent); color:#fff; box-shadow:var(--shadow); text-align:center;
+}
+:root[data-theme="dark"] .onesent, :root:not([data-theme="light"]) .onesent{color:#0b1f1c}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]) .onesent{color:#fff}}
+.onesent .lbl{font-size:12.5px; letter-spacing:.16em; opacity:.85; font-weight:700; margin-bottom:10px}
+.onesent p{margin:0; font-size:clamp(18px,3.6vw,23px); font-weight:700; line-height:1.6}
+
+nav.toc{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:20px 22px; margin:28px 0; box-shadow:var(--shadow)}
+nav.toc h2{font-size:14px; margin:0 0 12px; color:var(--ink-soft); letter-spacing:.08em}
+nav.toc ol{margin:0; padding-left:20px; columns:2; column-gap:28px}
+@media (max-width:640px){nav.toc ol{columns:1}}
+nav.toc li{margin:4px 0}
+nav.toc a{color:var(--ink); text-decoration:none}
+nav.toc a:hover{color:var(--accent)}
+
+section{margin:56px 0 0; scroll-margin-top:20px}
+h2.sec{font-size:clamp(21px,4.2vw,28px); margin:0 0 6px; letter-spacing:-.01em; display:flex; gap:12px; align-items:baseline}
+h2.sec .num{font-size:14px; font-weight:800; color:var(--accent); background:var(--accent-soft); min-width:30px; height:30px; display:inline-flex; align-items:center; justify-content:center; border-radius:8px; flex:none}
+.sec-lead{color:var(--ink-soft); margin:0 0 20px; font-size:15.5px}
+h3{font-size:19px; margin:34px 0 8px; display:flex; align-items:baseline; gap:10px; flex-wrap:wrap}
+h4{font-size:16px; margin:22px 0 6px}
+p{margin:0 0 14px}
+ul,ol{margin:0 0 14px; padding-left:22px}
+li{margin:7px 0}
+b.hl{color:var(--accent)}
+.ts{font-size:11.5px; font-weight:700; letter-spacing:.03em; padding:3px 9px; border-radius:999px; background:var(--surface-2); border:1px solid var(--line); color:var(--ink-soft); white-space:nowrap; flex:none}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:20px 22px; margin:16px 0; box-shadow:var(--shadow)}
+.card h4{margin-top:0}
+.grid{display:grid; gap:14px; grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.grid3{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(180px,1fr))}
+.note{border-left:4px solid var(--accent); background:var(--accent-soft); padding:14px 18px; border-radius:0 10px 10px 0; margin:18px 0; font-size:15.5px}
+.note.warn{border-left-color:var(--warn); background:var(--warn-soft)}
+.note.gold{border-left-color:var(--gold); background:var(--gold-soft)}
+.note.blue{border-left-color:var(--blue); background:var(--blue-soft)}
+.note strong{display:block; margin-bottom:5px}
+.quote{border-left:4px solid var(--gold); background:var(--gold-soft); padding:16px 20px; border-radius:0 10px 10px 0; margin:18px 0; font-size:16px; line-height:1.8}
+.quote .who{display:block; margin-top:8px; font-size:13px; color:var(--ink-soft); font-weight:600}
+table{width:100%; border-collapse:collapse; margin:16px 0; font-size:15px}
+th,td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--line); vertical-align:top}
+th{background:var(--surface-2); font-weight:700; font-size:13.5px}
+.table-scroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
+figure{margin:22px 0; padding:0}
+figure svg{width:100%; height:auto; display:block; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius)}
+figcaption{font-size:13.5px; color:var(--ink-soft); text-align:center; margin-top:8px}
+details{background:var(--surface); border:1px solid var(--line); border-radius:10px; padding:12px 16px; margin:10px 0}
+details summary{cursor:pointer; font-weight:600; font-size:15.5px}
+details[open] summary{margin-bottom:10px; color:var(--accent)}
+details p:last-child{margin-bottom:0}
+.term{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(230px,1fr))}
+.term .t{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:14px 16px; box-shadow:var(--shadow)}
+.term .t b{display:block; font-size:16px; color:var(--accent); margin-bottom:4px}
+.term .t span{font-size:14.5px; color:var(--ink-soft); line-height:1.6}
+footer{margin-top:70px; padding-top:24px; border-top:1px solid var(--line); color:var(--ink-soft); font-size:14px; text-align:center}
+.theme-toggle{position:fixed; right:14px; bottom:14px; z-index:10; border:1px solid var(--line); background:var(--surface); color:var(--ink); border-radius:999px; padding:9px 15px; font-size:13px; cursor:pointer; box-shadow:var(--shadow); font-family:inherit}
+@media print{.theme-toggle,nav.toc{display:none}}
+.lie{display:grid; gap:12px; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); margin:16px 0}
+.lie .l{background:var(--surface); border:1px solid var(--line); border-top:4px solid var(--warn); border-radius:12px; padding:14px 16px; box-shadow:var(--shadow)}
+.lie .l .n{font-size:12px; font-weight:800; color:var(--warn); letter-spacing:.06em}
+.lie .l b{display:block; font-size:17px; margin:2px 0 6px}
+.lie .l span{font-size:14.5px; color:var(--ink-soft); line-height:1.6}
+.verse{font-size:15.5px; background:var(--surface-2); border-radius:10px; padding:12px 16px; margin:14px 0; line-height:1.8}
+.verse .ref{display:block; font-size:12.5px; font-weight:700; color:var(--ink-soft); margin-top:4px}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <p class="kicker"><a href="../" style="color:inherit">← 목록으로</a> · 성경이 읽어지네 · 구약</p>
+  <h1>4일차<br>그렇지만 진짜 왕은 나다</h1>
+  <p class="sub">하나님은 왜 에덴 동산 한가운데에 선악과를 두셨을까요? 선악과를 먹은 뒤 사람에게 무슨 일이 일어났고, 그 뒤 인류가 어떻게 두 무리로 나뉘었는지 봅니다.</p>
+  <div class="meta">
+    <span>교재 51~59쪽</span>
+    <span>녹음 180 (52분)</span>
+    <span>녹음 181 (68분)</span>
+    <span>범위: 창세기 2:15~5:3</span>
+  </div>
+</header>
+
+<div class="wrap">
+
+<div class="onesent">
+  <div class="lbl">오늘의 한 문장</div>
+  <p>선악과는 "하나님이 진짜 왕이시다"를 인정하는 영수증이고,<br>그 왕을 인정하느냐에 따라 인류는 가인 계열과 셋 계열로 나뉜다.</p>
+</div>
+
+<nav class="toc">
+  <h2>차례</h2>
+  <ol start="0">
+    <li><a href="#s0">들어가며 — 지난 시간 다시 보기</a></li>
+    <li><a href="#s1">오늘의 큰 그림 — 두 나무와 두 계열</a></li>
+    <li><a href="#s2">오늘 제목의 뜻 — "그렇지만 진짜 왕은 나다"</a></li>
+    <li><a href="#s3">선악과 ① 하나님이 받아 두신 영수증</a></li>
+    <li><a href="#s4">선악과 ② 금지보다 먼저 나온 축복</a></li>
+    <li><a href="#s5">선악과 ③ 영광의 면류관 — 자유의지</a></li>
+    <li><a href="#s6">세상은 선악과를 싫어한다</a></li>
+    <li><a href="#s7">선악과 명령의 여섯 가지 성격</a></li>
+    <li><a href="#s8">선악과 안에 이미 들어 있던 복음</a></li>
+    <li><a href="#s9">먹은 뒤 — 네 가지 관계가 끊어지다</a></li>
+    <li><a href="#s10">절망 속의 두 소망 — 원시복음과 가죽옷</a></li>
+    <li><a href="#s11">사탄의 네 가지 거짓말</a></li>
+    <li><a href="#s12">네 거짓말이 만든 세상의 종교와 사상</a></li>
+    <li><a href="#s13">가인과 아벨 — 왜 한쪽 제사만 받으셨나</a></li>
+    <li><a href="#s14">가인이 만든 세상 — 성, 문명, 라멕의 노래</a></li>
+    <li><a href="#s15">무대 — 메소포타미아와 약속의 땅</a></li>
+    <li><a href="#s16">셋 계열 — 여호와의 이름을 부르다</a></li>
+    <li><a href="#s17">마무리 — 사랑의 왕 앞에서</a></li>
+    <li><a href="#s18">한 장으로 보는 오늘 강의</a></li>
+    <li><a href="#s19">핵심 용어 카드</a></li>
+    <li><a href="#s20">목사님 말씀 그대로</a></li>
+    <li><a href="#s21">직접 정리해 보기</a></li>
+    <li><a href="#s22">스스로 점검 · 다음 시간 예고</a></li>
+  </ol>
+</nav>
+
+<!-- ══════════ 들어가며 ══════════ -->
+<section id="s0">
+  <h2 class="sec"><span class="num">0</span>들어가며 — 지난 시간 다시 보기</h2>
+  <p class="sec-lead">녹음 180의 처음 12분은 3일차 내용을 빠르게 정리합니다. 오늘 내용은 이 복습을 전제로 합니다.</p>
+
+  <h3>두 가지 창조 <span class="ts">180 · 00:00</span></h3>
+  <p>지난 시간에는 창조를 두 부분으로 나눠 보았습니다. 하나는 <b>물질 세계의 창조</b>, 다른 하나는 <b>사람의 창조</b>입니다.</p>
+  <ul>
+    <li><b>물질 세계</b> — 빅뱅 이론에 두 가지 질문을 던졌습니다. 폭발한 에너지와 처음 물질은 어디서 왔는가(열역학 제1법칙). 질서에서 무질서로 가는 세상이 어떻게 더 질서 있게 되었는가(열역학 제2법칙).</li>
+    <li><b>결론</b> — 창조도 진화도 증명할 수 없습니다. 둘 다 <b>믿음의 문제</b>이고, 무엇을 믿느냐에 따라 삶이 완전히 달라집니다.</li>
+  </ul>
+
+  <h3>두 세계관의 충돌 <span class="ts">180 · 03:44</span></h3>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th style="width:22%"></th><th>진화를 믿으면</th><th>창조를 믿으면</th></tr></thead>
+    <tbody>
+      <tr><td>나는 누구인가</td><td>우연히 생긴 존재</td><td>하나님의 형상과 모양대로 지음받은 존재</td></tr>
+      <tr><td>삶의 목표</td><td>내가 스스로 정하고 이루는 것이 가장 사람다움</td><td>나를 만드신 분이 담아 두신 목적대로 사는 것</td></tr>
+      <tr><td>신에 대한 생각</td><td>신은 나를 억누르고 묶는 존재</td><td>하나님만 스스로 계신 분</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>목사님은 컴퓨터를 예로 듭니다. 이 컴퓨터는 스스로 목적을 정하지 않았습니다. 만든 사람의 목적대로 거기 있습니다. 하나님을 인정하지 않는 사람이 싫어하는 것이 바로 이것입니다. "왜 신이 내 동의도 없이 나를 향한 목적을 말하느냐"는 것이지요.</p>
+
+  <h3>아담은 통치자였다 <span class="ts">180 · 06:01</span></h3>
+  <p>타락하기 전 처음 창조된 모습에서 아담은 <b>통치자</b>였습니다. 아담이 짐승의 이름을 지어 준 일에는 두 가지 뜻이 있었습니다. 존재의 본질을 알아보는 능력, 그리고 다스리는 권위입니다.</p>
+  <p>하와를 보고 아담은 "내 뼈 중의 뼈요 살 중의 살"이라고 말했습니다. "너는 원래 내 안에 있었다, 너는 나다"라는 뜻입니다. 그래서 아담이 세상을 다스리는 방식은 <b class="hl">"내 이웃을 내 몸과 같이 사랑하는 것"</b>이어야 했습니다. 아담은 <b>사랑의 왕</b>이었습니다.</p>
+
+  <div class="note">
+    <strong>복습 — 형상과 모양, "따라"와 "대로"</strong>
+    하나님은 "우리의 형상을 <b>따라</b> 우리의 모양<b>대로</b>" 사람을 지으셨습니다(창 1:26). 겉으로 드러난 총체(형상)는 한 분 하나님이고, 존재하시는 방식(모양)은 "우리"입니다. 하나님께 영광을 올린다는 것은 이 "따라"와 "대로"를 사는 것입니다.
+  </div>
+
+  <h3>성경은 과학을 부정하지 않는다 <span class="ts">180 · 09:40</span></h3>
+  <p>복습 끝에 목사님은 손에 든 휴대폰 이야기를 합니다. 선도 없는데 외국에 있는 사람과 영상 통화를 합니다. 휴대폰 개발팀에 있던 사촌 형님의 설명에 따르면, 이 기술은 이미 있는 <b>파장</b> 위에 소리와 영상을 얹어 보내는 것입니다.</p>
+  <p>기술은 아무것도 없는 데서 나오지 않습니다. 하나님이 만물 속에 넣어 두신 <b>원리</b>를 발견해서 활용하는 것입니다. 그래서 과학은 하나님의 창조 세계의 원리를 찾아 사람에게 유익하게 쓰는 일입니다. 다만 과학은 창조 세계의 <b>일부</b>일 뿐, 전체가 될 수는 없습니다.</p>
+</section>
+
+<!-- ══════════ 큰 그림 ══════════ -->
+<section id="s1">
+  <h2 class="sec"><span class="num">1</span>오늘의 큰 그림 — 두 나무와 두 계열</h2>
+  <p class="sec-lead">오늘은 창세기 3장과 4장을 다룹니다. 녹음 180은 선악과를, 녹음 181은 선악과를 먹은 뒤의 일과 가인·아벨 이야기를 다룹니다.</p>
+
+  <figure>
+    <svg viewBox="0 0 900 400" role="img" aria-labelledby="f1t">
+      <title id="f1t">4일차 강의 구조 — 선악과에서 두 계열로</title>
+      <rect width="900" height="400" fill="var(--surface)"/>
+      <defs><marker id="a1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"/></marker></defs>
+      <g text-anchor="middle">
+        <rect x="30" y="40" width="250" height="150" rx="14" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="155" y="70" font-size="12.5" font-weight="800" fill="var(--accent)" letter-spacing="2">1부 · 녹음 180</text>
+        <text x="155" y="100" font-size="19" font-weight="700" fill="var(--ink)">선악과를 왜 두셨나</text>
+        <text x="155" y="128" font-size="13" fill="var(--ink-soft)">영수증 · 축복 명령 ·</text>
+        <text x="155" y="148" font-size="13" fill="var(--ink-soft)">영광의 면류관 · 여섯 가지 성격</text>
+        <text x="155" y="176" font-size="12.5" font-weight="700" fill="var(--accent)">창세기 2:15~17</text>
+
+        <rect x="325" y="40" width="250" height="150" rx="14" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2"/>
+        <text x="450" y="70" font-size="12.5" font-weight="800" fill="var(--warn)" letter-spacing="2">2부 앞 · 녹음 181</text>
+        <text x="450" y="100" font-size="19" font-weight="700" fill="var(--ink)">먹은 뒤에 생긴 일</text>
+        <text x="450" y="128" font-size="13" fill="var(--ink-soft)">네 가지 관계 단절 · 원시복음 ·</text>
+        <text x="450" y="148" font-size="13" fill="var(--ink-soft)">가죽옷 · 사탄의 네 가지 거짓말</text>
+        <text x="450" y="176" font-size="12.5" font-weight="700" fill="var(--warn)">창세기 3장</text>
+
+        <rect x="620" y="40" width="250" height="150" rx="14" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2"/>
+        <text x="745" y="70" font-size="12.5" font-weight="800" fill="var(--blue)" letter-spacing="2">2부 뒤 · 녹음 181</text>
+        <text x="745" y="100" font-size="19" font-weight="700" fill="var(--ink)">두 계열이 나뉘다</text>
+        <text x="745" y="128" font-size="13" fill="var(--ink-soft)">가인과 아벨의 제사 · 가인의 성 ·</text>
+        <text x="745" y="148" font-size="13" fill="var(--ink-soft)">라멕의 노래 · 셋과 에노스</text>
+        <text x="745" y="176" font-size="12.5" font-weight="700" fill="var(--blue)">창세기 4장 ~ 5:3</text>
+      </g>
+      <g stroke="var(--ink-soft)" stroke-width="2.5" fill="none" marker-end="url(#a1)">
+        <path d="M282,115 L321,115"/><path d="M577,115 L616,115"/>
+      </g>
+      <rect x="160" y="250" width="580" height="110" rx="14" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/>
+      <g text-anchor="middle">
+        <text x="450" y="284" font-size="13" font-weight="800" fill="var(--gold)" letter-spacing="2">세 부분에 공통된 질문</text>
+        <text x="450" y="316" font-size="20" font-weight="700" fill="var(--ink)">"누가 진짜 왕인가?"</text>
+        <text x="450" y="344" font-size="13.5" fill="var(--ink-soft)">구약에서는 선악과 나무 아래에서, 신약에서는 십자가 나무 아래에서 답합니다</text>
+      </g>
+      <path d="M450,196 L450,244" stroke="var(--gold)" stroke-width="2.5" stroke-dasharray="5 4"/>
+    </svg>
+    <figcaption>그림 1. 오늘 강의는 세 부분으로 나뉘고, 모두 "누가 진짜 왕인가"라는 한 질문으로 이어집니다.</figcaption>
+  </figure>
+
+  <p>교재가 정한 오늘의 공부 목표는 두 가지입니다. <span class="ts">180 · 11:52</span></p>
+  <ol>
+    <li><b>선악과와 희생제물 공부하기</b> — 이 자료의 2~10번</li>
+    <li><b>가인 계열과 셋 계열 공부하기</b> — 이 자료의 13~16번. 성경에 직접 나오는 말이 아니라, 성경의 흐름을 설명하려고 붙인 이름입니다.</li>
+  </ol>
+</section>
+
+<!-- ══════════ 제목 ══════════ -->
+<section id="s2">
+  <h2 class="sec"><span class="num">2</span>오늘 제목의 뜻 — "그렇지만 진짜 왕은 나다"</h2>
+  <p class="sec-lead">교재 51쪽입니다. 지난 시간 제목과 오늘 제목을 나란히 놓으면 뜻이 보입니다.</p>
+
+  <h3>지난 시간에서 한 걸음 더 <span class="ts">180 · 13:06</span></h3>
+  <p>지난 시간에 아담은 "너는 나다"라는 깨달음(논문)으로 만물을 다스릴 권리를 받았습니다. 하나님이 "아담아, 네가 다스려라. 네가 왕이다"라고 하신 것입니다.</p>
+  <p>오늘은 그다음 단계입니다. 하나님이 덧붙이십니다. <b class="hl">"그렇지만 진짜 왕은 나다. 그건 알고 있겠지?"</b></p>
+
+  <div class="grid">
+    <div class="card">
+      <h4 style="color:var(--accent)">3일차 제목</h4>
+      <p style="margin:0">"아담, PhD 논문으로 왕 되다"<br>→ 아담은 만물을 다스리는 <b>왕</b>이다.</p>
+    </div>
+    <div class="card">
+      <h4 style="color:var(--warn)">4일차 제목</h4>
+      <p style="margin:0">"그렇지만 진짜 왕은 나다"<br>→ 아담 위에 <b>진짜 왕</b>이신 하나님이 계신다.</p>
+    </div>
+  </div>
+
+  <h3>바로 떠오르는 질문 <span class="ts">180 · 14:07</span></h3>
+  <p>선악과 이야기를 시작하면 누구나 이렇게 묻습니다.</p>
+  <div class="note warn">
+    <strong>많은 성도가 넘어가지 못하는 질문</strong>
+    "하나님은 왜 선악과를 만드셔서 우리가 죄를 짓게 하셨나요? 안 만드셨으면 좋았을 텐데요."
+  </div>
+  <p>오늘 강의 전반부(이 자료의 3~8번)는 이 질문에 답합니다. 목사님은 선악과의 뜻을 세 가지로 정리하고, 이어서 선악과 명령의 성격을 여섯 가지로 정리합니다.</p>
+</section>
+
+<!-- ══════════ 영수증 ══════════ -->
+<section id="s3">
+  <h2 class="sec"><span class="num">3</span>선악과 ① 하나님이 받아 두신 영수증</h2>
+  <p class="sec-lead">첫 번째 뜻은 "하나님이 왕이신 것을 인정합니다"입니다. 교재는 이것을 <b>영수증</b>이라고 부릅니다.</p>
+
+  <h3>모든 것을 맡기신 하나님 <span class="ts">180 · 14:42</span></h3>
+  <p>창조 세계는 아름답습니다. 목사님은 최근 다녀온 중국 쿤밍의 경치를 예로 듭니다. 하나님은 이 아름다운 만물을 지으신 뒤 아담에게 <b>"경영하라, 다스리라"</b>고 맡기셨습니다.</p>
+  <p>그런데 에덴 동산 <b>한가운데</b>에 두 나무를 두셨습니다. <b>선악을 알게 하는 나무</b>와 <b>생명나무</b>입니다. 그리고 "선악을 알게 하는 나무의 열매는 먹지 말라"고 하셨습니다. 이 말씀으로 에덴 동산에 <b>하지 말아야 할 것이 딱 하나</b> 생겼습니다.</p>
+  <p>만물을 다스릴 권리는 아담에게 있었습니다. 아담은 무엇이든 마음대로 할 수 있었습니다. 그 가운데 단 하나만 제한되었습니다.</p>
+
+  <h3>5천만 원 차용증 <span class="ts">180 · 16:56</span></h3>
+  <p>누군가에게 5천만 원을 빌려준다고 해 봅시다. 그냥 빌려주지 않습니다. A4 종이 한 장에 <b>차용증</b>(돈을 빌렸다는 증서)을 씁니다. 빌린 사람, 빌려준 사람, 날짜, 금액, 갚을 날, 이자를 쓰고 도장을 찍습니다.</p>
+  <p>종이 한 장의 값은 얼마 안 됩니다. 그런데 이 한 장이 5천만 원을 <b>담보</b>합니다.</p>
+
+  <figure>
+    <svg viewBox="0 0 900 300" role="img" aria-labelledby="f2t">
+      <title id="f2t">차용증 비유 — 5천만 원과 차용증, 에덴 동산과 선악과</title>
+      <rect width="900" height="300" fill="var(--surface)"/>
+      <g text-anchor="middle">
+        <text x="225" y="40" font-size="14" font-weight="800" fill="var(--ink-soft)" letter-spacing="1">비유</text>
+        <text x="675" y="40" font-size="14" font-weight="800" fill="var(--accent)" letter-spacing="1">에덴 동산</text>
+
+        <rect x="60" y="64" width="190" height="90" rx="12" fill="var(--surface-2)" stroke="var(--line)" stroke-width="2"/>
+        <text x="155" y="104" font-size="18" font-weight="700" fill="var(--ink)">5천만 원</text>
+        <text x="155" y="130" font-size="12.5" fill="var(--ink-soft)">마음대로 써도 된다</text>
+        <rect x="270" y="64" width="120" height="90" rx="12" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/>
+        <text x="330" y="104" font-size="17" font-weight="700" fill="var(--ink)">차용증</text>
+        <text x="330" y="130" font-size="12.5" fill="var(--ink-soft)">종이 한 장</text>
+
+        <rect x="510" y="64" width="190" height="90" rx="12" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="605" y="104" font-size="18" font-weight="700" fill="var(--ink)">온 만물</text>
+        <text x="605" y="130" font-size="12.5" fill="var(--ink-soft)">마음대로 다스려라</text>
+        <rect x="720" y="64" width="120" height="90" rx="12" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/>
+        <text x="780" y="104" font-size="17" font-weight="700" fill="var(--ink)">선악과</text>
+        <text x="780" y="130" font-size="12.5" fill="var(--ink-soft)">나무 한 그루</text>
+
+        <text x="225" y="196" font-size="14" fill="var(--ink)">진짜 주인은 <tspan font-weight="700">빌려준 사람</tspan></text>
+        <text x="675" y="196" font-size="14" fill="var(--ink)">진짜 주인은 <tspan font-weight="700" fill="var(--accent)">하나님</tspan></text>
+        <text x="225" y="222" font-size="13" fill="var(--ink-soft)">정한 날에 돌려주면 된다</text>
+        <text x="675" y="222" font-size="13" fill="var(--ink-soft)">"내가 진짜 왕은 아니지"를 기억하면 된다</text>
+      </g>
+      <line x1="450" y1="30" x2="450" y2="240" stroke="var(--line)" stroke-width="2" stroke-dasharray="5 5"/>
+      <text x="450" y="276" text-anchor="middle" font-size="13.5" fill="var(--ink-soft)">작은 증서 하나가 큰 것 전체의 주인이 누구인지 보여 줍니다</text>
+    </svg>
+    <figcaption>그림 2. 선악과는 만물을 맡기시면서 하나님이 받아 두신 영수증(차용증)입니다.</figcaption>
+  </figure>
+
+  <p>돈을 빌린 사람은 갚기 전까지 그 돈으로 장사를 해도 되고 사업을 해도 됩니다. "이건 저 사람 돈이니까 손대지 말아야지" 하고 쌓아만 두면 오히려 바보입니다. 정한 날에 돌려주기만 하면 됩니다.</p>
+  <p>하나님도 똑같습니다. 만물 전체의 주인은 하나님이십니다. 아담에게 그것을 맡기시면서 <b>차용증 한 장</b>을 받아 두셨습니다. 그것이 선악을 알게 하는 나무입니다. 아담은 "내가 왕인가 보다, 다 내 것이다"라고 착각할 수 있었기 때문입니다.</p>
+
+  <h3>"오른쪽 서랍만 열지 마" <span class="ts">180 · 19:02</span></h3>
+  <p>목사님은 비유를 하나 더 듭니다. 목사님이 3년 동안 해외 선교를 가면서 교회 청년에게 집을 맡깁니다. "안방, 안방 화장실, 부엌까지 다 마음대로 써. 친구들 불러 파티해도 돼."</p>
+  <p>그런데 청년이 "목사님 집이니까 건넌방 하나만 써야지" 하고 지내면, 목사님 뜻에 맞을까요? 맞지 않습니다. 다 쓰라고 했으니 다 쓰는 것이 주인의 뜻입니다.</p>
+  <p>이번에는 한마디를 덧붙이고 떠납니다. <b>"안방 화장대 오른쪽 서랍은 열어 보지 마."</b> 그러면 청년은 다른 것을 다 해도 마음 한쪽이 찜찜합니다. 그 서랍을 꼭 한번 열어 보고 싶어집니다.</p>
+  <div class="note blue">
+    <strong>우리 모두 선악과를 먹었다는 증거</strong>
+    목사님은 웃으며 말합니다. 열지 말라는 서랍을 열어 보지 않으면 속이 시원하지 않은 마음, 그것이 우리 모두 선악과를 먹었다는 증거라고요. 실제로 그 서랍에는 별것 없었습니다. 아파트 등기부 등본이 들어 있었습니다. <b>집의 진짜 주인이 누구인지 적힌 서류</b>입니다.
+  </div>
+
+  <h3>정리 — 가장 잘 보이는 곳에 둔 안전장치 <span class="ts">180 · 21:04</span></h3>
+  <p>선악과는 하나님이 주신 <b>영수증이자 안전장치</b>입니다. 그래서 숨겨 두지 않고 동산 한가운데, <b>가장 잘 보이는 곳</b>에 두셨습니다.</p>
+</section>
+
+<!-- ══════════ 축복 명령 ══════════ -->
+<section id="s4">
+  <h2 class="sec"><span class="num">4</span>선악과 ② 금지보다 먼저 나온 축복</h2>
+  <p class="sec-lead">두 번째 뜻은 "선악과 명령 앞에 놓인 근본적인 명령"입니다. 우리는 선악과 하면 "먹으면 죽는다"부터 떠올립니다. 성경도 그 순서일까요?</p>
+
+  <h3>먹으면 죽을 것을 왜 가까이 두셨나 <span class="ts">180 · 21:20</span></h3>
+  <p>"먹으면 반드시 죽는다." 이 말부터 떠올리면 바로 질문이 생깁니다. 먹으면 죽을 것은 멀리 둬야 하지 않나요? 왜 가까이 두셨나요? 그런데 성경을 실제로 읽으면 순서가 다릅니다.</p>
+
+  <h3>금붕어 두 마리 <span class="ts">180 · 21:53</span></h3>
+  <p>어린이날 마트 행사에서 아이가 금붕어 두 마리를 사 왔습니다. 그냥은 키울 수 없습니다. 어항에 모래를 깔고, 돌을 넣고, 수초를 심고, 물레방아를 넣고, 산소 공급기를 답니다. 살 수 있는 환경을 먼저 다 갖춘 다음에 금붕어를 넣어 줍니다.</p>
+  <p>넣어 주면서 한마디 한다면 무엇이라고 할까요? "싸우면 죽는다"부터 말할까요? 아닙니다. <b>"잘 살아라. 아프지 마. 바위 뒤에서 숨바꼭질도 하고, 새끼도 낳고, 재미있게 살아라."</b></p>
+
+  <h3>창세기 2장의 순서 <span class="ts">180 · 23:37</span></h3>
+  <div class="verse">
+    여호와 하나님이 그 사람을 이끌어 에덴 동산에 두어 그것을 <b>경작하며 지키게</b> 하시고, 여호와 하나님이 그 사람에게 명하여 이르시되 동산 각종 나무의 열매는 <b>네가 임의로 먹되</b>, 선악을 알게 하는 나무의 열매는 먹지 말라 네가 먹는 날에는 반드시 죽으리라 하시니라
+    <span class="ref">창세기 2:15~17</span>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 900 270" role="img" aria-labelledby="f3t">
+      <title id="f3t">창세기 2장 15~17절의 순서 — 축복의 명령이 먼저, 금지 명령이 나중</title>
+      <rect width="900" height="270" fill="var(--surface)"/>
+      <defs><marker id="a3" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"/></marker></defs>
+      <g text-anchor="middle">
+        <rect x="30" y="50" width="250" height="120" rx="14" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="155" y="80" font-size="13" font-weight="800" fill="var(--accent)">15절</text>
+        <text x="155" y="110" font-size="18" font-weight="700" fill="var(--ink)">경작하며 지키라</text>
+        <text x="155" y="138" font-size="12.5" fill="var(--ink-soft)">= 1:28 "생육하고 번성하라,</text>
+        <text x="155" y="156" font-size="12.5" fill="var(--ink-soft)">땅을 정복하라, 다스리라"</text>
+
+        <rect x="325" y="50" width="250" height="120" rx="14" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="450" y="80" font-size="13" font-weight="800" fill="var(--accent)">16절</text>
+        <text x="450" y="110" font-size="18" font-weight="700" fill="var(--ink)">각종 열매를 마음껏 먹으라</text>
+        <text x="450" y="138" font-size="12.5" fill="var(--ink-soft)">동산의 모든 것이</text>
+        <text x="450" y="156" font-size="12.5" fill="var(--ink-soft)">네 것이다</text>
+
+        <rect x="620" y="50" width="250" height="120" rx="14" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2"/>
+        <text x="745" y="80" font-size="13" font-weight="800" fill="var(--warn)">17절</text>
+        <text x="745" y="110" font-size="18" font-weight="700" fill="var(--ink)">이 하나만 먹지 말라</text>
+        <text x="745" y="138" font-size="12.5" fill="var(--ink-soft)">먹는 날에는</text>
+        <text x="745" y="156" font-size="12.5" fill="var(--ink-soft)">반드시 죽으리라</text>
+      </g>
+      <g stroke="var(--ink-soft)" stroke-width="2.5" fill="none" marker-end="url(#a3)">
+        <path d="M282,110 L321,110"/><path d="M577,110 L616,110"/>
+      </g>
+      <path d="M30,200 L575,200" stroke="var(--accent)" stroke-width="4"/>
+      <path d="M620,200 L870,200" stroke="var(--warn)" stroke-width="4"/>
+      <text x="302" y="230" text-anchor="middle" font-size="14" font-weight="700" fill="var(--accent)">근본적인 명령 = 축복</text>
+      <text x="745" y="230" text-anchor="middle" font-size="14" font-weight="700" fill="var(--warn)">선악과 명령</text>
+    </svg>
+    <figcaption>그림 3. 하나님은 "먹지 말라"보다 "잘 살아라"를 먼저 말씀하셨습니다.</figcaption>
+  </figure>
+
+  <p>15절의 "경작하라"는 다른 말로 하면 창세기 1장 28절의 명령입니다. <span class="ts">180 · 24:33</span></p>
+  <div class="verse">
+    하나님이 그들에게 복을 주시며 하나님이 그들에게 이르시되 생육하고 번성하여 땅에 충만하라, 땅을 정복하라, 바다의 물고기와 하늘의 새와 땅에 움직이는 모든 생물을 다스리라 하시니라
+    <span class="ref">창세기 1:28</span>
+  </div>
+  <p>우리가 금붕어에게 "잘 살아라"라고 말하듯이, 하나님도 먼저 <b>복을 주시는 명령</b>을 하셨습니다. 금지 명령은 그 뒤에 나옵니다.</p>
+
+  <div class="note">
+    <strong>선악과를 향한 우리의 오해</strong>
+    "먹으면 죽는다"는 저주가 먼저 있었던 것이 아닙니다. <b>축복이 먼저</b> 있었습니다. 선악과 명령을 저주로만 읽는 것은 우리의 오해입니다. <span class="ts">180 · 25:55</span>
+  </div>
+</section>
+
+<!-- ══════════ 면류관 ══════════ -->
+<section id="s5">
+  <h2 class="sec"><span class="num">5</span>선악과 ③ 영광의 면류관 — 자유의지</h2>
+  <p class="sec-lead">세 번째 뜻은 "선악과는 영광의 면류관이다"입니다. 면류관은 왕이 쓰는 관입니다. 선악과가 어떻게 영광이 될까요?</p>
+
+  <h3>타율순종과 자율순종 <span class="ts">180 · 26:50</span></h3>
+  <p>사람을 뺀 나머지 피조물(하나님이 지으신 것)을 보세요. 이들은 <b>타율순종</b>을 합니다. 하나님이 넣어 두신 설계(DNA 프로그램)대로 그냥 돌아갑니다. "엔터"만 누르면 돌아가는 세상입니다.</p>
+  <ul>
+    <li><b>태양</b> — 올여름 너무 더웠습니다. 태양이 "오늘 너무 열심히 일했으니 내일은 30분만 더 자야지" 할 수 있을까요? 안 됩니다.</li>
+    <li><b>노란 장미</b> — 옆의 빨간 장미를 보며 "나도 프러포즈 꽃이 되고 싶다"고 아무리 애써도 스스로 빨간 장미가 될 수 없습니다. 노란 장미로 심기면 평생 노란 장미입니다.</li>
+  </ul>
+
+  <figure>
+    <svg viewBox="0 0 900 310" role="img" aria-labelledby="f4t">
+      <title id="f4t">타율순종하는 피조물과 자율순종하는 사람의 비교</title>
+      <rect width="900" height="310" fill="var(--surface)"/>
+      <g text-anchor="middle">
+        <rect x="40" y="40" width="380" height="210" rx="16" fill="var(--surface-2)" stroke="var(--line)" stroke-width="2"/>
+        <text x="230" y="76" font-size="13" font-weight="800" fill="var(--ink-soft)" letter-spacing="2">사람을 뺀 모든 피조물</text>
+        <text x="230" y="110" font-size="22" font-weight="700" fill="var(--ink)">타율순종</text>
+        <text x="230" y="142" font-size="14" fill="var(--ink-soft)">설계된 대로만 존재한다</text>
+        <text x="230" y="168" font-size="14" fill="var(--ink-soft)">태양 · 노란 장미 · 동물</text>
+        <text x="230" y="206" font-size="13.5" fill="var(--ink)">선택할 수 없다 → 의지가 필요 없다</text>
+
+        <rect x="480" y="40" width="380" height="210" rx="16" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="670" y="76" font-size="13" font-weight="800" fill="var(--accent)" letter-spacing="2">하나님의 형상인 사람</text>
+        <text x="670" y="110" font-size="22" font-weight="700" fill="var(--ink)">자율순종</text>
+        <text x="670" y="142" font-size="14" fill="var(--ink-soft)">스스로 선택해서 순종한다</text>
+        <text x="670" y="168" font-size="14" fill="var(--ink-soft)">먹을 수도, 안 먹을 수도 있다</text>
+        <text x="670" y="206" font-size="13.5" fill="var(--ink)">선악과 앞에서 <tspan font-weight="700" fill="var(--accent)">자유의지</tspan>가 드러난다</text>
+      </g>
+      <text x="450" y="286" text-anchor="middle" font-size="13.5" fill="var(--ink-soft)">선악과가 없었다면 사람도 왼쪽처럼, 짐승처럼 살았을 것입니다</text>
+    </svg>
+    <figcaption>그림 4. 하나님의 형상이 가진 두 번째 특징은 스스로 순종하는 자유의지입니다.</figcaption>
+  </figure>
+
+  <h3>사람만은 다르다 <span class="ts">180 · 28:24</span></h3>
+  <p>하나님의 형상과 모양으로 지음받은 사람만은 다릅니다. 지난 시간에 본 첫 번째 특징은 <b>"혼자 있으면 안 된다"</b>였습니다. 하와가 생겨 "우리"가 될 때 하나님의 형상이 됩니다.</p>
+  <p>오늘 보는 두 번째 특징은 <b>자율순종</b>입니다. 사람은 정해진 대로 움직이는 존재가 아니라, 스스로 선택해서 순종하는 존재여야 합니다.</p>
+
+  <h3>방학 때 늦잠과 의지 <span class="ts">180 · 29:44</span></h3>
+  <p>젊을 때 방학이면 점심때 허리가 아파서 더 못 잘 때까지 잡니다. 이럴 때 의지가 필요할까요? 필요 없습니다. 무엇이든 마음대로니까요.</p>
+  <p>에덴 동산도 모든 것이 가능한 곳이었습니다. 그런데 <b>"먹지 마"</b>가 생기는 순간, 아담은 <b>의지를 써야</b> 하는 존재가 됩니다. <span class="ts">180 · 30:44</span></p>
+
+  <h3>왜 손 닿는 곳에 두셨나 <span class="ts">180 · 31:07</span></h3>
+  <p>정말 먹으면 안 되는 것이라면, 2만 볼트 전기 울타리를 치거나 밀림 깊은 곳에 숨기거나 300m 위에 올려 가시덤불로 막았어야 합니다. 하나님은 그렇게 하지 않으셨습니다. <b>동산 한가운데, 손을 뻗으면 언제나 먹을 수 있는 곳</b>에 두셨습니다.</p>
+  <p>사람을 자유의지를 가진 인격적인 존재로 만드셔야 했기 때문입니다. 먹을 수도 있고 먹지 않을 수도 있는 권한을 아담에게 주신 것입니다. 배가 고파서 먹을 수밖에 없는 상황도 아니었습니다. 동산의 다른 열매를 마음껏 먹을 수 있었으니까요.</p>
+
+  <h3>"너 이제 스스로 할 수 있어" <span class="ts">180 · 32:13</span></h3>
+  <p>아이를 키우다 보면, 초등학교 고학년쯤 되었을 때 처음으로 "라면 스스로 끓여 먹어"라고 맡깁니다. 그 전에는 위험해서 못 맡깁니다. 아이에게 그 말은 무엇일까요? <b>영광</b>입니다. "나도 이제 스스로 끓여 먹을 수 있다!"</p>
+  <p>선악과가 저주가 아니라 영광의 면류관인 이유가 여기 있습니다. 하나님은 "너는 이제 스스로 할 수 있어. 안 먹을 수도 있고 먹을 수도 있어. 너는 그런 자유의지를 가진, <b>나의 형상과 모양을 닮은 존재</b>야"라고 말씀하신 것입니다.</p>
+
+  <div class="note gold">
+    <strong>사람 사이 관계가 어려운 이유도 여기 있다</strong>
+    목사님 경험으로는 직장 생활의 어려움은 51%가 일, 49%가 사람 관계입니다. <span class="ts">180 · 34:43</span> 하나님은 왜 혼자 일해도 될 나를 사람들 사이에 넣으셨을까요? 사람을 사랑하고 관계를 맺는 일은 정해진 대로 되지 않습니다. 스스로 선택해야 합니다. 그 어려운 선택 속에서 하나님의 형상과 모양이 드러납니다.
+  </div>
+</section>
+
+<!-- ══════════ 세상은 선악과를 싫어한다 ══════════ -->
+<section id="s6">
+  <h2 class="sec"><span class="num">6</span>세상은 선악과를 싫어한다</h2>
+  <p class="sec-lead">선악과는 "하나님이 왕이시다"를 인정하게 하는 장치입니다. 그래서 스스로 왕이 되고 싶은 세상은 이런 장치를 싫어합니다.</p>
+
+  <h3>"어른 되면 마음대로 하잖아요" <span class="ts">180 · 35:49</span></h3>
+  <p>아이들은 "어른 되면 좋겠다", "목사님은 좋겠다"고 말합니다. 왜냐고 물으면 "마음대로 하잖아요"라고 답합니다. 휴대폰 하지 말라면서 엄마 아빠는 다 하는 것 같으니까요. 그런데 어른이 되어 보니 마음대로 다 하던가요? 아닙니다.</p>
+
+  <h3>세상이 좋아하는 신 <span class="ts">180 · 36:31</span></h3>
+  <p>세상이 말하는 좋은 신은 이런 신입니다. <b>"나에게 요구하지 마십시오. 그러나 내가 요구하는 것은 응답해 주십시오."</b></p>
+  <p>평소에는 아무 상관없이 살다가, 고3이 되면 갓바위에 가서 10만 원 봉투를 넣고 "좋은 대학 보내 주세요" 하고 빕니다. 매주 교회에 가는 일은 "종교적 압박"이라고 느낍니다. 아플 때만 찾아가면 되는 신이 얼마나 간편하냐는 것입니다.</p>
+
+  <div class="note warn">
+    <strong>기복주의 우상</strong>
+    이런 신앙을 <b>기복주의</b>(복을 비는 것을 신앙의 중심에 두는 생각)라고 부릅니다. 겉으로는 내가 신을 섬기는 것 같지만, 실제로는 <b>신이 나를 섬기는</b> 것입니다. 내 성공, 내 건강, 내 대학을 위해 신이 존재합니다. 그러면 진짜 우상은 신이 아니라 <b>나</b>입니다. <span class="ts">180 · 38:13</span>
+  </div>
+
+  <h3>기독교는 종교가 아니다 <span class="ts">180 · 38:43</span></h3>
+  <p>목사님은 "종교"를 이렇게 정의합니다. <b>사람에게 필요한 것을 신의 힘을 빌려 얻어 내는 것.</b> 선악과 없는 인류가 만들어 낸 것이 바로 이런 종교입니다.</p>
+  <p>기독교는 방향이 반대입니다. 하나님이 왕이시고 주인이시며, 사람은 하나님의 뜻과 주권을 따라 삽니다. 그래서 목사님은 기독교는 종교가 아니라 <b>생명</b>이라고 말합니다. 그리고 이것이 세상이 가장 싫어하는 말입니다.</p>
+
+  <h3>우상 종교의 두 모습 <span class="ts">180 · 39:19</span></h3>
+  <div class="grid">
+    <div class="card">
+      <h4 style="color:var(--warn)">① 주술 신앙</h4>
+      <p style="margin:0">신을 내 뜻대로 움직이려고 <b>주문</b>을 외우는 것입니다. "남묘호렌게쿄"를 계속 외우면 병이 낫는다고 믿는 식입니다.</p>
+    </div>
+    <div class="card">
+      <h4 style="color:var(--warn)">② 부적</h4>
+      <p style="margin:0">복을 불러들이고 나쁜 것을 막으려고 붙이는 것입니다. 서울의 최첨단 빌딩 정문 위에도 부적이나 북어가 붙어 있는 곳이 많습니다.</p>
+    </div>
+  </div>
+  <p>첨단 산업의 상징인 제철소도, 데이터로 경기하는 프로야구도 시즌을 시작할 때 돼지머리를 놓고 고사를 지냅니다. 문명이 아무리 발달해도 이 마음은 그대로입니다. <span class="ts">180 · 40:44</span></p>
+
+  <div class="note">
+    <strong>싸움의 본질 — 결국 선악과</strong>
+    세상의 모든 싸움은 결국 선악과 문제입니다. 하나님의 왕권을 인정하느냐, 인정하지 않느냐. "하나님이 왕이시다"에 맞서 우상 종교가 외치는 말은 <b>"내가 왕이다"</b>입니다. <span class="ts">180 · 41:17</span>
+  </div>
+</section>
+
+<!-- ══════════ 여섯 가지 성격 ══════════ -->
+<section id="s7">
+  <h2 class="sec"><span class="num">7</span>선악과 명령의 여섯 가지 성격</h2>
+  <p class="sec-lead">교재 5번 항목입니다. 목사님은 선악과 명령이 어떤 명령인지 여섯 가지로 정리합니다. <span class="ts">180 · 41:37</span></p>
+
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th style="width:6%">#</th><th style="width:34%">선악과 명령은</th><th>설명</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td><b>지킬 수 없는 명령이 아니다</b></td><td>"왕권을 인정한다면 울산바위를 들어 올려라" 같은 불가능한 명령이 아닙니다. 그냥 두면 됩니다. 안 먹으면 됩니다.</td></tr>
+      <tr><td>2</td><td><b>한 번 지키면 끝나는 명령이 아니다</b></td><td>오늘 안 먹었다고 끝나지 않습니다. 오늘도, 내일도 계속 안 먹어야 합니다. 수행이나 성숙으로 졸업하는 명령이 아닙니다.</td></tr>
+      <tr><td>3</td><td><b>독이 든 열매가 아니다</b></td><td>백설공주의 독사과처럼 이상한 물질이 든 열매가 아닙니다. 독이 있었다면 아담과 하와는 먹자마자 몸이 죽었어야 하는데, 죽지 않았습니다.</td></tr>
+      <tr><td>4</td><td><b>고상한 주제가 아니다</b></td><td>조금 유치해 보이지만 <b>먹는 문제</b>입니다. 그런데 그 먹는 문제에 생명이 걸려 있습니다.</td></tr>
+      <tr><td>5</td><td><b>늘 기억해야 하는 명령이다</b></td><td>동산 한가운데, 어디서나 보이는 곳에 있습니다. 볼 때마다 "내가 진짜 주인은 아니지. 하나님이 만들어 나에게 주셨지"를 떠올리게 하는 나무입니다.</td></tr>
+      <tr><td>6</td><td><b>먹는 것에 생명이 걸려 있다</b></td><td>사람은 먹어서 생명을 이어 갑니다. 무엇을 먹느냐가 건강을 결정합니다. 영원한 생명도 "무엇을 먹느냐"의 문제로 이어집니다(아래 참고).</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note warn">
+    <strong>3번과 관련된 이단 교리 — 피가름</strong>
+    선악과 열매 안에 무언가(독)가 있었다고 주장하는 이단이 있습니다. 목사님은 통일교와 JMS를 예로 듭니다. 이들은 "피가 더러워졌으니 피를 갈아야 한다"는 <b>피가름 교리</b>를 가르칩니다. 그러나 열매에 물질적인 문제가 있었다면 아담과 하와의 몸이 바로 죽었어야 합니다. <span class="ts">180 · 43:08</span>
+  </div>
+
+  <h3>먹는 문제에 생명이 걸려 있다 <span class="ts">180 · 45:09</span></h3>
+  <p>사람만큼 에너지를 많이 쓰는 존재는 없습니다. 도축장에 가면 돼지가 한 번에 100마리씩 실려 들어갑니다. 사람은 다른 생명의 희생으로 살아가는 존재입니다. 먹는 것에 생명이 걸려 있습니다.</p>
+  <p>예수님도 마찬가지입니다. <span class="ts">180 · 46:20</span></p>
+  <ul>
+    <li><b>첫 번째 시험</b> — 40일 금식 뒤 사탄의 첫 시험은 "돌을 떡으로 만들라", 곧 <b>먹는 문제</b>였습니다. 예수님은 <b>둘째 아담, 마지막 아담</b>이십니다.</li>
+    <li><b>성찬</b> — "내 살과 피를 먹고 마시지 않는 자는 영생할 수 없다." 예수님의 살과 피를 먹고 마셔야 삽니다.</li>
+  </ul>
+
+  <h3>예수님은 생명나무 <span class="ts">180 · 47:32</span></h3>
+  <p>에덴 한가운데에는 선악과 옆에 <b>생명나무</b>가 있었습니다. 선악과를 먹기 전에는 생명나무를 먹을 수 있었습니다. 먹은 뒤에는 생명나무를 먹지 못하게 막으셨습니다.</p>
+  <p>왜일까요? 선악과를 먹는 순간 인류 안에 <b>죽음</b>이 들어왔습니다. 죄 있는 상태로 영원히 사는 것은 복이 아니라 <b>저주</b>입니다. 그래서 막으신 것입니다. 목사님은 그 생명나무가 예수님을 보여 준다고 설명합니다.</p>
+</section>
+
+<!-- ══════════ 복음 ══════════ -->
+<section id="s8">
+  <h2 class="sec"><span class="num">8</span>선악과 안에 이미 들어 있던 복음</h2>
+  <p class="sec-lead">선악과는 저주로 주신 것이 아니라 생명으로, 영광으로, 은혜로 주신 것입니다. 그 뒤에는 이미 큰 대가가 준비되어 있었습니다.</p>
+
+  <h3>창세 전의 구원 계획 <span class="ts">180 · 48:34</span></h3>
+  <p>하나님은 세상을 만드시기 전에 이미 <b>구원 계획</b>을 세우셨습니다. 성부·성자·성령 삼위 하나님이 함께 정하신 약속입니다.</p>
+  <p>선악을 알게 하는 나무를 동산에 두는 순간, 사람이 그것을 먹을 가능성이 생깁니다. 먹으면 누군가의 생명이 대신 치러지지 않고는 다시 살 수 없습니다. 바로 <b>성자 예수님의 생명</b>입니다.</p>
+
+  <div class="note gold">
+    <strong>자유의지의 값</strong>
+    다르게 말하면, 하나님은 우리에게 자유의지를 주시려고 <b>예수님의 생명을 미리 담보로</b> 내놓으셨습니다. 그만큼 사람은 위대한 존재로, 하나님의 형상과 모양을 담은 인격적 존재로, 사랑하는 존재로 지어졌습니다. <span class="ts">180 · 49:17</span>
+  </div>
+
+  <h3>사람 하나 사랑하는 일의 무게 <span class="ts">180 · 49:50</span></h3>
+  <p>그래서 사람 하나를 사랑하는 일은 하나님 보시기에 매우 값진 일입니다. 목사님은 다음 주 교회에서 다룰 야고보서의 <b>차별</b> 문제로 이어 갑니다.</p>
+  <ul>
+    <li>첫 아담은 사랑의 관계에 실패했습니다. 둘째 아담이신 예수님은 <b>죽기까지</b> 사랑하셔서 "이웃을 내 몸같이 사랑하라"를 이루셨습니다.</li>
+    <li>남자와 여자, 가난한 사람과 부자 사이에는 <b>차이</b>가 있습니다. 그렇다고 교회 안에서 <b>차별</b>하면 안 됩니다.</li>
+    <li>그런데 "차별해야 교회가 빨리 크고 힘이 생긴다"는 생각이 이 시대 교회의 풍토가 되었습니다.</li>
+  </ul>
+  <p>여기까지 다루고 쉬는 시간을 가집니다. <span class="ts">180 · 51:23</span></p>
+</section>
+
+<!-- ══════════ 관계 단절 ══════════ -->
+<section id="s9">
+  <h2 class="sec"><span class="num">9</span>먹은 뒤 — 네 가지 관계가 끊어지다</h2>
+  <p class="sec-lead">녹음 181은 창세기 3장으로 들어갑니다. "먹는 날에는 반드시 죽으리라"는 말씀은 실제로 어떻게 이루어졌을까요?</p>
+
+  <h3>"정녕 죽으리라"의 뜻 <span class="ts">181 · 00:24</span></h3>
+  <p>선악과를 먹은 아담과 하와는 그 자리에서 몸이 죽지 않았습니다. 대신 <b>하나님의 낯을 피해 숨었습니다</b>. 사람의 본질은 하나님의 형상이기에 사람 안에는 영혼이 있습니다. 그 영혼이 더 이상 하나님을 만날 수 없는 상태가 된 것입니다.</p>
+  <div class="verse">
+    이르되 내가 동산에서 하나님의 소리를 듣고 내가 벗었으므로 두려워하여 숨었나이다
+    <span class="ref">창세기 3:10</span>
+  </div>
+  <p>7절을 보면 "그들의 눈이 밝아져 자기들이 벗은 줄을 알고 무화과나무 잎을 엮어 치마로 삼았더라"고 합니다. 눈이 밝아져서 본 것은 <b>자신의 수치</b>였습니다. 여기서 "두려워하다"는 <b>죽음의 공포</b>입니다. 죄 있는 상태로는 하나님께 나아가면 죽을 것 같은 두려움이 찾아온 것입니다. <span class="ts">181 · 01:57</span></p>
+
+  <figure>
+    <svg viewBox="0 0 900 400" role="img" aria-labelledby="f5t">
+      <title id="f5t">선악과 이후 끊어진 네 가지 관계 — 하나님, 이웃, 피조세계, 나 자신</title>
+      <rect width="900" height="400" fill="var(--surface)"/>
+      <g text-anchor="middle">
+        <rect x="330" y="26" width="240" height="78" rx="12" fill="var(--blue-soft)" stroke="var(--blue)" stroke-width="2"/>
+        <text x="450" y="56" font-size="17" font-weight="700" fill="var(--ink)">① 하나님과의 관계</text>
+        <text x="450" y="82" font-size="13" fill="var(--ink-soft)">낯을 피해 숨다 (3:8~10)</text>
+
+        <rect x="40" y="160" width="240" height="78" rx="12" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2"/>
+        <text x="160" y="190" font-size="17" font-weight="700" fill="var(--ink)">② 이웃과의 관계</text>
+        <text x="160" y="216" font-size="13" fill="var(--ink-soft)">"하나님이 주신 그 여자가" (3:12)</text>
+
+        <rect x="620" y="160" width="240" height="78" rx="12" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2"/>
+        <text x="740" y="190" font-size="17" font-weight="700" fill="var(--ink)">③ 피조세계와의 관계</text>
+        <text x="740" y="216" font-size="13" fill="var(--ink-soft)">해산의 고통 · 땅의 저주 (3:16~17)</text>
+
+        <rect x="330" y="290" width="240" height="78" rx="12" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2"/>
+        <text x="450" y="320" font-size="17" font-weight="700" fill="var(--ink)">④ 나 자신과의 관계</text>
+        <text x="450" y="346" font-size="13" fill="var(--ink-soft)">내가 누구인지 모르게 되다</text>
+      </g>
+      <g stroke="var(--ink-soft)" stroke-width="2" fill="none" stroke-dasharray="7 6">
+        <path d="M330,90 L250,158"/><path d="M570,90 L650,158"/><path d="M450,106 L450,288"/>
+      </g>
+      <g font-size="22" font-weight="800" fill="var(--warn)" text-anchor="middle">
+        <text x="288" y="132">✕</text><text x="612" y="132">✕</text><text x="472" y="204">✕</text>
+      </g>
+      <text x="450" y="392" text-anchor="middle" font-size="13" fill="var(--ink-soft)">맨 위가 끊어지자 나머지 셋이 차례로 끊어집니다</text>
+    </svg>
+    <figcaption>그림 5. 하나님과의 관계가 끊어진 결과로 사람·세상·나 자신과의 관계도 끊어졌습니다.</figcaption>
+  </figure>
+
+  <h3>② "당신이 주신 저 여자 때문에" <span class="ts">181 · 02:36</span></h3>
+  <p>하나님이 "왜 먹었느냐"고 물으시자 아담은 이렇게 답합니다. "하나님이 주셔서 나와 함께 있게 하신 여자 그가 그 나무 열매를 내게 주므로 내가 먹었나이다"(3:12).</p>
+  <p>창세기 2장 23절에서 아담은 하와를 "내 뼈 중의 뼈요 살 중의 살"이라고 불렀습니다. 그런데 이제는 "저 여자"가 됩니다. 아담은 하와를 탓하고, 결국 하나님까지 탓합니다. "당신이 주신 저 여자 때문에 먹었습니다."</p>
+  <div class="note blue">
+    <strong>왜 예배는 말씀을 전하는 시간인가</strong>
+    선악과 명령을 먼저 들은 사람은 아담입니다. 아담이 하와에게 제대로 전하고 가르쳤어야 했습니다. 하나님의 계시(하나님이 알려 주신 뜻)는 이렇게 <b>전달</b>로 이어집니다. 그래서 기독교 예배의 기본은 절하는 의식이 아니라, 말씀이 전해지고 그 말씀이 삶으로 나타나게 하는 것입니다. 토요일 아침마다 이 공부를 하는 이유도 같습니다. <span class="ts">181 · 03:30</span>
+  </div>
+
+  <h3>③ 피조세계와의 관계 <span class="ts">181 · 04:47</span></h3>
+  <ul>
+    <li><b>16절</b> — 여자는 생명을 낳으려고 큰 수고를 해야 합니다. 출산은 자기 죽음을 지나 또 다른 생명이 오는 일입니다.</li>
+    <li><b>17절</b> — 땅이 저주를 받습니다. 히브리어로 사람은 <b>아담</b>, 땅은 <b>아다마</b>입니다. 사람과 땅은 이름부터 이어져 있습니다.</li>
+  </ul>
+
+  <h3>④ 나 자신과의 관계 <span class="ts">181 · 05:34</span></h3>
+  <p>마지막으로, 결정적으로 <b>나와 나 사이</b>가 깨집니다. 내가 누구인지 잘 모르게 됩니다. 하나님이 나를 어떻게 보시는지는 자연스럽게 떠오르지 않습니다. 대신 나에 대한 <b>부정적인 생각</b>이 훨씬 잘 떠오릅니다.</p>
+  <p>그리고 19절에서 하나님은 말씀하십니다. "너는 흙이니 흙으로 돌아갈 것이니라."</p>
+</section>
+
+<!-- ══════════ 원시복음 · 가죽옷 ══════════ -->
+<section id="s10">
+  <h2 class="sec"><span class="num">10</span>절망 속의 두 소망 — 원시복음과 가죽옷</h2>
+  <p class="sec-lead">19절까지는 절망 위에 절망이 쌓입니다. 그런데 20절과 21절에서 소망이 나옵니다.</p>
+
+  <div class="verse">
+    아담이 그의 아내의 이름을 하와라 불렀으니 그는 모든 산 자의 어머니가 됨이더라. 여호와 하나님이 아담과 그의 아내를 위하여 가죽옷을 지어 입히시니라
+    <span class="ref">창세기 3:20~21</span>
+  </div>
+
+  <h3>소망 ① 모든 산 자의 어머니 — 원시복음 <span class="ts">181 · 06:45</span></h3>
+  <p>"죽는다"고 하셨는데, 하와는 <b>모든 산 자의 어머니</b>가 된다고 합니다. 이 말은 3장 15절과 이어집니다.</p>
+  <div class="verse">
+    내가 너로 여자와 원수가 되게 하고 너의 후손도 여자의 후손과 원수가 되게 하리니 여자의 후손은 네 머리를 상하게 할 것이요 너는 그의 발꿈치를 상하게 할 것이니라
+    <span class="ref">창세기 3:15</span>
+  </div>
+  <p>이 구절을 <b class="hl">원시복음</b>이라고 부릅니다. "원시"는 미개하다는 뜻이 아니라 <b>복음이 처음 시작된 지점</b>이라는 뜻입니다. "여자의 후손"은 메시아를 미리 보여 줍니다. 남자의 후손이 아니라 여자의 후손이라는 말은 <b>동정녀 탄생</b>, 곧 원죄를 가진 남자의 후손이 아닌 분을 가리킵니다.</p>
+
+  <h3>소망 ② 가죽옷 <span class="ts">181 · 07:56</span></h3>
+  <p>그전까지 아담과 하와는 <b>무화과나무 잎</b>으로 수치를 가렸습니다. 그러나 그것으로는 가려지지 않았습니다. 하나님이 직접 <b>가죽옷</b>을 지어 입히셨습니다.</p>
+  <p>가죽옷을 만들려면 반드시 무엇이 필요할까요? <b>피</b>입니다. 다른 생명의 희생입니다. 에덴 동산에는 이 일이 있기 전까지 <b>죽음이 한 번도 없었습니다</b>. 짐승 한 마리의 죽음으로 그 가죽이 수치를 가리고, 사람은 다시 하나님께 나아갈 수 있게 됩니다.</p>
+
+  <figure>
+    <svg viewBox="0 0 900 380" role="img" aria-labelledby="f6t">
+      <title id="f6t">무화과 잎에서 가죽옷으로, 희생제사에서 십자가로 이어지는 흐름</title>
+      <rect width="900" height="380" fill="var(--surface)"/>
+      <defs><marker id="a6" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"/></marker></defs>
+      <g text-anchor="middle">
+        <rect x="30" y="40" width="190" height="120" rx="12" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2"/>
+        <text x="125" y="72" font-size="12.5" font-weight="800" fill="var(--warn)">3:7 · 사람이 만든 것</text>
+        <text x="125" y="104" font-size="18" font-weight="700" fill="var(--ink)">무화과 잎</text>
+        <text x="125" y="132" font-size="12.5" fill="var(--ink-soft)">수치를 가리지 못함</text>
+
+        <rect x="250" y="40" width="190" height="120" rx="12" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="345" y="72" font-size="12.5" font-weight="800" fill="var(--accent)">3:21 · 하나님이 지으심</text>
+        <text x="345" y="104" font-size="18" font-weight="700" fill="var(--ink)">가죽옷</text>
+        <text x="345" y="132" font-size="12.5" fill="var(--ink-soft)">짐승의 피와 죽음</text>
+
+        <rect x="470" y="40" width="190" height="120" rx="12" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="565" y="72" font-size="12.5" font-weight="800" fill="var(--accent)">구약 전체</text>
+        <text x="565" y="104" font-size="18" font-weight="700" fill="var(--ink)">희생제사</text>
+        <text x="565" y="132" font-size="12.5" fill="var(--ink-soft)">생명은 생명으로</text>
+
+        <rect x="690" y="40" width="180" height="120" rx="12" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/>
+        <text x="780" y="72" font-size="12.5" font-weight="800" fill="var(--gold)">신약</text>
+        <text x="780" y="104" font-size="18" font-weight="700" fill="var(--ink)">십자가</text>
+        <text x="780" y="132" font-size="12.5" fill="var(--ink-soft)">세상 죄를 지고 가는 어린 양</text>
+      </g>
+      <g stroke="var(--ink-soft)" stroke-width="2.5" fill="none" marker-end="url(#a6)">
+        <path d="M222,100 L246,100"/><path d="M442,100 L466,100"/><path d="M662,100 L686,100"/>
+      </g>
+      <g text-anchor="middle">
+        <rect x="70" y="220" width="350" height="120" rx="14" fill="var(--surface-2)" stroke="var(--line)" stroke-width="2"/>
+        <text x="245" y="252" font-size="13" font-weight="800" fill="var(--ink-soft)" letter-spacing="1">첫 아담 · 선악과 나무 아래</text>
+        <text x="245" y="288" font-size="19" font-weight="700" fill="var(--ink)">"하나님은 왕이십니다"</text>
+        <text x="245" y="318" font-size="13" fill="var(--ink-soft)">먹지 않고 그냥 둠으로 인정</text>
+
+        <rect x="480" y="220" width="350" height="120" rx="14" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/>
+        <text x="655" y="252" font-size="13" font-weight="800" fill="var(--gold)" letter-spacing="1">우리 · 십자가 나무 아래</text>
+        <text x="655" y="288" font-size="19" font-weight="700" fill="var(--ink)">"하나님은 사랑의 왕이십니다"</text>
+        <text x="655" y="318" font-size="13" fill="var(--ink-soft)">생명을 다해 사랑하신 왕</text>
+      </g>
+      <path d="M422,280 L476,280" stroke="var(--gold)" stroke-width="2.5" fill="none" marker-end="url(#a6)"/>
+    </svg>
+    <figcaption>그림 6. 가죽옷에서 시작한 희생제사는 십자가를 가리킵니다. 두 나무 아래에서 하는 고백도 서로 연결됩니다.</figcaption>
+  </figure>
+
+  <h3>죽음은 죽음으로만 메울 수 있다 <span class="ts">181 · 09:04</span></h3>
+  <p>선악과를 먹기 전에는 선악과를 그냥 두기만 하면 언제나 하나님께 나아갈 수 있었습니다. 먹은 뒤 죽음이 들어오자, 죽음은 <b>죽음으로만</b> 해결할 수 있게 되었습니다. 생명은 생명으로 바꿀 수밖에 없습니다. 그래서 구약에서 이스라엘 백성은 수많은 짐승의 희생제사를 드렸습니다.</p>
+
+  <div class="note">
+    <strong>목사님이 처음 본 죽음</strong>
+    목사님은 1980년대 중반 시골 초등학생 때, 버스 정류장 공터에서 아이가 버스에 치이는 모습을 눈앞에서 보았습니다. 사흘 동안 밥을 먹지 못했다고 합니다. <span class="ts">181 · 09:25</span> 목회를 하며 장례 현장의 비참함도 자주 봅니다. 그 모든 죽음이 시작된 곳이 하나님의 왕권을 거부한 선악과 사건입니다.
+  </div>
+
+  <h3>선악과와 희생제사는 같은 고백 <span class="ts">181 · 12:27</span></h3>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th style="width:24%"></th><th>먹기 전</th><th>먹은 뒤</th></tr></thead>
+    <tbody>
+      <tr><td>하나님께 나아가는 방법</td><td>선악과를 먹지 않고 그냥 둔다</td><td>다른 생명의 희생제사를 드린다</td></tr>
+      <tr><td>그 행동이 뜻하는 것</td><td colspan="2"><b class="hl">"하나님이 왕이십니다"</b> — 둘 다 같은 고백입니다</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>구약의 수많은 희생제사는 결국 <b>세상 죄를 지고 가는 하나님의 어린 양, 예수 그리스도의 십자가</b>를 가리킵니다. 우리 안의 공포, 수치, 불안, 갈등, 미움, 죄책감에 대한 하나님의 대책, 곧 <b>구원</b>이 이미 창세기 3장에 나타나 있습니다. <span class="ts">181 · 13:36</span></p>
+  <p>22~24절에서 하나님은 그룹들과 두루 도는 불 칼로 생명나무로 가는 길을 지키게 하십니다.</p>
+</section>
+
+<!-- ══════════ 네 가지 거짓말 ══════════ -->
+<section id="s11">
+  <h2 class="sec"><span class="num">11</span>사탄의 네 가지 거짓말</h2>
+  <p class="sec-lead">교재는 가인 계열과 셋 계열로 넘어가기 전에 한 단계를 더 둡니다. "새로운 종교·사상·철학, 곧 세계관이 생겨난다." 그 출발점이 뱀의 말입니다. <span class="ts">181 · 15:34</span></p>
+
+  <div class="verse">
+    뱀이 여자에게 이르되 너희가 <b>결코 죽지 아니하리라</b>. 너희가 그것을 먹는 날에는 너희 <b>눈이 밝아져</b> <b>하나님과 같이 되어</b> <b>선악을 알 줄</b> 하나님이 아심이니라
+    <span class="ref">창세기 3:4~5</span>
+  </div>
+
+  <h3>이미 흐려져 있던 말씀 <span class="ts">181 · 16:35</span></h3>
+  <p>뱀은 사탄을 대표합니다. 성경은 사탄이 어디서 왔는지 많이 말하지 않습니다. 우리가 그 부분까지 알 필요는 없다는 뜻입니다.</p>
+  <p>하와는 이미 하나님의 말씀을 정확히 알지 못했습니다. "먹지도 말고 <b>만지지도 말라</b>, 너희가 <b>죽을까 하노라</b>"(3:3)라고 말합니다. 하나님은 만지지 말라고 하신 적이 없고, "반드시 죽으리라"를 "죽을까"로 흐리게 기억했습니다. 뱀은 바로 이 부분을 이용했습니다.</p>
+
+  <div class="lie">
+    <div class="l"><div class="n">거짓말 ①</div><b>죽지 않는다</b><span>먹어도 바로 죽지 않았으니 맞는 말처럼 들립니다. 그러나 5장 족보에 가면 모두 죽습니다.</span></div>
+    <div class="l"><div class="n">거짓말 ②</div><b>눈이 밝아진다</b><span>밝아진 눈으로 본 것은 하나님의 영광이 아니라 자신의 수치였습니다.</span></div>
+    <div class="l"><div class="n">거짓말 ③</div><b>선악을 알게 된다</b><span>원래 선악은 하나님이 정하십니다. 이제 사람이 스스로 선악을 판단합니다.</span></div>
+    <div class="l"><div class="n">거짓말 ④</div><b>하나님과 같이 된다</b><span>창조주와 피조물의 구별을 없애고, 내가 신의 자리에 앉습니다.</span></div>
+  </div>
+
+  <p>이 네 가지 거짓말은 하나님의 왕권을 거부하는 <b>새로운 세계관</b>을 만들어 냅니다. 그리고 그 세계관이 이 세상의 큰 종교와 사상이 됩니다. 교재 54쪽에 정리되어 있습니다. <span class="ts">181 · 35:24</span></p>
+</section>
+
+<!-- ══════════ 거짓말이 만든 세상 ══════════ -->
+<section id="s12">
+  <h2 class="sec"><span class="num">12</span>네 거짓말이 만든 세상의 종교와 사상</h2>
+  <p class="sec-lead">목사님은 거짓말 하나하나가 어떤 종교와 사상으로 나타났는지 예를 듭니다. 먼저 표로 훑고, 아래에서 하나씩 봅니다.</p>
+
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th style="width:20%">거짓말</th><th style="width:34%">만들어 낸 생각</th><th>강의에서 든 예</th></tr></thead>
+    <tbody>
+      <tr><td><b>① 죽지 않는다</b></td><td>영생불사(영원히 죽지 않음)를 추구하는 종교</td><td>도교의 단전호흡과 무아지경, 힌두교·불교의 윤회와 열반, 냉동 인간, 장기 이식</td></tr>
+      <tr><td><b>② 눈이 밝아진다</b></td><td>이성주의·합리주의·과학주의</td><td>성경의 기적을 빼려는 비신화화, 칸트의 질문, 오병이어를 "도시락 나눔"으로 푸는 해석, 과학 숭배</td></tr>
+      <tr><td><b>③ 선악을 알게 된다</b></td><td>율법주의·도덕주의·행위 구원</td><td>복음 없이 "선하게 살자", 힌두교의 공덕 쌓기, 바리새파</td></tr>
+      <tr><td><b>④ 하나님과 같이 된다</b></td><td>범신론(모든 것이 신이다)·신인합일</td><td>범아일여, 성즉리, 뉴에이지, 나만 드러내는 찬양</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>① 죽지 않는다 — 영생불사의 종교 <span class="ts">181 · 17:23</span></h3>
+  <p>먹어도 바로 안 죽었으니 거짓말이 맞은 것 같습니다. 그러나 창세기 5장에 가면 "죽었더라"가 반복되는 <b>죽음의 족보</b>가 나옵니다. 결국 죽습니다.</p>
+  <ul>
+    <li><b>도교</b> — 단전에 기를 모아 무아지경(내가 없어지는 상태)에 들어가면 죽지 않는다고 믿습니다. <span class="ts">181 · 18:19</span></li>
+    <li><b>힌두교·불교</b> — 죽으면 다시 태어난다(윤회)고 믿습니다. 덕을 쌓으면 더 좋은 존재로 태어나고, 깨달음을 얻으면 열반에 듭니다. 갠지스강의 장례식이 울지 않는 축제인 이유입니다. <span class="ts">181 · 19:20</span></li>
+    <li><b>현대 과학</b> — 냉동 인간, 장기 이식처럼 과학으로 죽음을 피하려는 시도도 같은 생각에서 나옵니다. <span class="ts">181 · 20:51</span></li>
+  </ul>
+  <p>우리도 다르지 않습니다. 장례식에 다녀오면 "사람은 죽는구나" 하다가, 돌아와 고기 한 그릇 먹으면 다 잊습니다. 안 죽을 것처럼 집을 "풀옵션"으로 꾸미고 삽니다.</p>
+  <div class="note">
+    <strong>장막이 무너지는 순간</strong>
+    바울은 몸을 <b>장막</b>(텐트)에 비유했습니다(고린도후서 5:1). 팽팽하게 친 텐트도 붙잡고 있는 줄을 탁 풀면 바로 무너집니다. 우리 몸을 붙들고 있는 생명의 줄도 그렇게 한순간에 끊어집니다. <span class="ts">181 · 22:44</span>
+  </div>
+
+  <h3>② 눈이 밝아진다 — 이성주의 <span class="ts">181 · 23:21</span></h3>
+  <p>눈이 밝아지면 깨우치고 교양이 생기니 좋은 것 같습니다. 그런데 이것이 <b>내 이성이 이해하는 것만 진리</b>라는 생각으로 갑니다.</p>
+  <ul>
+    <li><b>비신화화</b> — 독일에서 시작된 이성주의 신학은 성경의 초자연적인 내용을 빼야 한다고 했습니다. 이성으로 이해할 수 없고 합리적이지 않다는 이유입니다. <span class="ts">181 · 23:44</span></li>
+    <li><b>신 인식론</b> — 칸트 같은 철학자는 "신이 있다고 치자. 그런데 사람이 인식할 수 있는 존재라면 그게 신이냐"고 묻습니다. <span class="ts">181 · 24:59</span></li>
+    <li><b>오병이어</b> — 자유주의 신학은 "한 아이가 도시락을 내놓자 다른 사람들도 숨겨 둔 도시락을 내놓아 다 같이 먹었다"고 풉니다. <span class="ts">181 · 25:52</span></li>
+  </ul>
+  <p>예수님의 첫 번째 표적은 물을 포도주로 바꾼 일입니다(요한복음 2장). 이 표적은 예수님이 물질 세계를 지으신 <b>창조주</b>이심을 보여 줍니다. 이성으로 다 이해되지 않는다고 아니라고 할 수는 없습니다.</p>
+  <div class="note blue">
+    <strong>성경과 이성의 위치</strong>
+    성경을 읽을 때 이성을 써야 합니다. 진리는 이성을 거쳐 받아들여집니다. 그러나 <b>성경은 우리 이성보다 위에</b> 있어야 합니다. 예수님의 신성과 인성, 삼위일체는 지금 우리가 완전히 이해할 수 없습니다. <span class="ts">181 · 26:42</span> 과학은 중요하지만 <b>숭배의 대상</b>이 될 수는 없습니다.
+  </div>
+
+  <h3>③ 선악을 알게 된다 — 내가 정하는 선악 <span class="ts">181 · 28:34</span></h3>
+  <p>선악은 원래 <b>하나님이 정하십니다</b>. 그런데 사람은 이제 스스로 선악을 나눕니다. 정말 온전히 나눌 수 있다면 세상은 이렇지 않을 것입니다. 한 사람을 두고 국민이 반으로 나뉘어, 한쪽은 좋은 사람이라 하고 다른 쪽은 나쁜 사람이라 합니다. 그런데도 우리는 "내가 지금 나누는 선악은 옳다"는 생각에 빠져 있습니다.</p>
+  <p>"선하게 살아야 한다"는 말은 기독교에서 <b>49%만 맞는 말</b>입니다. <span class="ts">181 · 29:39</span></p>
+  <ul>
+    <li>복음을 받은 사람은 선을 추구하고 싶은 마음이 생깁니다. 이것은 맞습니다.</li>
+    <li>복음 없이 "선하게 살아야지" 하는 마음은 <b>내 양심의 위로</b>에서 나옵니다. 선행을 해도 결국 나를 위한 것입니다.</li>
+    <li>힌두교 사회에서는 가난한 사람이 "당신이 공덕을 쌓을 기회를 내가 주는 것"이라며 오히려 큰소리를 친다고 합니다. 미얀마의 젊은 수도승들이 아침마다 바구니를 들고 다니면, 바쁜 농사철에도 동네 여인들이 밥을 해서 기다립니다. <span class="ts">181 · 30:31</span></li>
+  </ul>
+  <p>이것이 예수님이 가장 싫어하신 바리새파의 <b>율법주의·도덕주의·행위 구원</b>입니다. 예수님은 율법을 없애신 것이 아니라 완성하셨습니다.</p>
+  <div class="note">
+    <strong>하나님의 법 안에 있을 때 자유롭다</strong>
+    목사님이 회사 다닐 때 서류 문제로 경찰서 출두 명령서를 받은 적이 있습니다. 잘못이 없어도 마음이 불편했습니다. 스쿨존에서 과속한 것 같으면 일주일 내내 마음이 쓰입니다. 대한민국 사람은 대한민국 법 안에 있을 때 자유롭습니다. 하나님 나라 백성도 하나님의 법 안에서 자유롭습니다. 야고보서가 말하는 "자유롭게 하는 율법"입니다. <span class="ts">181 · 32:15</span>
+  </div>
+
+  <h3>④ 하나님과 같이 된다 — 모든 것이 신이다 <span class="ts">181 · 33:15</span></h3>
+  <p>"너와 나, 만물과 내가 구별되지 않고 하나가 되는 아름다운 세상." 좋은 말처럼 들립니다. 그러나 다르게 말하면 <b>"우리는 모두 신이다, 구별하지 말자"</b>입니다. 범아일여(우주와 나는 하나), 신인합일(신과 사람이 하나), 성즉리, 뉴에이지 사상이 여기에 속합니다.</p>
+  <p>우리 안에도 이 생각이 있습니다. <span class="ts">181 · 34:10</span></p>
+  <ul>
+    <li><b>찬양</b> — 나의 어떠함만 계속 드러내는 노래는 좋은 찬양이 아닙니다. 늘 위로받고 지지받아야 하는 "나"가 중심이 되기 때문입니다.</li>
+    <li><b>부모</b> — "아빠가 다 해 줄게"라고 계속 말하면 아이의 인생이 어긋날 수 있습니다. 빨리 말해 줘야 합니다. "엄마 아빠는 다 못 해 줘. 엄마 아빠는 하나님이 아니야." 사랑은 하나님을 닮았지만, 다 해 줄 수는 없는 것이 현실입니다.</li>
+  </ul>
+</section>
+
+<!-- ══════════ 가인과 아벨 ══════════ -->
+<section id="s13">
+  <h2 class="sec"><span class="num">13</span>가인과 아벨 — 왜 한쪽 제사만 받으셨나</h2>
+  <p class="sec-lead">이제 창세기 4장입니다. 하나님의 왕권을 인정하는 제사를 두고 형제가 나뉩니다. <span class="ts">181 · 35:49</span></p>
+
+  <h3>"세월이 지난 후에" <span class="ts">181 · 36:20</span></h3>
+  <p>3절은 "세월이 지난 후에"로 시작합니다. 5장을 보면 아담은 900년 넘게 삽니다. 아담과 하와는 계속 자녀를 낳았고, 그 자녀들도 결혼해서 자녀를 낳았을 가능성이 높습니다. 그러니 가인과 아벨 때 세상에 이 두 사람만 있었던 것은 아닙니다.</p>
+
+  <h3>제사를 받으신 기준 <span class="ts">181 · 37:12</span></h3>
+  <div class="verse">
+    가인은 땅의 소산으로 제물을 삼아 여호와께 드렸고 아벨은 자기도 양의 첫 새끼와 그 기름으로 드렸더니 여호와께서 아벨과 그의 제물은 받으셨으나 가인과 그의 제물은 받지 아니하신지라
+    <span class="ref">창세기 4:3~5</span>
+  </div>
+  <p>왜 아벨의 제사만 받으셨을까요? 흔한 답은 "가인이 원래 나쁜 사람이라서"입니다. 나중에 동생을 죽였으니까요. 그런데 그렇게 말하려면 제사 <b>전에</b> 가인이 나빴다는 내용이 나와야 합니다. 본문에는 없습니다.</p>
+  <p>본문은 "아벨<b>과 그의 제물</b>", "가인<b>과 그의 제물</b>"이라고 합니다. 제물과 드리는 사람을 함께 보셨다는 뜻입니다.</p>
+
+  <h3>히브리서의 답 — 믿음 <span class="ts">181 · 38:06</span></h3>
+  <p>히브리서 11장 4절은 "믿음으로 아벨은 가인보다 더 나은 제사를 하나님께 드렸다"고 합니다. 한 사람은 믿음으로, 다른 사람은 믿음 없이 드렸습니다. 그러면 <b>무엇을</b> 믿었을까요?</p>
+  <p>가인과 아벨은 부모에게서 제사를 배웠습니다. 아담과 하와는 3장에서 <b>가죽옷</b>, 곧 피 흘림의 사건을 겪었습니다. 그러니 두 사람이 배운 믿음의 내용은 이렇습니다.</p>
+  <ol>
+    <li>하나님이 왕이시다.</li>
+    <li>희생제사를 드리지 않고는 하나님께 나아갈 수 없다.</li>
+    <li>사람은 희생제사를 통해서만 하나님께 나아가야 하는 존재다.</li>
+  </ol>
+  <p>아벨은 이것을 믿었고, 가인은 믿지 않았습니다. 그 차이가 <b>제물</b>로 드러났습니다.</p>
+
+  <div class="note">
+    <strong>곡식 제사는 왜 안 되었나</strong>
+    훗날 하나님이 이스라엘에게 제사법을 주실 때 먼저 요구하신 것은 <b>피 제사</b>입니다. 곡식 제사(소제)도 있지만 언제나 피 제사와 함께 드리는 <b>딸린 제사</b>로 나옵니다. 부모에게 받은 믿음대로라면 가인도 피 흘림의 제사로 나아갔어야 했습니다. <span class="ts">181 · 39:46</span> 목사님은 여러 민족에게 피 제사의 흔적이 남아 있는 것도, 죄 문제를 해결하려던 인류의 처음 기억이 여기 있기 때문이라고 설명합니다.
+  </div>
+
+  <h3>첫 살인 — 형제 사이에서 <span class="ts">181 · 41:17</span></h3>
+  <p>가인은 동생에게 "들로 나가자"고 합니다. 일부러 밖으로 불러낸 <b>계획된 살인</b>입니다. 하나님의 왕권을 인정하는 제사 때문에, 인류의 첫 살인이 <b>형제 사이</b>에서 일어났습니다.</p>
+  <p>이웃을 내 몸같이 사랑하며 땅을 다스려야 했는데, 사랑 대신 <b>살인</b>이 역사에 들어왔습니다.</p>
+  <div class="grid">
+    <div class="card">
+      <h4>9절</h4>
+      <p style="margin:0">"내가 내 아우를 지키는 자니이까" — 가인은 모른다고 잡아뗍니다.</p>
+    </div>
+    <div class="card">
+      <h4>13절</h4>
+      <p style="margin:0">"내 죄벌이 지기가 너무 무거우니이다" — 동생을 죽여 놓고는 자기 벌이 무겁다고 합니다. <span class="ts">181 · 42:20</span></p>
+    </div>
+  </div>
+  <p>하나님의 왕권을 인정하지 않는 사람은 이런 존재가 됩니다.</p>
+</section>
+
+<!-- ══════════ 가인의 세상 ══════════ -->
+<section id="s14">
+  <h2 class="sec"><span class="num">14</span>가인이 만든 세상 — 성, 문명, 라멕의 노래</h2>
+  <p class="sec-lead">하나님을 떠난 가인은 자기 나라를 만듭니다. 그 나라에서 문명이 나오고, 폭력도 나옵니다.</p>
+
+  <h3>성을 쌓은 가인 — 왕 <span class="ts">181 · 42:44</span></h3>
+  <div class="verse">
+    가인이 여호와 앞을 떠나서 에덴 동쪽 놋 땅에 거주하더니 … 가인이 성을 쌓고 그의 아들의 이름으로 성을 이름하여 에녹이라 하니라
+    <span class="ref">창세기 4:16~17</span>
+  </div>
+  <p>목사님이 묻습니다. 성을 쌓아 자기 안전을 지키고, 그 성에 아들 이름을 붙이는 사람은 평민일까요, 왕일까요? <b>왕</b>입니다. 가인은 한 부족의 왕이 되었습니다. 하나님의 왕권을 거부한 사람이 <b>스스로 왕</b>이 된 것입니다.</p>
+
+  <figure>
+    <svg viewBox="0 0 900 560" role="img" aria-labelledby="f7t">
+      <title id="f7t">아담의 자손 계보 — 가인 계열과 셋 계열</title>
+      <rect width="900" height="560" fill="var(--surface)"/>
+      <g text-anchor="middle">
+        <rect x="370" y="20" width="160" height="44" rx="10" fill="var(--surface-2)" stroke="var(--ink-soft)" stroke-width="2"/>
+        <text x="450" y="48" font-size="16" font-weight="700" fill="var(--ink)">아담 · 하와</text>
+      </g>
+      <g stroke="var(--ink-soft)" stroke-width="2" fill="none">
+        <path d="M450,64 L450,84 M180,84 L740,84 M180,84 L180,104 M450,84 L450,104 M740,84 L740,104"/>
+      </g>
+      <!-- 가인 계열 -->
+      <g text-anchor="middle">
+        <rect x="100" y="104" width="160" height="44" rx="10" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2"/>
+        <text x="180" y="132" font-size="16" font-weight="700" fill="var(--ink)">가인</text>
+        <rect x="100" y="172" width="160" height="44" rx="10" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="1.5"/>
+        <text x="180" y="194" font-size="15" font-weight="700" fill="var(--ink)">에녹</text>
+        <text x="180" y="209" font-size="11.5" fill="var(--ink-soft)">성 이름이 됨 (4:17)</text>
+        <text x="180" y="242" font-size="13" fill="var(--ink-soft)">이랏 → 므후야엘 → 므드사엘</text>
+        <rect x="100" y="258" width="160" height="44" rx="10" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2"/>
+        <text x="180" y="280" font-size="15" font-weight="700" fill="var(--ink)">라멕</text>
+        <text x="180" y="295" font-size="11.5" fill="var(--ink-soft)">아내 둘: 아다 · 씰라</text>
+      </g>
+      <g stroke="var(--warn)" stroke-width="2" fill="none">
+        <path d="M180,148 L180,172 M180,216 L180,228 M180,248 L180,258 M180,302 L180,324 M60,324 L300,324 M60,324 L60,342 M180,324 L180,342 M300,324 L300,342"/>
+      </g>
+      <g text-anchor="middle">
+        <rect x="14" y="342" width="92" height="74" rx="10" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.5"/>
+        <text x="60" y="366" font-size="14" font-weight="700" fill="var(--ink)">야발</text>
+        <text x="60" y="386" font-size="11.5" fill="var(--ink-soft)">장막 · 가축</text>
+        <text x="60" y="404" font-size="11.5" font-weight="700" fill="var(--warn)">목축업</text>
+        <rect x="134" y="342" width="92" height="74" rx="10" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.5"/>
+        <text x="180" y="366" font-size="14" font-weight="700" fill="var(--ink)">유발</text>
+        <text x="180" y="386" font-size="11.5" fill="var(--ink-soft)">수금 · 퉁소</text>
+        <text x="180" y="404" font-size="11.5" font-weight="700" fill="var(--warn)">음악 · 예술</text>
+        <rect x="254" y="342" width="92" height="74" rx="10" fill="var(--surface)" stroke="var(--warn)" stroke-width="1.5"/>
+        <text x="300" y="366" font-size="14" font-weight="700" fill="var(--ink)">두발가인</text>
+        <text x="300" y="386" font-size="11.5" fill="var(--ink-soft)">구리 · 쇠 기구</text>
+        <text x="300" y="404" font-size="11.5" font-weight="700" fill="var(--warn)">산업 · 기술</text>
+        <text x="180" y="452" font-size="15" font-weight="800" fill="var(--warn)">가인 계열</text>
+        <text x="180" y="474" font-size="12.5" fill="var(--ink-soft)">사람이 왕 · 문명과 힘 · 폭력</text>
+      </g>
+      <!-- 아벨 -->
+      <g text-anchor="middle">
+        <rect x="370" y="104" width="160" height="44" rx="10" fill="var(--surface-2)" stroke="var(--ink-soft)" stroke-width="2" stroke-dasharray="5 4"/>
+        <text x="450" y="132" font-size="16" font-weight="700" fill="var(--ink)">아벨</text>
+        <text x="450" y="172" font-size="12.5" fill="var(--ink-soft)">믿음의 제사 → 가인에게 죽임당함</text>
+      </g>
+      <path d="M530,126 Q610,126 650,126" stroke="var(--accent)" stroke-width="2" fill="none" stroke-dasharray="5 4"/>
+      <text x="590" y="116" text-anchor="middle" font-size="11.5" fill="var(--accent)">대신 주신 씨 (4:25)</text>
+      <!-- 셋 계열 -->
+      <g text-anchor="middle">
+        <rect x="660" y="104" width="160" height="44" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="740" y="132" font-size="16" font-weight="700" fill="var(--ink)">셋</text>
+        <rect x="660" y="172" width="160" height="58" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="740" y="196" font-size="15" font-weight="700" fill="var(--ink)">에노스</text>
+        <text x="740" y="216" font-size="11.5" fill="var(--ink-soft)">여호와의 이름을 부름 (4:26)</text>
+        <rect x="660" y="258" width="160" height="58" rx="10" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5" stroke-dasharray="5 4"/>
+        <text x="740" y="282" font-size="14" font-weight="700" fill="var(--ink)">5장 족보</text>
+        <text x="740" y="302" font-size="11.5" fill="var(--ink-soft)">"아담의 계보" → 노아까지</text>
+        <text x="740" y="452" font-size="15" font-weight="800" fill="var(--accent)">셋 계열</text>
+        <text x="740" y="474" font-size="12.5" fill="var(--ink-soft)">하나님이 왕 · 예배 · 사랑의 공동체</text>
+      </g>
+      <g stroke="var(--accent)" stroke-width="2" fill="none">
+        <path d="M740,148 L740,172 M740,230 L740,258"/>
+      </g>
+      <line x1="450" y1="200" x2="450" y2="500" stroke="var(--line)" stroke-width="2" stroke-dasharray="4 6"/>
+      <text x="450" y="530" text-anchor="middle" font-size="13" fill="var(--ink-soft)">두 계열은 앞으로 서로 만나지 않는 평행선으로 흘러갑니다</text>
+    </svg>
+    <figcaption>그림 7. 창세기 4장의 계보. 이랏·므후야엘·므드사엘은 4:18 본문에서 옮겼습니다.</figcaption>
+  </figure>
+
+  <h3>문명을 만든 가인의 후손 <span class="ts">181 · 43:30</span></h3>
+  <p>라멕은 아내를 둘 맞이합니다. 역사에 <b>한 남자 여러 아내</b>(일부다처)가 처음 등장합니다. 라멕의 세 아들은 각자 한 분야의 조상이 됩니다.</p>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th style="width:18%">이름</th><th style="width:20%">어머니</th><th>성경 본문</th><th style="width:22%">오늘로 말하면</th></tr></thead>
+    <tbody>
+      <tr><td><b>야발</b></td><td>아다</td><td>장막에 거주하며 가축을 치는 자의 조상 (4:20)</td><td>목축업</td></tr>
+      <tr><td><b>유발</b></td><td>아다</td><td>수금과 퉁소를 잡는 모든 자의 조상 (4:21)</td><td>음악·예술</td></tr>
+      <tr><td><b>두발가인</b></td><td>씰라</td><td>구리와 쇠로 여러 가지 기구를 만드는 자 (4:22)</td><td>산업·기술</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>이렇게 가인의 후손이 <b>문명</b>을 만들어 갑니다. 가인의 세상입니다.</p>
+
+  <h3>라멕의 노래 — 폭력을 자랑하다 <span class="ts">181 · 44:36</span></h3>
+  <div class="verse">
+    아다와 씰라여 내 목소리를 들으라 라멕의 아내들이여 내 말을 들으라 나의 상처로 말미암아 내가 사람을 죽였고 나의 상함으로 말미암아 소년을 죽였도다. 가인을 위하여는 벌이 칠 배일진대 라멕을 위하여는 벌이 칠십칠 배이리로다
+    <span class="ref">창세기 4:23~24</span>
+  </div>
+  <p>라멕은 아내들 앞에서 자기 노래를 부릅니다. 사람을 죽인 일을 <b>자랑</b>합니다. 자기 힘, 곧 <b>폭력</b>을 자랑하는 것입니다.</p>
+  <p>"가인의 벌이 일곱 배라면 나는 일흔일곱 배다"는 무슨 뜻일까요? "벌 주는 하나님이 어디 있냐, 77배든 뭐든 받아 주마"라는 <b>조롱</b>입니다. "심판이 어디 있냐, 죽어 봐야 알지", "하나님이 어디 있냐, 네 눈에 보이냐"와 같은 말입니다. <span class="ts">181 · 46:51</span></p>
+
+  <div class="note warn">
+    <strong>상처인가, 죄인가</strong>
+    라멕은 "나의 상처 때문에" 사람을 죽였다고 합니다. 목사님은 여기서 오늘 교회의 문제를 지적합니다. 상담학은 사람의 문제를 <b>상처</b>라고 말합니다. 성경은 사람의 문제를 <b>죄</b>라고 말합니다. 교회가 죄를 다루지 않고 상처만 다루면 안 됩니다. 상처가 생기는 근본 이유가 죄이기 때문입니다. 상처가 있다고 사람을 죽이고, 죽이고 나서 자랑하지는 않습니다. <span class="ts">181 · 45:48</span>
+  </div>
+
+  <h3>가인의 세상 정리 <span class="ts">181 · 47:23</span></h3>
+  <p>가인의 세상은 사탄의 네 가지 거짓말에 완전히 노출된 세상입니다. 내가 하는 일은 다 옳고 정의롭다고 생각합니다. 그래서 <b>사랑의 다스림</b> 대신 <b>칼과 힘과 폭력</b>으로 다스리는 새 왕국을 세웁니다. 가인의 후손은 에녹 성을 만들고, 문명을 만들고, 폭력의 공동체를 만들었습니다.</p>
+</section>
+
+<!-- ══════════ 지도 ══════════ -->
+<section id="s15">
+  <h2 class="sec"><span class="num">15</span>무대 — 메소포타미아와 약속의 땅</h2>
+  <p class="sec-lead">강의 중간에 목사님은 지도를 펴고 인류 문명이 시작된 곳을 설명합니다. <span class="ts">181 · 47:59</span></p>
+
+  <figure>
+    <svg viewBox="0 0 900 560" role="img" aria-labelledby="f8t">
+      <title id="f8t">비옥한 초승달 지역과 메소포타미아, 에덴 추정 지역, 약속의 땅 가나안</title>
+      <rect x="0" y="0" width="900" height="560" fill="var(--map-desert)"/>
+      <path d="M336,344 Q356,198 470,136 Q610,70 702,158 Q770,244 748,392" fill="none" stroke="var(--map-land)" stroke-width="86" stroke-linecap="round"/>
+      <path d="M336,344 Q356,198 470,136 Q610,70 702,158 Q770,244 748,392" fill="none" stroke="var(--accent)" stroke-width="3" stroke-dasharray="10 7" opacity=".75"/>
+      <path d="M0,68 L132,60 L262,72 L332,106 L344,192 L306,258 L160,278 L40,264 L0,254 Z" fill="var(--map-sea)" stroke="var(--map-stroke)" stroke-width="1.2"/>
+      <path d="M272,296 L293,300 L306,400 L301,490 L283,486 L277,394 Z" fill="var(--map-sea)"/>
+      <path d="M397,296 L384,300 L377,398 L373,490 L391,486 L393,392 Z" fill="var(--map-sea)"/>
+      <path d="M276,486 L392,486 L418,560 L252,560 Z" fill="var(--map-sea)"/>
+      <path d="M900,356 L822,428 L792,498 L782,560 L900,560 Z" fill="var(--map-sea)"/>
+      <path d="M196,560 L208,480 L220,410 L232,340 L237,282" fill="none" stroke="var(--map-river)" stroke-width="4.5" stroke-linecap="round"/>
+      <path d="M470,78 Q560,180 640,290 Q700,370 788,466" fill="none" stroke="var(--map-river)" stroke-width="4" stroke-linecap="round"/>
+      <path d="M556,70 Q630,170 700,280 Q742,352 806,452" fill="none" stroke="var(--map-river)" stroke-width="3.5" stroke-linecap="round"/>
+      <path d="M382,228 L387,256 L390,296" fill="none" stroke="var(--map-river)" stroke-width="4.5" stroke-linecap="round"/>
+      <!-- 메소포타미아 -->
+      <ellipse cx="690" cy="300" rx="70" ry="120" transform="rotate(-32 690 300)" fill="var(--warn)" opacity=".13" stroke="var(--warn)" stroke-width="2"/>
+      <!-- 에덴 추정 -->
+      <circle cx="745" cy="400" r="40" fill="none" stroke="var(--blue)" stroke-width="2.5" stroke-dasharray="6 5"/>
+      <!-- 가나안 -->
+      <ellipse cx="368" cy="262" rx="34" ry="62" fill="var(--accent)" opacity=".16" stroke="var(--accent)" stroke-width="2"/>
+      <g font-size="14.5" font-style="italic" fill="var(--ink-soft)">
+        <text x="150" y="176">지중해</text>
+        <text x="836" y="516" text-anchor="middle" font-size="12.5">페르시아만</text>
+        <text x="336" y="544" text-anchor="middle" font-size="12.5">홍해</text>
+        <text x="168" y="474" font-size="12.5">나일강</text>
+      </g>
+      <g fill="var(--ink-soft)" opacity=".55"><circle cx="560" cy="128" r="6"/><circle cx="650" cy="120" r="6"/><circle cx="238" cy="318" r="6"/></g>
+      <g fill="var(--accent)"><circle cx="750" cy="438" r="7"/><circle cx="678" cy="330" r="7"/><circle cx="360" cy="282" r="7"/></g>
+      <g paint-order="stroke" stroke="var(--surface)" stroke-width="4.5" stroke-linejoin="round">
+        <text x="574" y="124" font-size="13" fill="var(--ink-soft)">하란</text>
+        <text x="664" y="116" font-size="13" fill="var(--ink-soft)">니느웨</text>
+        <text x="224" y="314" text-anchor="end" font-size="13" fill="var(--ink-soft)">애굽</text>
+        <text x="766" y="452" font-size="14" font-weight="700" fill="var(--ink)">우르</text>
+        <text x="692" y="334" font-size="14" font-weight="700" fill="var(--ink)">바벨론</text>
+        <text x="346" y="290" text-anchor="end" font-size="14" font-weight="700" fill="var(--ink)">예루살렘</text>
+        <text x="610" y="236" font-size="15" font-weight="800" fill="var(--warn)">메소포타미아</text>
+        <text x="610" y="254" font-size="12" fill="var(--ink-soft)">"두 강 사이의 땅"</text>
+        <text x="520" y="290" font-size="12.5" font-style="italic" fill="var(--ink-soft)">유프라테스</text>
+        <text x="716" y="214" font-size="12.5" font-style="italic" fill="var(--ink-soft)">티그리스</text>
+        <text x="800" y="380" font-size="13" font-weight="700" fill="var(--blue)">에덴?</text>
+        <text x="800" y="396" font-size="11.5" fill="var(--ink-soft)">추정만 가능</text>
+        <text x="410" y="318" font-size="14" font-weight="800" fill="var(--accent)">가나안</text>
+        <text x="410" y="335" font-size="11.5" fill="var(--ink-soft)">약속의 땅</text>
+        <text x="410" y="350" font-size="11.5" fill="var(--ink-soft)">기근이 먼저 오는 땅</text>
+        <text x="470" y="108" font-size="13" font-weight="700" fill="var(--accent)">비옥한 초승달</text>
+      </g>
+      <g transform="translate(848,54)" stroke="var(--ink-soft)" fill="var(--ink-soft)">
+        <line x1="0" y1="26" x2="0" y2="-14" stroke-width="2"/><path d="M0,-20 L6,-8 L-6,-8 Z" stroke="none"/>
+        <text x="0" y="42" font-size="13" font-weight="700" text-anchor="middle" stroke="none">N</text>
+      </g>
+      <g transform="translate(24,440)" font-size="12">
+        <rect x="0" y="0" width="200" height="98" rx="8" fill="var(--surface)" stroke="var(--line)"/>
+        <path d="M14,20 L44,20" stroke="var(--accent)" stroke-width="3" stroke-dasharray="8 5"/><text x="54" y="24" fill="var(--ink)">비옥한 초승달</text>
+        <ellipse cx="29" cy="44" rx="15" ry="8" fill="var(--warn)" opacity=".2" stroke="var(--warn)" stroke-width="1.5"/><text x="54" y="48" fill="var(--ink)">문명이 시작된 곳</text>
+        <circle cx="29" cy="68" r="9" fill="none" stroke="var(--blue)" stroke-width="2" stroke-dasharray="4 3"/><text x="54" y="72" fill="var(--ink)">에덴 추정 지역</text>
+        <ellipse cx="29" cy="88" rx="15" ry="7" fill="var(--accent)" opacity=".2" stroke="var(--accent)" stroke-width="1.5"/><text x="54" y="92" fill="var(--ink)">아브라함이 간 땅</text>
+      </g>
+    </svg>
+    <figcaption>그림 8. 문명의 중심은 두 강 사이였고, 하나님은 아브라함을 중심이 아닌 가나안으로 보내셨습니다. 실제 거리·모양과 다릅니다.</figcaption>
+  </figure>
+
+  <h3>두 강 사이에서 시작된 문명</h3>
+  <p>티그리스강과 유프라테스강 사이를 <b>메소포타미아</b>("두 강 사이의 땅")라고 부릅니다. 이 일대에서 지중해 쪽으로 휘어진 기름진 땅을 <b>비옥한 초승달 지역</b>이라고 합니다. 인류의 첫 문명이 이곳에서 일어났습니다.</p>
+  <p>에덴 동산이 어디였는지는 정확히 알 수 없습니다. 교재 지도는 노아 홍수 이후의 지도이기 때문입니다. 다만 홍수 이전의 에덴도 이 근처에 있지 않았을까 <b>추측</b>할 뿐입니다. <span class="ts">181 · 50:37</span></p>
+
+  <h3>하나님은 아브라함을 중심으로 보내지 않으셨다 <span class="ts">181 · 48:12</span></h3>
+  <p>앞으로 하나님은 아브라함을 불러 하나님 나라를 세워 가십니다. 그런데 아브라함을 보내신 곳은 문명의 중심이 아니었습니다. <b>가나안</b>은 이 지역에 가뭄이 들면 가장 먼저 기근이 찾아오는 땅입니다. 실제로 아브라함이 가자 그 땅에 기근이 들었습니다(창 12:10). 약속의 땅에 갔는데 왜 기근일까요?</p>
+  <div class="note gold">
+    <strong>신앙의 기본값은 고난이다</strong>
+    목사님은 신앙생활의 <b>기본값</b>이 고난이라고 말합니다. "세상에서는 너희가 환난을 당하나 담대하라 내가 세상을 이기었노라"(요 16:33). 하나님은 그 고난을 이겨 가도록 가끔 기쁨과 감격을 주십니다. 그런데 우리는 거꾸로, 기쁨이 기본값이고 가끔 힘든 것이라고 생각합니다. <span class="ts">181 · 48:49</span>
+  </div>
+</section>
+
+<!-- ══════════ 셋 계열 ══════════ -->
+<section id="s16">
+  <h2 class="sec"><span class="num">16</span>셋 계열 — 여호와의 이름을 부르다</h2>
+  <p class="sec-lead">가인이 문명을 만들고 있을 때, 하나님은 다른 한 사람을 주십니다. <span class="ts">181 · 50:57</span></p>
+
+  <div class="verse">
+    아담이 다시 자기 아내와 동침하매 그가 아들을 낳아 그의 이름을 셋이라 하였으니 이는 하나님이 내게 가인이 죽인 아벨 대신에 다른 씨를 주셨다 함이며 셋도 아들을 낳고 그의 이름을 에노스라 하였으며 그 때에 사람들이 비로소 <b>여호와의 이름을 불렀더라</b>
+    <span class="ref">창세기 4:25~26</span>
+  </div>
+
+  <h3>제사를 두고 나뉜 두 계열 <span class="ts">181 · 51:45</span></h3>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th style="width:20%"></th><th>가인 계열</th><th>셋 계열 (아벨 대신)</th></tr></thead>
+    <tbody>
+      <tr><td>하나님의 왕권</td><td>인정하지 않는다</td><td>인정한다</td></tr>
+      <tr><td>누가 왕인가</td><td>사람이 스스로 왕 (성을 쌓은 가인)</td><td>하나님이 왕</td></tr>
+      <tr><td>다스리는 방식</td><td>칼과 힘과 폭력</td><td>사랑 — "당신은 나입니다"</td></tr>
+      <tr><td>만들어 낸 것</td><td>성, 문명, 산업, 예술</td><td>예배 — 여호와의 이름을 부름</td></tr>
+      <tr><td>공동체</td><td>폭력과 살인의 세상 나라</td><td>사랑의 공동체, 예배 공동체</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>앞으로 이 두 계열은 서로 맞지 않습니다. 계속 <b>평행선</b>을 이루며 흘러갑니다. <span class="ts">181 · 52:20</span></p>
+
+  <h3>문명과 힘은 세상이 가져갔다 <span class="ts">181 · 52:25</span></h3>
+  <p>신기하게도 문명과 힘은 가인 계열이 가져갔습니다. 우리나라도 비슷합니다. 복음이 들어와 사회가 열리고 좋아졌습니다. 목사님 어릴 때는 교회가 학교보다 먼저 OHP를 썼습니다. 100년이 지난 지금은 학교와 세상의 시설이 훨씬 좋습니다.</p>
+  <p>그러나 하나님 나라는 환경이나 문명으로 승부하지 않습니다. <b class="hl">진리로 승부합니다.</b> <span class="ts">181 · 53:18</span></p>
+
+  <h3>5장 족보는 셋의 족보 <span class="ts">181 · 53:26</span></h3>
+  <p>5장 1절은 "아담의 계보를 적은 책"으로 시작합니다. 3절은 이렇습니다. "아담은 백삼십 세에 자기의 모양 곧 자기의 형상과 같은 아들을 낳아 이름을 셋이라 하였고." 장남 가인의 족보가 아니라 <b>셋의 족보</b>가 이어집니다.</p>
+  <p>4장 15절을 보면 하나님은 가인에게 표를 주어 "그를 만나는 모든 사람에게서 죽임을 면하게" 하셨습니다. 이미 사람이 많았다는 뜻입니다. 역사의 중심은 성을 쌓고 문명을 만든 가인 쪽처럼 보였습니다. 그러나 성경은 <b>여호와의 이름을 부른 셋 쪽</b>을 따라갑니다. <span class="ts">181 · 54:00</span></p>
+</section>
+
+<!-- ══════════ 마무리 ══════════ -->
+<section id="s17">
+  <h2 class="sec"><span class="num">17</span>마무리 — 사랑의 왕 앞에서</h2>
+  <p class="sec-lead">교재 마지막 부분을 함께 읽으며 정리합니다. <span class="ts">181 · 55:32</span></p>
+
+  <h3>하나님이 인정받고 싶으신 것 하나</h3>
+  <p>하나님은 창조주로서 적어도 한 가지는 인정받고 싶으셨습니다. 하나님이 <b>왕</b>이라는 사실입니다. "너는 통치자다. 그러나 창조주가 계시다는 것, 눈에 보이지 않지만 진짜 왕이 있다는 것은 인정해야 한다."</p>
+  <div class="verse">
+    이는 만물이 주에게서 나오고 주로 말미암고 주에게로 돌아감이라
+    <span class="ref">로마서 11:36</span>
+  </div>
+  <p>바울은 로마서의 교리 부분(1~11장)을 이 한 구절로 정리합니다. 목사님은 이것이 <b>가장 합리적인 신인관계</b>(하나님과 사람의 관계)라고 말합니다.</p>
+
+  <h3>공자도 안 것 <span class="ts">181 · 56:39</span></h3>
+  <p>공자는 성경 같은 특별계시 없이도 이 정도는 알았습니다. 하늘이라는 신적 존재가 있고, 사람은 하늘이 아니며, 하늘에 대한 예를 차리고 사는 것이 사람다운 것이라고요. 철학 같은 <b>일반계시</b>로 발견한 것입니다.</p>
+
+  <h3>도덕의 시작은 하나님과의 관계 <span class="ts">181 · 57:13</span></h3>
+  <p>우리는 도덕과 양심을 이야기합니다. 그러나 진정한 도덕은 <b>하나님과 나의 관계</b>에서 시작합니다. 사람은 피조물의 자리에 있어야 합니다. 그 자리를 박차고 나와 신의 자리에 앉아 내 마음대로 살려는 순간, 그 사람은 세상 도덕을 아무리 잘 지켜도 하나님 앞에서 <b>비도덕적</b>입니다.</p>
+  <div class="note">
+    <strong>교재 함께 읽기 — 선악과 없는 신인관계</strong>
+    선악과는 가장 합리적인 신인관계의 출발이며, 참 종교에 꼭 있어야 할 요소입니다. 선악과 없는 신인관계는 참 진리 종교가 아니라는 표시입니다. 불교, 힌두교, 현대 유사 종교와 철학이 말하는 인연, 무아지경, 우주와의 합일은 우주와 사람이 모두 신이라고 말합니다. 하나님과 사람 사이의 <b>위아래 관계</b>를 인정하기 싫어하는 것입니다. <span class="ts">181 · 58:13</span>
+  </div>
+
+  <h3>잘못을 회개하기 전에 <span class="ts">181 · 59:30</span></h3>
+  <p>싸웠나, 거짓말했나, 훔쳤나, 술을 마셨나. 하나님은 이런 잘못을 회개하라고 하시기 <b>전에</b> 먼저 고백받고 싶은 것이 있습니다.</p>
+  <ol>
+    <li>내 생명을 <b>창조하신 분이 계시다</b>는 것</li>
+    <li>그분이 목숨까지 내줄 만큼 <b>나를 사랑하신다</b>는 것</li>
+  </ol>
+  <p>이 둘을 인정하지 않는 것을 성경은 비로소 <b>죄</b>라고 부릅니다.</p>
+  <div class="note warn">
+    <strong>하나님이 가장 안타까워하시는 것</strong>
+    형편이 조금 어려워지면 우리는 "하나님, 정말 저를 사랑하세요?"라고 묻습니다. 아들을 십자가에 내주기까지 사랑하셨는데, 우리는 "이 문제를 해결해 주셔야 사랑하시는 것"이라며 더 증명하라고 합니다. 목사님은 하나님이 이것을 가장 싫어하신다고 말합니다. <span class="ts">181 · 60:10</span>
+  </div>
+
+  <h3>역사는 왕들의 역사 <span class="ts">181 · 61:08</span></h3>
+  <p>역사는 <b>왕들이 다스린 기록</b>입니다. 창조주 하나님은 "내가 다스린다"고 선포하십니다. 선악과를 기준으로 역사는 둘로 나뉩니다. 사람이 스스로 왕이 되어 다스리는 <b>가인의 나라</b>, 그리고 하나님의 왕권을 인정하고 예배자로 사는 <b>셋 계열</b>입니다.</p>
+  <p>사람들은 이것을 그냥 "세계사"라고 부르지만, 그 세계사가 결국 하나님이 다스리시는 역사로 드러날 것입니다. 구약 역사의 중심에 <b>선악과</b>가 있다면, 신약의 중심에는 <b>십자가</b>가 있습니다.</p>
+
+  <h3>십자가 아래에서 하나 더 붙이는 고백 <span class="ts">181 · 63:01</span></h3>
+  <p>선악과 앞에서 하나님이 받고 싶으신 고백은 "하나님은 왕이십니다"입니다. 십자가 앞에서는 여기에 하나를 더 붙입니다. <b class="hl">"하나님은 사랑의 왕이십니다."</b></p>
+  <p>사랑에도 순서가 있습니다. "너희가 나를 먼저 사랑한 것이 아니라, <b>내가 너를 먼저 사랑했다</b>." 하나님이 먼저 사랑하셨기 때문에 우리도 사랑한다고 고백할 수 있습니다.</p>
+
+  <h3>무엇이 나를 다스리고 있나 <span class="ts">181 · 64:12</span></h3>
+  <p>"가인 계열처럼 살지 말고 셋 계열로 살아라." 그런데 내 감정이 하나님의 다스림을 이기려 할 때가 많습니다.</p>
+  <ul>
+    <li><b>부부 싸움</b> — 사랑해서 결혼했는데 싸울 일이 더 많습니다. 가장 나쁜 싸움은 <b>아무것도 배우지 못하고 끝나는 싸움</b>입니다. 싸움을 통해 "나는 한 사람을 온전히 사랑할 수 없는 존재구나, 저 사람도 그렇구나"를 보아야 합니다. 그래서 가정은 하나님을 의지할 수밖에 없습니다.</li>
+    <li><b>숫자들</b> — 갱년기의 호르몬, 통장 잔고, 아이의 성적표가 나를 다스리는 것 같습니다. 그 숫자가 나를 다스리지 않게 해 달라는 것이 오늘의 기도입니다.</li>
+    <li><b>돈</b> — 마지막 때에는 돈이라는 숫자가 사람을 점령합니다. 야고보서는 "고아와 과부를 돌보고 세상에 물들지 말라"(약 1:27)고 합니다. 세상에 물드는 첫 통로가 돈입니다. <span class="ts">181 · 65:37</span></li>
+  </ul>
+</section>
+
+<!-- ══════════ 한 장 정리 ══════════ -->
+<section id="s18">
+  <h2 class="sec"><span class="num">18</span>한 장으로 보는 오늘 강의</h2>
+  <p class="sec-lead">그림 9는 오늘 다룬 사건을 성경 순서대로 놓은 연대표입니다. 그림 10은 그 사건들이 어떻게 두 계열로 나뉘는지 보여 줍니다.</p>
+
+  <div class="table-scroll">
+  <figure style="min-width:860px">
+    <svg viewBox="0 0 1000 260" role="img" aria-labelledby="f9t">
+      <title id="f9t">창세기 2장부터 4장까지 사건 연대표</title>
+      <rect width="1000" height="260" fill="var(--surface)"/>
+      <line x1="40" y1="120" x2="960" y2="120" stroke="var(--line)" stroke-width="5"/>
+      <path d="M952,110 L970,120 L952,130 Z" fill="var(--line)"/>
+      <g text-anchor="middle">
+        <circle cx="70" cy="120" r="11" fill="var(--accent)"/>
+        <text x="70" y="88" font-size="12" font-weight="800" fill="var(--accent)">2:15~17</text>
+        <text x="70" y="156" font-size="13.5" font-weight="700" fill="var(--ink)">선악과 명령</text>
+        <text x="70" y="176" font-size="11.5" fill="var(--ink-soft)">축복이 먼저</text>
+
+        <circle cx="175" cy="120" r="11" fill="var(--warn)"/>
+        <text x="175" y="88" font-size="12" font-weight="800" fill="var(--warn)">3:1~6</text>
+        <text x="175" y="156" font-size="13.5" font-weight="700" fill="var(--ink)">뱀의 거짓말</text>
+        <text x="175" y="176" font-size="11.5" fill="var(--ink-soft)">먹다</text>
+
+        <circle cx="280" cy="120" r="11" fill="var(--warn)"/>
+        <text x="280" y="88" font-size="12" font-weight="800" fill="var(--warn)">3:7~19</text>
+        <text x="280" y="156" font-size="13.5" font-weight="700" fill="var(--ink)">숨다 · 탓하다</text>
+        <text x="280" y="176" font-size="11.5" fill="var(--ink-soft)">네 관계 단절</text>
+
+        <circle cx="385" cy="120" r="11" fill="var(--accent)"/>
+        <text x="385" y="88" font-size="12" font-weight="800" fill="var(--accent)">3:15, 20~21</text>
+        <text x="385" y="156" font-size="13.5" font-weight="700" fill="var(--ink)">원시복음</text>
+        <text x="385" y="176" font-size="11.5" fill="var(--ink-soft)">가죽옷</text>
+
+        <circle cx="490" cy="120" r="11" fill="var(--ink-soft)"/>
+        <text x="490" y="88" font-size="12" font-weight="800" fill="var(--ink-soft)">3:22~24</text>
+        <text x="490" y="156" font-size="13.5" font-weight="700" fill="var(--ink)">에덴 밖으로</text>
+        <text x="490" y="176" font-size="11.5" fill="var(--ink-soft)">생명나무를 지킴</text>
+
+        <circle cx="595" cy="120" r="11" fill="var(--warn)"/>
+        <text x="595" y="88" font-size="12" font-weight="800" fill="var(--warn)">4:3~8</text>
+        <text x="595" y="156" font-size="13.5" font-weight="700" fill="var(--ink)">두 제사 · 첫 살인</text>
+        <text x="595" y="176" font-size="11.5" fill="var(--ink-soft)">가인이 아벨을 죽임</text>
+
+        <circle cx="700" cy="120" r="11" fill="var(--warn)"/>
+        <text x="700" y="88" font-size="12" font-weight="800" fill="var(--warn)">4:16~17</text>
+        <text x="700" y="156" font-size="13.5" font-weight="700" fill="var(--ink)">에녹 성</text>
+        <text x="700" y="176" font-size="11.5" fill="var(--ink-soft)">가인이 왕이 됨</text>
+
+        <circle cx="805" cy="120" r="11" fill="var(--warn)"/>
+        <text x="805" y="88" font-size="12" font-weight="800" fill="var(--warn)">4:19~24</text>
+        <text x="805" y="156" font-size="13.5" font-weight="700" fill="var(--ink)">라멕</text>
+        <text x="805" y="176" font-size="11.5" fill="var(--ink-soft)">문명 · 폭력의 노래</text>
+
+        <circle cx="910" cy="120" r="11" fill="var(--accent)"/>
+        <text x="910" y="88" font-size="12" font-weight="800" fill="var(--accent)">4:25~26</text>
+        <text x="910" y="156" font-size="13.5" font-weight="700" fill="var(--ink)">셋 · 에노스</text>
+        <text x="910" y="176" font-size="11.5" fill="var(--ink-soft)">여호와의 이름을 부름</text>
+      </g>
+      <g font-size="12" text-anchor="middle">
+        <circle cx="380" cy="228" r="7" fill="var(--accent)"/><text x="440" y="232" fill="var(--ink)">하나님의 은혜</text>
+        <circle cx="520" cy="228" r="7" fill="var(--warn)"/><text x="590" y="232" fill="var(--ink)">사람의 거부와 죄</text>
+      </g>
+    </svg>
+    <figcaption>그림 9. 창세기 2:15~4:26 연대표. 화면이 좁으면 좌우로 밀어서 보세요.</figcaption>
+  </figure>
+  </div>
+
+  <figure>
+    <svg viewBox="0 0 900 420" role="img" aria-labelledby="f10t">
+      <title id="f10t">선악과 앞에서 나뉘는 두 계열 — 가인 계열과 셋 계열, 그리고 십자가</title>
+      <rect width="900" height="420" fill="var(--surface)"/>
+      <defs><marker id="a10" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="var(--ink-soft)"/></marker></defs>
+      <g text-anchor="middle">
+        <rect x="340" y="20" width="220" height="70" rx="14" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/>
+        <text x="450" y="50" font-size="18" font-weight="700" fill="var(--ink)">선악과</text>
+        <text x="450" y="74" font-size="12.5" fill="var(--ink-soft)">"누가 진짜 왕인가?"</text>
+      </g>
+      <g stroke="var(--ink-soft)" stroke-width="2.5" fill="none" marker-end="url(#a10)">
+        <path d="M380,92 L230,140"/><path d="M520,92 L670,140"/>
+      </g>
+      <text x="270" y="112" text-anchor="middle" font-size="13" font-weight="700" fill="var(--warn)">거부</text>
+      <text x="630" y="112" text-anchor="middle" font-size="13" font-weight="700" fill="var(--accent)">인정</text>
+      <g text-anchor="middle">
+        <rect x="40" y="144" width="360" height="190" rx="14" fill="var(--warn-soft)" stroke="var(--warn)" stroke-width="2"/>
+        <text x="220" y="176" font-size="13" font-weight="800" fill="var(--warn)" letter-spacing="2">가인 계열</text>
+        <text x="220" y="208" font-size="17" font-weight="700" fill="var(--ink)">"내가 왕이다"</text>
+        <text x="220" y="238" font-size="13" fill="var(--ink-soft)">믿음 없는 제사 → 형제 살인</text>
+        <text x="220" y="260" font-size="13" fill="var(--ink-soft)">성을 쌓음 → 문명 · 산업 · 예술</text>
+        <text x="220" y="282" font-size="13" fill="var(--ink-soft)">라멕의 노래 → 폭력 자랑 · 심판 조롱</text>
+        <text x="220" y="314" font-size="12.5" font-weight="700" fill="var(--warn)">칼과 힘으로 다스림</text>
+
+        <rect x="500" y="144" width="360" height="190" rx="14" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+        <text x="680" y="176" font-size="13" font-weight="800" fill="var(--accent)" letter-spacing="2">셋 계열 (아벨 대신)</text>
+        <text x="680" y="208" font-size="17" font-weight="700" fill="var(--ink)">"하나님이 왕이십니다"</text>
+        <text x="680" y="238" font-size="13" fill="var(--ink-soft)">믿음의 제사 (피 흘림)</text>
+        <text x="680" y="260" font-size="13" fill="var(--ink-soft)">여호와의 이름을 부름 → 예배</text>
+        <text x="680" y="282" font-size="13" fill="var(--ink-soft)">5장 "아담의 계보"로 이어짐</text>
+        <text x="680" y="314" font-size="12.5" font-weight="700" fill="var(--accent)">사랑으로 다스림</text>
+      </g>
+      <g text-anchor="middle">
+        <rect x="250" y="356" width="400" height="50" rx="12" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/>
+        <text x="450" y="387" font-size="15" font-weight="700" fill="var(--ink)">신약: 십자가 앞에서 — "하나님은 사랑의 왕이십니다"</text>
+      </g>
+      <path d="M680,336 L680,346 L652,370" stroke="var(--accent)" stroke-width="2" fill="none" stroke-dasharray="4 4"/>
+    </svg>
+    <figcaption>그림 10. 선악과 앞에서 무엇을 선택하느냐에 따라 두 계열이 나뉘고, 그 고백은 십자가 앞에서 완성됩니다.</figcaption>
+  </figure>
+
+  <div class="note gold">
+    <strong>이 그림을 말로 풀면 이렇게 됩니다</strong>
+    하나님은 만물을 아담에게 맡기시면서 선악과라는 영수증 하나를 받아 두셨습니다. 그것은 저주가 아니라 축복 뒤에 온 명령이었고, 자유의지라는 영광의 면류관이었습니다. 사람은 뱀의 거짓말을 믿고 먹었고, 네 가지 관계가 끊어졌습니다. 하나님은 원시복음과 가죽옷으로 희생제사로 하나님께 나아가는 방법을 주셨습니다. 그 제사를 믿음으로 드리느냐에 따라 가인 계열과 셋 계열이 나뉘었습니다. 그 희생제사는 결국 십자가를 가리킵니다.
+  </div>
+</section>
+
+<!-- ══════════ 용어 카드 ══════════ -->
+<section id="s19">
+  <h2 class="sec"><span class="num">19</span>핵심 용어 카드</h2>
+  <p class="sec-lead">오늘 나온 말 중에 뜻을 모르면 막히는 것들입니다.</p>
+
+  <div class="term">
+    <div class="t"><b>선악을 알게 하는 나무</b><span>에덴 동산 한가운데 있던 나무. 오늘은 하나님이 왕이심을 인정하는 영수증, 축복 뒤의 명령, 영광의 면류관으로 보았습니다.</span></div>
+    <div class="t"><b>생명나무</b><span>선악과 옆에 있던 나무. 먹은 뒤에는 하나님이 막으셨습니다. 목사님은 예수님을 보여 주는 나무라고 설명합니다.</span></div>
+    <div class="t"><b>차용증</b><span>돈을 빌렸다는 증서. 종이 한 장이 큰돈 전체의 주인이 누구인지 보여 줍니다. 선악과가 그런 증서입니다.</span></div>
+    <div class="t"><b>면류관</b><span>왕이 쓰는 관. 선악과는 사람에게 자유의지를 준 영광의 면류관입니다.</span></div>
+    <div class="t"><b>타율순종 · 자율순종</b><span>정해진 대로만 움직이면 타율순종, 스스로 선택해서 따르면 자율순종입니다. 사람만 자율순종합니다.</span></div>
+    <div class="t"><b>자유의지</b><span>먹을 수도, 안 먹을 수도 있는 선택의 능력. 하나님의 형상이 가진 두 번째 특징입니다.</span></div>
+    <div class="t"><b>기복주의</b><span>복 받는 것을 신앙의 중심에 두는 생각. 신이 나를 섬기게 되므로 결국 내가 우상이 됩니다.</span></div>
+    <div class="t"><b>피가름 교리</b><span>선악과에 물질적 문제가 있어 피가 더러워졌으니 피를 갈아야 한다는 이단의 가르침입니다.</span></div>
+    <div class="t"><b>원시복음</b><span>창세기 3장 15절. 복음이 처음 나타난 구절이라는 뜻입니다. "여자의 후손"은 메시아를 가리킵니다.</span></div>
+    <div class="t"><b>가죽옷</b><span>하나님이 아담과 하와에게 지어 입히신 옷. 짐승의 죽음이 필요했고, 희생제사의 출발점이 됩니다.</span></div>
+    <div class="t"><b>희생제사</b><span>다른 생명의 피로 죄를 덮고 하나님께 나아가는 제사. 십자가를 미리 보여 줍니다.</span></div>
+    <div class="t"><b>아담 · 아다마</b><span>히브리어로 사람과 땅. 사람이 죄를 지으니 땅도 저주를 받습니다.</span></div>
+    <div class="t"><b>비신화화</b><span>성경의 초자연적인 내용을 이성으로 이해할 수 없다며 빼려는 신학의 흐름입니다.</span></div>
+    <div class="t"><b>범신론 · 범아일여</b><span>모든 것이 신이고, 우주와 내가 하나라는 생각. "하나님과 같이 된다"는 거짓말에서 나옵니다.</span></div>
+    <div class="t"><b>가인 계열 · 셋 계열</b><span>하나님의 왕권을 거부하고 사람이 왕이 된 무리와, 왕권을 인정하고 예배하는 무리를 부르는 이름입니다.</span></div>
+    <div class="t"><b>신인관계</b><span>하나님과 사람의 관계. 하나님은 창조주, 사람은 피조물이라는 위아래 관계를 인정하는 것이 출발입니다.</span></div>
+    <div class="t"><b>일반계시 · 특별계시</b><span>자연과 양심으로 하나님을 아는 것이 일반계시, 성경과 예수님으로 아는 것이 특별계시입니다.</span></div>
+  </div>
+</section>
+
+<!-- ══════════ 인용 ══════════ -->
+<section id="s20">
+  <h2 class="sec"><span class="num">20</span>목사님 말씀 그대로</h2>
+  <p class="sec-lead">오늘 강의에서 특별히 기억해 둘 말들입니다.</p>
+
+  <div class="quote">"하나님은 모든 것을 맡기시고, 아담에게 영수증 하나 받아 놓으신 거예요."<span class="who">180 · 16:49</span></div>
+  <div class="quote">"먹으면 죽는다라는 저주가 먼저 있었던 것이 아니라, 축복이 먼저 있었어요."<span class="who">180 · 25:59</span></div>
+  <div class="quote">"이런 신은 엄밀히 말하면 내가 신을 섬기는 거예요? 신이 나를 섬기는 거예요. 그게 결국은 내가 우상이 됐다는 증거예요."<span class="who">180 · 38:13</span></div>
+  <div class="quote">"차이는 있을 수 있어요. 그렇다고 해서 차별하면 돼요? 안 되는 거잖아요."<span class="who">180 · 50:47</span></div>
+  <div class="quote">"상처가 생기는 근본적인 이유는 무엇 때문이에요? 죄 때문이에요."<span class="who">181 · 46:23</span></div>
+  <div class="quote">"하나님의 나라는 뭐로 승부하는 것입니까? 진리로 승부하는 것입니다."<span class="who">181 · 53:18</span></div>
+  <div class="quote">"이 모든 세계사의 중심에 선악과가 서 있었다면, 신약에는 또 뭐가 서 있습니까? 십자가가 서 있는 거예요."<span class="who">181 · 61:48</span></div>
+  <div class="quote">"제일 나쁜 싸움이 뭐예요? 싸우고 끝나는 거예요. 싸웠는데 아무것도 못 배우고 그냥 끝나는 거예요."<span class="who">181 · 64:23</span></div>
+</section>
+
+<!-- ══════════ 직접 정리 ══════════ -->
+<section id="s21">
+  <h2 class="sec"><span class="num">21</span>직접 정리해 보기</h2>
+  <p class="sec-lead">종이를 꺼내 아래 세 가지를 직접 써 보세요. <b>눈으로 읽지 말고 손으로 쓰세요.</b></p>
+
+  <h3>연습 ① 계보도 빈칸 채우기</h3>
+  <p>그림 7을 보지 않고 빈칸에 이름을 써 보세요. 아래 세 칸 밑에는 그 사람이 시작한 일을 적습니다.</p>
+  <figure>
+    <svg viewBox="0 0 900 330" role="img" aria-labelledby="f11t">
+      <title id="f11t">가인 계열과 셋 계열 계보를 채워 넣는 연습용 빈칸</title>
+      <rect width="900" height="330" fill="var(--surface)"/>
+      <g fill="none" stroke="var(--ink-soft)" stroke-width="1.5" stroke-dasharray="5 5">
+        <rect x="370" y="20" width="160" height="40" rx="8"/>
+        <rect x="100" y="96" width="160" height="40" rx="8"/>
+        <rect x="370" y="96" width="160" height="40" rx="8"/>
+        <rect x="660" y="96" width="160" height="40" rx="8"/>
+        <rect x="100" y="160" width="160" height="40" rx="8"/>
+        <rect x="660" y="160" width="160" height="40" rx="8"/>
+        <rect x="100" y="224" width="160" height="40" rx="8"/>
+        <rect x="14" y="276" width="92" height="40" rx="8"/>
+        <rect x="134" y="276" width="92" height="40" rx="8"/>
+        <rect x="254" y="276" width="92" height="40" rx="8"/>
+      </g>
+      <g stroke="var(--ink-soft)" stroke-width="1.5" fill="none">
+        <path d="M450,60 L450,78 M180,78 L740,78 M180,78 L180,96 M450,78 L450,96 M740,78 L740,96 M180,136 L180,160 M740,136 L740,160 M180,200 L180,224 M180,264 L180,270 M60,270 L300,270 M60,270 L60,276 M300,270 L300,276"/>
+      </g>
+      <text x="270" y="190" font-size="12" fill="var(--ink-soft)">성 이름</text>
+      <text x="740" y="220" text-anchor="middle" font-size="12" fill="var(--ink-soft)">이때 비로소 __________</text>
+      <text x="270" y="250" font-size="12" fill="var(--ink-soft)">아내 둘</text>
+      <text x="560" y="300" font-size="13" fill="var(--ink-soft)">빈칸 10개 · 정답은 그림 7</text>
+    </svg>
+    <figcaption>정답은 14절의 그림 7에 있습니다.</figcaption>
+  </figure>
+
+  <h3>연습 ② 네 가지 거짓말 표</h3>
+  <div class="table-scroll">
+  <table>
+    <thead><tr><th style="width:26%">뱀의 거짓말</th><th>만들어 낸 생각</th><th>내 안에서 찾은 모습</th></tr></thead>
+    <tbody>
+      <tr><td>①</td><td style="color:var(--ink-soft)">________________</td><td style="color:var(--ink-soft)">________________</td></tr>
+      <tr><td>②</td><td style="color:var(--ink-soft)">________________</td><td style="color:var(--ink-soft)">________________</td></tr>
+      <tr><td>③</td><td style="color:var(--ink-soft)">________________</td><td style="color:var(--ink-soft)">________________</td></tr>
+      <tr><td>④</td><td style="color:var(--ink-soft)">________________</td><td style="color:var(--ink-soft)">________________</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>연습 ③ 교재 58~59쪽에 내 이름 넣기 <span class="ts">181 · 62:31</span></h3>
+  <p>목사님은 교재 58~59쪽 "선악과 나무에서 하는 말"의 밑줄 친 곳에 <b>자기 이름</b>을 넣어 읽으라고 했습니다. 내 존재 자체가 하나님을 왕으로 인정하며 살고 있는지 돌아보는 연습입니다.</p>
+
+  <h3>연습 ④ 1분 동안 소리 내어 설명하기</h3>
+  <ol>
+    <li>하나님은 왜 선악과를 만드셨는가 (영수증, 축복 명령, 면류관)</li>
+    <li>왜 동산 한가운데, 손 닿는 곳에 두셨는가</li>
+    <li>먹은 뒤 끊어진 네 가지 관계는 무엇인가</li>
+    <li>가죽옷이 왜 소망인가</li>
+    <li>왜 아벨의 제사만 받으셨는가</li>
+    <li>가인 계열과 셋 계열은 무엇을 기준으로 나뉘는가</li>
+  </ol>
+</section>
+
+<!-- ══════════ 점검 ══════════ -->
+<section id="s22">
+  <h2 class="sec"><span class="num">22</span>스스로 점검 · 다음 시간 예고</h2>
+  <p class="sec-lead">답을 먼저 보지 말고, 소리 내어 대답해 본 다음 펼쳐서 확인하세요.</p>
+
+  <details>
+    <summary>1. 오늘 제목 "그렇지만 진짜 왕은 나다"에서 "나"는 누구이고, 지난 시간 제목과 어떻게 이어집니까?</summary>
+    <p>"나"는 <b>하나님</b>입니다. 지난 시간에 아담은 "너는 나다"라는 깨달음으로 만물을 다스리는 왕이 되었습니다. 오늘 하나님은 "그렇지만 진짜 왕은 나다"라고 덧붙이십니다.</p>
+  </details>
+
+  <details>
+    <summary>2. 선악과를 "영수증(차용증)"이라고 부르는 이유는?</summary>
+    <p>하나님이 만물을 아담에게 맡기시면서, <b>진짜 주인이 하나님</b>이라는 증서 하나를 받아 두셨기 때문입니다. 차용증 한 장이 5천만 원 전체를 담보하듯, 나무 한 그루가 만물 전체의 주인을 보여 줍니다.</p>
+  </details>
+
+  <details>
+    <summary>3. 창세기 2장 15~17절에서 "먹지 말라"보다 먼저 나오는 명령은?</summary>
+    <p>"경작하며 지키라"(15절), "각종 나무의 열매는 임의로 먹으라"(16절)입니다. 1장 28절의 <b>축복의 명령</b>이 먼저 있고, 금지 명령은 그 뒤입니다. 저주가 아니라 축복이 먼저였습니다.</p>
+  </details>
+
+  <details>
+    <summary>4. 선악과가 "영광의 면류관"인 이유는? 왜 손 닿는 곳에 두셨습니까?</summary>
+    <p>다른 피조물은 타율순종하지만, 사람만은 스스로 선택하는 <b>자유의지</b>를 가진 하나님의 형상이기 때문입니다. 먹을 수도 안 먹을 수도 있어야 의지가 드러나므로, 2만 볼트 울타리 속이 아니라 <b>언제나 손 닿는 동산 한가운데</b>에 두셨습니다.</p>
+  </details>
+
+  <details>
+    <summary>5. 선악과 명령의 여섯 가지 성격을 말해 보세요.</summary>
+    <p>① 지킬 수 없는 명령이 아니다 ② 한 번 지키면 끝나는 명령이 아니다 ③ 독이 든 열매가 아니다 ④ 고상한 주제가 아니라 먹는 문제다 ⑤ 늘 기억해야 한다 ⑥ 먹는 것에 생명이 걸려 있다</p>
+  </details>
+
+  <details>
+    <summary>6. 선악과를 먹은 뒤 끊어진 네 가지 관계는?</summary>
+    <p>① <b>하나님</b>과의 관계(숨음) ② <b>이웃</b>과의 관계("저 여자 때문에") ③ <b>피조세계</b>와의 관계(해산의 고통, 땅의 저주) ④ <b>나 자신</b>과의 관계(내가 누구인지 모름)</p>
+  </details>
+
+  <details>
+    <summary>7. 원시복음은 어느 구절이며, "여자의 후손"은 누구를 가리킵니까?</summary>
+    <p><b>창세기 3장 15절</b>입니다. 여자의 후손은 <b>메시아</b>를 가리키며, 남자의 후손이 아니라는 점에서 동정녀 탄생을 미리 보여 줍니다.</p>
+  </details>
+
+  <details>
+    <summary>8. 무화과 잎과 가죽옷의 차이는? 가죽옷이 왜 소망입니까?</summary>
+    <p>무화과 잎은 사람이 만든 것이라 수치를 가리지 못했습니다. 가죽옷은 하나님이 지으신 것이고, <b>짐승의 피와 죽음</b>이 필요했습니다. 이것이 희생제사의 출발점이 되고, 결국 <b>십자가</b>를 가리키기 때문에 소망입니다.</p>
+  </details>
+
+  <details>
+    <summary>9. 사탄의 네 가지 거짓말과, 각각이 만든 생각은?</summary>
+    <p>① 죽지 않는다 → 영생불사의 종교 ② 눈이 밝아진다 → 이성주의·과학주의 ③ 선악을 알게 된다 → 율법주의·도덕주의 ④ 하나님과 같이 된다 → 범신론·신인합일</p>
+  </details>
+
+  <details>
+    <summary>10. 하나님이 아벨의 제사만 받으신 이유는 "가인이 원래 나빠서"입니까?</summary>
+    <p>아닙니다. 본문에는 제사 전에 가인이 나빴다는 내용이 없습니다. 히브리서 11장 4절에 따르면 차이는 <b>믿음</b>입니다. 하나님이 왕이시며 희생제사 없이는 나아갈 수 없다는 믿음을 아벨은 가졌고, 가인은 갖지 않았습니다.</p>
+  </details>
+
+  <details>
+    <summary>11. 가인이 성에 아들 이름을 붙인 일과 라멕의 노래는 무엇을 보여 줍니까?</summary>
+    <p>성을 쌓고 아들 이름을 붙인 것은 가인이 <b>스스로 왕</b>이 되었다는 뜻입니다. 라멕의 노래는 사람을 죽인 <b>폭력을 자랑</b>하고, "77배"로 하나님의 심판을 <b>조롱</b>합니다. 가인의 세상은 칼과 힘으로 다스립니다.</p>
+  </details>
+
+  <details>
+    <summary>12. 셋 계열의 특징을 보여 주는 구절은? 5장 족보는 누구의 족보입니까?</summary>
+    <p>창세기 4장 26절, "그 때에 사람들이 비로소 <b>여호와의 이름을 불렀더라</b>"입니다. 5장 "아담의 계보"는 장남 가인이 아니라 <b>셋</b>으로 이어집니다.</p>
+  </details>
+
+  <h3>이번 주에 해 볼 것</h3>
+  <div class="grid">
+    <div class="card">
+      <h4 style="color:var(--accent)">① 나를 다스리는 숫자 찾기</h4>
+      <p style="margin:0">통장 잔고, 성적표, 몸무게, 조회 수처럼 요즘 내 기분을 좌우하는 숫자 하나를 적어 보세요. 그 앞에서 "하나님이 나의 왕이십니다"라고 소리 내어 고백해 보세요.</p>
+    </div>
+    <div class="card">
+      <h4 style="color:var(--accent)">② 배우고 끝내는 다툼</h4>
+      <p style="margin:0">이번 주에 누군가와 부딪히면, 끝난 뒤 "이 일로 내가 배운 것" 한 줄을 적어 보세요. 아무것도 배우지 못하고 끝나는 싸움을 줄이는 연습입니다.</p>
+    </div>
+  </div>
+
+  <div class="note gold">
+    <strong>다음 시간에는</strong>
+    창조, 선악과, 가인 계열과 셋 계열 다음에는 <b>왕들의 이야기</b>가 이어집니다. 하나님의 왕권을 인정하는 왕들의 역사와, 인정하지 않는 왕들의 역사가 함께 흘러갑니다. 선악과와 희생제사를 중심에 놓고 "누가 진정한 왕인가"를 계속 묻게 됩니다. <span class="ts">181 · 62:03</span>
+  </div>
+</section>
+
+<footer>
+  <p><b>4일차 — 그렇지만 진짜 왕은 나다</b><br>
+  원본 녹음: 새로운 녹음 180.m4a (52분) · 새로운 녹음 181.m4a (68분)<br>
+  전사본: transcript/180.txt · transcript/181.txt<br>
+  본문의 <span class="ts">180 · 00:00</span> 표시는 해당 내용이 나오는 녹음 위치입니다.<br>
+  성경 구절은 개역개정을 기준으로 옮겼습니다.</p>
+</footer>
+
+</div>
+
+<button class="theme-toggle" id="tt">◐ 화면 밝기 전환</button>
+<script>
+(function(){
+  var root=document.documentElement, btn=document.getElementById('tt');
+  var saved=null;
+  try{ saved=localStorage.getItem('bs-theme'); }catch(e){}
+  if(saved){ root.setAttribute('data-theme',saved); }
+  btn.addEventListener('click',function(){
+    var cur=root.getAttribute('data-theme');
+    if(!cur){ cur=window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'; }
+    var next=cur==='dark'?'light':'dark';
+    root.setAttribute('data-theme',next);
+    try{ localStorage.setItem('bs-theme',next); }catch(e){}
+  });
+})();
+</script>
+</body>
+</html>
