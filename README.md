@@ -9,6 +9,7 @@
 - `index.html` — 홈. 회차별 자료 목록
 - `스터디자료-제작지침서.html` — 자료 제작 지침서
 - `N일차/index.html` — 각 회차 정리 자료 (자기완결형 정적 HTML)
+- `tools/maps/` — 지도 생성 스크립트. 실제 해안선·강(Natural Earth) 위에 위경도로 지명을 찍어 SVG를 만든다. 사용법은 제작지침서 6절
 - `N일차/transcript/`, `*.m4a` — 원본 녹음/전사본. **git에는 올리지 않음** (`.gitignore` 처리)
 
 ## 새 회차 추가하기

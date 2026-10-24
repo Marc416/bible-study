@@ -18,3 +18,6 @@ _site/
 .jekyll-metadata
 vendor/
 .bundle/
+
+# Natural Earth 원본(약 22MB). tools/maps/geo.py가 없으면 내려받는다
+tools/maps/data/
