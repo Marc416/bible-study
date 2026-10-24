@@ -6,7 +6,7 @@ from mapkit import *
 # ───────────── f7 : 아라랏에서 애굽까지 ─────────────
 def f7():
     P = NORTH
-    s = [base_defs(P, 'g5'), base_use('g5'), crescent(P, clip='g5-clip')]
+    s = [base_defs(P, 'g5'), base_use('g5', under=crescent(P, clip='g5-clip'))]
     s.append(SEA_TXT)
     for p, t, a in [((34.3, 31.0), '지중해', None), ((29.95, 49.0), '페르시아만', 'middle')]:
         x, y = P(*p); s.append(text(x, y, t, 14.5 if t == '지중해' else 12.5, 400, 'var(--ink-soft)', a))

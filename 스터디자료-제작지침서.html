@@ -361,10 +361,11 @@ footer{margin-top:72px; padding-top:24px; border-top:1px solid var(--line); colo
     <clipPath id="gd-clip"><use href="#gd-land"/></clipPath>
   </defs>
   <rect x="0" y="0" width="900" height="560" fill="var(--map-sea)"/>
-  <use href="#gd-land" fill="var(--map-desert)" stroke="var(--map-stroke)" stroke-width="0.9"/>
+  <use href="#gd-land" fill="var(--map-desert)"/>
+  <path d="M775.7,386.2 C765.0,378.6 732.1,358.2 711.4,340.5 C690.7,322.7 667.9,300.7 651.4,279.5 C635.0,258.3 620.7,238.8 612.9,213.4 C605.0,188.0 615.7,150.8 604.3,127.0 C592.9,103.3 570.0,83.4 544.3,71.1 C518.6,58.9 481.4,53.4 450.0,53.4 C418.6,53.4 379.3,57.2 355.7,71.1 C332.1,85.1 321.4,111.8 308.6,137.2 C295.7,162.6 287.9,198.2 278.6,223.6 C269.3,249.0 260.0,270.2 252.9,289.6 C245.7,309.1 238.6,332.0 235.7,340.5" fill="none" stroke="var(--accent)" stroke-width="62" opacity=".13" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#gd-clip)"/>
+  <use href="#gd-land" fill="none" stroke="var(--map-stroke)" stroke-width="0.9"/>
   <use href="#gd-lakes" fill="var(--map-sea)" stroke="var(--map-stroke)" stroke-width="0.6"/>
   <use href="#gd-rivers" fill="none" stroke="var(--map-river)" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round"/>
-  <path d="M775.7,386.2 C765.0,378.6 732.1,358.2 711.4,340.5 C690.7,322.7 667.9,300.7 651.4,279.5 C635.0,258.3 620.7,238.8 612.9,213.4 C605.0,188.0 615.7,150.8 604.3,127.0 C592.9,103.3 570.0,83.4 544.3,71.1 C518.6,58.9 481.4,53.4 450.0,53.4 C418.6,53.4 379.3,57.2 355.7,71.1 C332.1,85.1 321.4,111.8 308.6,137.2 C295.7,162.6 287.9,198.2 278.6,223.6 C269.3,249.0 260.0,270.2 252.9,289.6 C245.7,309.1 238.6,332.0 235.7,340.5" fill="none" stroke="var(--map-land)" stroke-width="62" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#gd-clip)"/>
 <g font-size="13" font-style="italic" fill="var(--ink-soft)" paint-order="stroke" stroke="var(--map-sea)" stroke-width="3" stroke-linejoin="round">
     <text x="73" y="188" font-size="14.5" font-weight="400" fill="var(--ink-soft)">지중해</text>
     <text x="870" y="488" text-anchor="middle" font-size="12.5" font-weight="400" fill="var(--ink-soft)">페르시아만</text>
@@ -412,6 +413,7 @@ footer{margin-top:72px; padding-top:24px; border-top:1px solid var(--line); colo
       <tr><td><code>geo.py</code></td><td>Natural Earth 10m 데이터(땅·호수·강)를 내려받아 투영하고, 화면 밖을 잘라 SVG path로 만듭니다. 원본은 <code>tools/maps/data/</code>에 두고 git에는 올리지 않습니다.</td></tr>
       <tr><td><code>mapkit.py</code></td><td>표준 투영(FULL·ZOOM), 지명 위경도(<code>PL</code>), 바탕·경로·라벨·축척·방위표 부품</td></tr>
       <tr><td><code>day2.py</code></td><td>2일차 지도 6장. 새 일차는 이 파일을 복사해 <code>dayN.py</code>로 만듭니다.</td></tr>
+      <tr><td><code>day4.py</code></td><td>4일차 지도 1장(메소포타미아와 약속의 땅, FULL 투영)</td></tr>
       <tr><td><code>day5.py</code></td><td>5일차 지도 1장(아라랏에서 애굽까지, NORTH 투영)</td></tr>
       <tr><td><code>guide.py</code></td><td>이 절의 표준 베이스맵</td></tr>
       <tr><td><code>preview.py</code></td><td>지도를 한 장씩 라이트·다크로 캡처해 겹침을 확인합니다(헤드리스 Chrome).</td></tr>
@@ -469,7 +471,7 @@ footer{margin-top:72px; padding-top:24px; border-top:1px solid var(--line); colo
 
   <div class="note warn">
     <strong>정확하게 그리되, 불확실한 것은 밝힙니다</strong>
-    ① 해안선·강은 <b>오늘날 기준</b>입니다. 현대에 만든 댐 호수는 넣지 않습니다. ② 위치가 확정되지 않은 곳(시내산·가데스바네아·고센·홍해 건넌 지점)은 전통적 위치를 쓰고 캡션에 그렇게 적습니다. ③ 이동 경로는 직선으로 긋지 않고, 실제로 다닌 길(강·비옥한 초승달·왕의 대로)을 따라 그립니다. ④ 축척 막대와 방위표를 넣습니다.
+    ① 해안선·강은 <b>오늘날 기준</b>입니다. 현대에 만든 댐 호수는 넣지 않습니다. ② 위치가 확정되지 않은 곳(시내산·가데스바네아·고센·홍해 건넌 지점)은 전통적 위치를 쓰고 캡션에 그렇게 적습니다. ③ 이동 경로는 직선으로 긋지 않고, 실제로 다닌 길(강·비옥한 초승달·왕의 대로)을 따라 그립니다. ④ 축척 막대와 방위표를 넣습니다. ⑤ 초승달·메소포타미아 같은 영역 표시는 <b>반투명 색</b>으로 칠하고, <code>base_use(under=...)</code>로 넣어 강·해안선 <b>아래</b>에 깝니다. 영역이 지형을 가리면 어디인지 알아볼 수 없습니다.
   </div>
 </section>
 

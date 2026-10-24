@@ -11,7 +11,7 @@ LEFT = dict(shechem=(-11, 0), jerusalem=(-11, 10), beersheba=(-11, 14), kadesh=(
 def basemap():
     P = FULL
     # 2일차와 같은 문서에 들어가지 않지만, id는 'gd'로 따로 둔다
-    s = [base_defs(P, 'gd'), base_use('gd'), crescent(P, clip='gd-clip')]
+    s = [base_defs(P, 'gd'), base_use('gd', under=crescent(P, clip='gd-clip'))]
     s += full_water_labels()
     s.append(dots(P, NAMES, r=5.5))
     s.append(HALO)

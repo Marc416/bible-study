@@ -6,7 +6,7 @@ from mapkit import *
 # ───────────── m0 : 전체 지도 ─────────────
 def m0():
     P = FULL
-    s = [base_defs(P, 'ne'), base_use('ne'), crescent(P, accent=True)]
+    s = [base_defs(P, 'ne'), base_use('ne', under=crescent(P, accent=True))]
     s += full_water_labels()
     s.append(dots(P, ['ur', 'haran', 'nineveh', 'babylon', 'shechem', 'jerusalem', 'kadesh', 'sinai', 'goshen']))
     s.append(HALO)
@@ -22,7 +22,7 @@ def m0():
     s.append('  </g>')
     s.append('''  <g transform="translate(300,516)">
     <rect x="0" y="0" width="372" height="30" rx="6" fill="var(--surface)" opacity=".9"/>
-    <rect x="10" y="8" width="15" height="15" rx="3" fill="var(--accent)" opacity=".25"/>
+    <rect x="10" y="8" width="15" height="15" rx="3" fill="var(--accent)" opacity=".2"/>
     <text x="33" y="20" font-size="12.5" fill="var(--ink-soft)">비옥한 초승달 — 물이 있어 사람이 모여 살던 띠 모양의 땅</text>
   </g>''')
     s.append(scalebar(P, 200, 730, 528))
@@ -33,7 +33,7 @@ def m0():
 # ───────────── m1 : 아브라함 ─────────────
 def m1():
     P = FULL
-    s = [base_use('ne'), crescent(P)]
+    s = [base_use('ne', under=crescent(P))]
     s += full_water_labels((33.45, 40.9))
     s.append('  <defs><marker id="ar1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3.6" markerHeight="3.6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--warn)"/></marker></defs>')
     routes = [
@@ -137,7 +137,7 @@ def m3():
 # ───────────── m5 : 남북 왕국 멸망 ─────────────
 def m5():
     P = FULL
-    s = [base_use('ne'), crescent(P)]
+    s = [base_use('ne', under=crescent(P))]
     s += full_water_labels((33.45, 40.9))
     s.append('''  <defs>
     <marker id="arR" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="3.6" markerHeight="3.6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="var(--warn)"/></marker>

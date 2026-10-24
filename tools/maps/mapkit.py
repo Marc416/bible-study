@@ -86,10 +86,13 @@ def base_defs(P, pid):
   </defs>'''
 
 
-def base_use(pid, w=900, h=560, faded=False, river_w=1.8):
+def base_use(pid, w=900, h=560, faded=False, river_w=1.8, under=''):
+    """바다 → 땅 → under(초승달 같은 영역 표시) → 해안선 → 호수 → 강 순서로 그린다.
+    영역 표시를 강·해안선 아래에 두어 지형이 가려지지 않게 한다."""
     o = ' opacity=".55"' if faded else ''
     return f'''  <rect x="0" y="0" width="{w}" height="{h}" fill="var(--map-sea)"{o}/>
-  <use href="#{pid}-land" fill="var(--map-desert)" stroke="var(--map-stroke)" stroke-width="0.9"{o}/>
+  <use href="#{pid}-land" fill="var(--map-desert)"{o}/>
+{under + chr(10) if under else ''}  <use href="#{pid}-land" fill="none" stroke="var(--map-stroke)" stroke-width="0.9"{o}/>
   <use href="#{pid}-lakes" fill="var(--map-sea)" stroke="var(--map-stroke)" stroke-width="0.6"{o}/>
   <use href="#{pid}-rivers" fill="none" stroke="var(--map-river)" stroke-width="{river_w}" stroke-linejoin="round" stroke-linecap="round"{o}/>'''
 
@@ -99,11 +102,10 @@ CRESCENT = [(30.4, 47.4), (31.3, 45.9), (32.5, 44.5), (33.8, 43.6), (35.5, 43.4)
 
 
 def crescent(P, accent=False, clip='ne-clip'):
-    d = smooth(P, CRESCENT)
-    out = f'  <path d="{d}" fill="none" stroke="var(--map-land)" stroke-width="62" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#{clip})"/>'
-    if accent:
-        out += f'\n  <path d="{d}" fill="none" stroke="var(--accent)" stroke-width="62" opacity=".12" stroke-linecap="round" stroke-linejoin="round" clip-path="url(#{clip})"/>'
-    return out
+    """비옥한 초승달 띠. 반투명 색이라 아래 지형이 비친다. base_use(under=...)로 넣는다."""
+    op = '.2' if accent else '.13'
+    return (f'  <path d="{smooth(P, CRESCENT)}" fill="none" stroke="var(--accent)" stroke-width="62" opacity="{op}" '
+            f'stroke-linecap="round" stroke-linejoin="round" clip-path="url(#{clip})"/>')
 
 
 def full_water_labels(euphrates=(34.9, 40.0)):
